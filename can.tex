@@ -1,0 +1,84 @@
+\section{G³ówna magistrala komunikacyjna - CAN} \label{sec:can}
+Wybór magistrali CAN spe³nia wszystkie za³o¿enia projektu zawarte w \hyperref[sec:analiza]{Sekcji~\ref*{sec:analiza}: Analiza problemu}). Jest to protokó³ komunikacyjny wykorzystywany przez sterowniki silnika ECU serii PE3\cite{manual:ecu}, który zosta³ wybrany przez konstruktorów pojazdu. Jest to powszechnie stosowany standard w systemach automatyki przemys³owej i samochodowej. Charakteryzuje siê wysokim bezpieczeñstwem (odpornoœci¹ na b³êdy) transmisji. Pozwala na przesy³anie mikrostrumieni danych, takich jak uzyskiwane dane z czujników, sk³adaj¹cych siê z 1 do 8 bitów na komunikat.
+\subsection{CAN w modelu ISO/OSI} \label{sec:sub:iso}
+Controller Area Network to standard przemys³owej sieci transmisyjnej, stworzonej na pocz¹tku lat osiemdziesi¹tych przez niemieck¹ firmê Bosch. Jak ka¿dy powszechnie stosowany protokó³ komunikacyjny, tak i CAN zosta³ w roku 1993  zestandaryzowany i opisany przez \textit{International Standard Organisation (ISO)} na warstwach modelu ISO/OSI i przyjêty za normê ISO-11898~\cite{article:siecican} (\hyperref[fig:ISO/OSI]{Rysunek~\ref*{fig:ISO/OSI}}).  Standard CAN mia³ obejmowaæ warstwy 1.~(fizyczn¹) 2.~(³¹cza danych) oraz 7.~(aplikacji) \cite{article:can}.
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.75\textwidth]{figures/CAN_ISO_OSI.JPG}
+\caption{CAN w modelu ISO/OSI~\cite{article:can}}
+\label{fig:ISO/OSI}
+\end {figure}
+
+W warstwie fizycznej istniej¹ dwie wersje protoko³u:
+\begin{itemize}
+\item \textit{Low Speed CAN} od 5 kb/s do 125 kb/s
+\item \textit{High Speed CAN} do 1 Mb/s
+\end{itemize}
+Wersje te jednak nie opisuj¹ bezpoœrednio realizacji fizycznej transmisji sygna³u. Powsta³o wiele dokumentów, które uœciœlaj¹ to zagadnienie. Sygna³ musi byæ sygna³em ró¿nicowym, a najczêœciej stosowanym medium jest skrêtka dwóch przewodów, ekranowanych lub nie. Sygna³ ró¿nicowy zapobiega zniekszta³ceniu sygna³u przez zak³ócenia. Topologia sieci to magistrala, co oznacza, ¿e wszystkie elementy sieci pod³¹czone s¹ do wspólnej pary przewodów. 
+
+W nowszej wersji specyfikacji (oznaczanej CAN 2.0), która jest odpowiedzi¹ na rosn¹ce zapotrzebowanie, warstwa ³¹cza danych podzielona jest na dwie czêœci:
+\begin{itemize}
+\item \textit{Logical Link Control (LLC)} odpowiedzialn¹ za retransmisjê danych, zarz¹dzanie filtrami identyfikatorów oraz sygnalizacjê przepe³nieñ skrzynek odbiorczych i nadawczych.
+\item \textit{Media Access Control (MAC)} odpowiedzialn¹ za dostêp do medium, kodowanie i enkapsulacjê danych oraz wykrywanie b³êdów transmisji.
+\end{itemize}
+
+Dostêp do medium realizowany jest poprzez wyró¿nienie dwóch stanów magistrali: dominuj¹cego i recesywnego. (Wartoœci napiêæ przedstawiono na \hyperref[fig:canvolt]{Rysunku~\ref*{fig:canvolt}}. Standard ISO-11898 mo¿e byæ stosowany równie¿ w sieciach o ni¿szych prêdkoœciach, dlatego zaprezentowano go jako uniwersalny). 
+
+\begin  {figure} [h] 
+\centering
+\captionsetup{justification=centering}
+\includegraphics[width=0.5\textwidth]{figures/CAN_voltage}
+\caption{Poziomy bezwzglêdne linii magistrali w odniesieniu do (lokalnej) masy zgodnie z ISO-11898~\cite{article:can}}
+\label{fig:canvolt}
+\end {figure}
+
+Je¿eli urz¹dzenia magistrali wymusz¹ jednoczeœnie stan recesywny i dominuj¹cy, to na linii ustabilizuje siê stan dominuj¹cy. System dostêpu do medium jest potocznie zwany "iloczynem na drucie" (wiêcej informacji w \hyperref[sec:sub:filtry]{Sekcji~\ref*{sec:sub:filtry}: Filtry akceptacyjne})\\
+Warstwa ³¹cza danych czêsto obs³ugiwana jest sprzêtowo przez kontrolery magistrali CAN, które spotykane s¹ jako integralne czêœci niektórych mikrokontrolerów.\\
+
+Istnieje bardzo wiele ró¿nych standardów opartych na warstwie aplikacji. Ka¿dy producent opracowuje swój standard. Istniej¹: 
+\begin{itemize} \label{itemize:can}
+\item CANopen oparty na standardzie grupy CiA (CAN in Automation - standard DS 301). Bardzo popularny protokó³, u¿ywany w systemach wbudowanych.
+\item CAN Areospace - standard wprowadzony przez NASA (National Aeronautic and Space Administration). U¿ywany do systemu kontrolno-nawigacyjnego.
+\item CAN Kingdom - specyfikacja warstwy aplikacji stworzona przez szwedzka firmê Kvaser AB. Daje on projektantom swobodê w tworzeniu w³asnego systemu, otwieraj¹c mo¿liwoœæ do projektowania systemu modu³owego.
+\item Device Net - szeroko stosowany w aplikacjach automatyki przemys³owej.
+\item SDS - (Smart Distributed System) - specyfikacja stworzona przez firmê Honeywell, zajmuj¹c¹ siê systemami steruj¹cymi oraz kontrolno-pomiarowymi.
+\item SafetyBus - standard opracowany przez grupê Safety Network International e.V. Stosowany w przemyœle transportowym, i automatyce przemys³owej.
+\item SAE - standard zdefiniowany przez grupê Society of Automotive Engineers. Stosowany jest jako system komunikacji urz¹dzeñ kontrolnych, pomiarowych w samochodach osobowych (J1850) i ciê¿arowych (J1939)~\cite{misc:canbus}.
+\end{itemize}
+
+Oraz wiele innych, bêd¹cych wariacjami powy¿szych.
+ 
+
+
+\subsection{Budowa ramki CAN} \label{sec:sub:ramkacan}
+Wyró¿nia siê podzia³ standardu CAN na dwie kolejne grupy, wewn¹trz warstwy ³¹cza danych:
+\begin{itemize}
+\item \textit CAN 2.0 A - podstawow¹
+\item \textit CAN 2.0 B - rozszerzon¹
+\end{itemize}
+Podzia³ ten ogranicza siê do budowy ramki, a przede wszystkim do d³ugoœci pola arbitra¿u wiadomoœci. Podstawowa wersja ramki posiada 11-bitowy identyfikator (\hyperref[fig:subfig:canstd]{Rysunek~\ref*{fig:subfig:canstd}}), natomiast rozszerzona 29-bitowy (\hyperref[fig:subfig:canext]{Rysunek~\ref*{fig:subfig:canext}}). Dobrze zaprojektowany system mo¿e skutecznie ³¹czyæ w sobie obie wersje protoko³u.
+
+\begin{figure} [h]
+\centering
+%%----start of first subfigure----
+	\subfloat[Standardowa ramka]{\label{fig:subfig:canstd} 
+	\includegraphics[width=0.75\textwidth]{figures/CAN_frame.JPG}}
+	\\
+%%----start of second subfigure----
+	\subfloat[Rozszerzony nag³ówek]{\label{fig:subfig:canext}
+	\includegraphics[width=\textwidth]{figures/CAN_ext.JPG}}
+	\caption{Ramka CAN \cite{article:siecican}}
+	\label{fig:canframe} %% label for entire figure
+\end{figure}
+
+Po polu arbitra¿u nastêpuje pole kontrolne, w którym zapisana jest informacja o iloœci przesy³anych danych. Kod DLC (Data Length Code) to nic innego, tylko zapis binarny liczby bajtów przes³anych w polu danych. Maksymalna liczba to 8, czyli zakres wartoœci DLC wynosi <0b0000, 0b1000>~\cite{manual:stm32f4}.\\
+Pole danych jest opcjonalne, gdy¿ istniej¹ ramki, które s¹ go pozbawione, jak ramka ¿¹dania transmisji, czy ramka przepe³nienia.
+
+\subsection{Filtry akceptacyjne} \label{sec:sub:filtry}
+Ogromn¹ zalet¹ systemu opartego na protokole CAN jest obecnoœæ filtrów wiadomoœci. W sieci CAN identyfikator wiadomoœci jest jednoczeœnie jej priorytetem. Im ni¿szy identyfikator, tym wy¿szy priorytet. Wynika to z faktu, ¿e za stan logiczny 0 odpowiada bit dominuj¹cy na magistrali. Dlatego nag³ówek ramki zawieraj¹cy identyfikator nazywany jest polem arbitra¿u. Wêze³, który chce wys³aæ wiadomoœæ o najmniejszym identyfikatorze, uzyska dostêp do magistrali jako pierwszy. Wszystkie wêz³y monitoruj¹ sieæ, równie¿ w trakcie nadawania. Gdy wykryj¹, ¿e wiadomoœæ któr¹ nadaj¹, nie pokrywa siê z t¹ na magistrali, przestaj¹ nadawaæ i oczekuj¹ na koniec ramki. Wtedy ponawiaj¹ próbê nadania wiadomoœci~\cite{article:can}\cite{article:siecican}.\\
+Wa¿nym spostrze¿eniem oraz znacz¹c¹ ró¿nic¹ miêdzy protoko³em CAN, a innymi protoko³ami, jest fakt i¿ protokó³ nie posiada adresów. Identyfikator jest powi¹zany z wiadomoœci¹, a nie z urz¹dzeniem. Jako, ¿e ka¿de urz¹dzenie odczytuje stan na magistrali, wysy³anie wiadomoœci odbywa siê w trybie broadcast. W wersji podstawowej, dziêki 11-bitowemu identyfikatorowi istnieje 2048 ró¿nych ramek, w rozszerzonej ponad 500 milionów. Nie ma potrzeby aby wszystkie ramki by³y przetwarzane przez wszystkie wêz³y magistrali~\cite{article:can}. Kontrolery CAN umo¿liwiaj¹ filtracjê ramek na poziomie sprzêtowym, bez potrzeby anga¿owania jednostki centralnej. Istniej¹ dwa podstawowe sposoby filtracji wiadomoœci:
+\begin{itemize}
+\item Tryb maskowania. Definiujemy w nim maskê, która okreœla, które bity identyfikatora bêd¹ porównywane z wzorcowym identyfikatorem. Dziêki temu trybowi, mo¿emy w ³atwy sposób zadeklarowaæ zbiór interesuj¹cych nas identyfikatorów.
+\item Tryb listy identyfikatorów. Tworzymy listê identyfikatorów, które bêd¹ akceptowane przez wêze³. Jest to wygodne rozwi¹zanie w przypadku ma³ej iloœci po¿¹danych wiadomoœci.
+\end{itemize}
