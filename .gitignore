@@ -43,13 +43,16 @@ Temporary Items
 .apdisk
 
 #ignoruj w folderze
-.lof
-.lot
-.toc
-.out
-.blg
-.aux
-.bbl
-.bak
-.dvi
-.txt
+*.lof
+*.lot
+*.toc
+*.out
+*.blg
+*.aux
+*.bbl
+*.bak
+*.dvi
+*.txt
+*.log
+*.pdf
+*.xls
