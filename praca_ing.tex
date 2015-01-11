@@ -68,31 +68,26 @@ Niniejsza praca in¿ynierska stanowi dokumentacjê projektu realizowanego przez gr
 
 \chapter{Omówienie protoko³ów komunikacyjnych} \label{ch:can}
 %=============================================================
+\section{G³ówna magistrala komunikacyjna - CAN} \label{sec:can}
 \input{can.tex}
+
+\section{Archiwizacja danych - SD} \label{sec:sd}
 \input{sd.tex}
-\section{Komunikacja bezprzewodowa - XBee} \label{sec:xbee}
-\subsection{Universal Asynchronous Receiver and Transmitter - UART} \label{ssec:uart}
+
 
 \chapter{Realizacja projektu}
 %=============================================================
+\section{Model systemu} \label{sec:model}
 \input{model.tex}
+
 \section{G³ówny komputer pok³adowy}
-\input{uC.tex}
-\subsection{Obs³uga magistrali CAN}
-\subsubsection{Transceiver CAN}
-\subsection{Obs³uga karty SD}
-\subsection{Obs³uga modu³u XBee}
-\subsection{Zasilanie}
-\subsection{System przerwañ (NVIC)} \label{sec:nvic}
+\input{cpu.tex}
 
 \section{Rozproszone jednostki pomiarowe - HUB}
-\input{Hub.tex}
-
+\input{hub.tex}
 
 \section{Zdalny interfejs u¿ytkownika}
-\subsection{Wymagania sprzêtowe}
-\subsection{Modu³ odbiorczy XBee}
-\subsection{Grphical User Interface (GUI)}
+\input{interface.tex}
 
 \chapter{Badania eksperymentalne}
 %=============================================================

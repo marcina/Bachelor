@@ -1,8 +1,7 @@
-\subsection{Wprowadzenie}
 G³ówne zadanie Rozproszonej Jednostki Pomiarowej(Hub) to dokonywanie pomiaru wielkoœci fizycznych mierzonych przez czujniki rozmieszczone w bolidzie. Za standard analogowego sygna³u wejœciowego przyjêto 0-12V. \newline
 Uk³ad Jednostki Pomiarowej sk³ada siê z 3 odseparowanych galwanicznie czêœci: pomiarowej, mikrokontrolerowej i transmisji CAN.\newline
 Uk³ad realizuj¹cy dzia³anie Jednostki to STM32f103, zapewniaj¹c peryferia pomiarowe jak i komunikacyjne.
-\subsection{Uk³ad g³ówny}
+\subsection{Mikrokontroler}
 Mikrokontroler STM32f103 pochodzi z rodziny uk³adów o rdzeniu Cortex\texttrademark-M3, dostêpny od paru lat na rynku, sprawdza siê w rozwi¹zaniach wymagaj¹cych ma³ego i prostego kontrolera. Szereg peryferiów w które wyposa¿ony jest ten uk³ad stawia go w kategorii uniwersalnoœci nie osi¹galnej przez inne uk³ady na rynku tej klasy. Najwa¿niejsze peryferia wykorzystane w Hubie to:\newline
 \begin{itemize}
 	\item Dwa 12 bitowe przetworniki analogowo-cyfrowe, potrafi¹ce obs³u¿yæ do 16 kana³ów
