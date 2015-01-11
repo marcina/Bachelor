@@ -1,0 +1,80 @@
+\begin{thebibliography}{10}
+
+\bibitem{misc:fat}
+{ChaN}.
+\newblock {FatFs - FAT file system module R0.10c }.
+\newblock \url{http://elm-chan.org/fsw/ff/00index_e.html}, 2014.
+
+\bibitem{article:can}
+{Elektor Electronics}.
+\newblock {Magistrala CAN}.
+\newblock {\em ELEKTRONIKA PRAKTYCZNA}, 2000.
+
+\bibitem{misc:formula}
+{Formula Student}.
+\newblock \url{http://events.imeche.org/formula-student/about-us}.
+
+\bibitem{misc:canbus}
+{Magistrala CAN - Warstwa aplikacyjna}.
+\newblock \url{http://canbus.pl/index.php?id=5}.
+
+\bibitem{article:siecican}
+Pawe³ Moll.
+\newblock {Sieci CAN}.
+\newblock {\em ELEKTRONIKA PRAKTYCZNA}, 2005.
+
+\bibitem{book:paprocki}
+Krzysztof Paprocki.
+\newblock {\em {Mikrokontrolery STM32 w praktyce}}.
+\newblock Wydawnictwo BTC, Legionowo, 2011.
+
+\bibitem{manual:ecu}
+{Performance ELEKTRONICS}.
+\newblock {\em {AN400 Rev B– Application Note CAN Bus Protocol for PE3 Series
+  ECUs}}, November 2011.
+
+\bibitem{misc:motorsport}
+{PUT Motorsport}.
+\newblock \url{http://motorsport.put.poznan.pl}.
+
+\bibitem{manual:sandisk}
+SanDisk.
+\newblock {\em {Secure Digital Card Product Manual - Revision 1.7}}, September
+  2003.
+
+\bibitem{spec:sd}
+{SD Card Association}.
+\newblock {\em {SD Specifications Part 1: Physical Layer Simplified
+  Specification}}.
+\newblock {SD Group}, wydanie 2.00, September 2006.
+
+\bibitem{spec:sdio}
+{SD Card Association}.
+\newblock {\em {SD Specifications Part E1 - SDIO Simplified Specification}},
+  wydanie 2.00, February 2007.
+
+\bibitem{article:discovery}
+Tomasz Starak.
+\newblock {Tanio, taniej, STM32F4Discovery… Cortex-M4 w pe³nej okaza³oœci}.
+\newblock {\em ELEKTRONIKA PRAKTYCZNA}, Listopad 2011.
+
+\bibitem{manual:discovery}
+STMicroelectronics.
+\newblock {\em {UM1472 User Manual}}, January 2012.
+
+\bibitem{manual:stm32f4}
+STMicroelectronics.
+\newblock {\em {RM0090 Reference manual}}, February 2013.
+
+\bibitem{manual:stm32f4d}
+STMicroelectronics.
+\newblock {\em {STM32F405xx STM32F407xx Datasheet}}, June 2013.
+
+\bibitem{lib:sd}
+Majerle Tilen.
+\newblock {Library 21 - Read SD card with FatFs on STM32F4}.
+\newblock
+  {\url{http://stm32f4-discovery.com/2014/07/library-21-read-sd-card-fatfs-stm32f4xx-devices/}},
+  July 2014.
+
+\end{thebibliography}
