@@ -43,6 +43,7 @@ Temporary Items
 .apdisk
 
 #ignoruj w folderze
+<<<<<<< HEAD
 .lof
 .lot
 .toc
@@ -54,3 +55,19 @@ Temporary Items
 .dvi
 .txt
 *.pdf
+=======
+*.lof
+*.lot
+*.toc
+*.out
+*.blg
+*.aux
+*.bbl
+*.bak
+*.dvi
+*.txt
+*.log
+*.pdf
+*.xls
+*.gz
+>>>>>>> origin/master
