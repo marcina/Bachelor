@@ -10,4 +10,11 @@ Mikrokontroler STM32f103 pochodzi z rodziny uk³adów o rdzeniu Cortex\texttradema
 Uk³ad dostarcza tak¿e 7 timerów sprzêtowych, które mog¹ pracowaæ w wielu zaawansowanych trybach. Do wykonywania pomiarów z okreœlonym próbkowaniem wystarcz¹ podstawowe tryby dzia³ania dostarczonych timerów.
 \subsection{Zasilanie}
 \subsection{Separacja sygna³ów analogowych}
+Dokonywanie pomiaru odbywa siê za pomoc¹ kana³ów ADC mikrokontrolera. Przyjêty przez nas standard napiêcia wymusza na nas sprowadzenie poziomów napiêæ sygna³u do zakresu pracy przetwornika ADC. Podczas projektowania rozpatrywano 3 rozwi¹zania:\newline
+\begin{itemize}
+	\item Rezystancyjny dzielnik napiêcia
+	\item Izolacja sygna³ów analogowych przez zewnêtrzny uk³ad ADC
+		\item Izolacja sygna³ów analogowych na uk³adzie IL300
+\end{itemize}\newline
+Najprostszym rozwi¹zaniem jest rezystancyjny dzielnik napiêcia jest to czwórnik który zapewnia uzyskanie okreœlonego stosunku pomiêdzy napiêciem wejœciowym a wyjœciowym. Rozwi¹zanie tego typu w ¿aden sposób nie zabezpiecza przed podaniem zbyt wysokiego napiêcia oraz wymusza aby sygna³ analogowy by³ mierzony wzglêdem masy Jednostki Pomiarowej. 
 \subsection{Obs³uga magistrali CAN}
