@@ -24,6 +24,13 @@ Najprostszym rozwi¹zaniem jest rezystancyjny dzielnik napiêcia jest to czwórnik 
 \label{fig:ADS}
 \end {figure}
 
-Nastêpn¹ metod¹ separacji, któr¹ brano pod uwagê by³o wykorzystanie zewnêtrznego uk³adu ADC, który przesy³a³by dane po odseparowanej magistrali danych. Zaprojektowane rozwi¹zanie widaæ na \hyperref[fig:ADS]{Rysunku~\ref*{fig:ADS}}. Zosta³o odrzucone, poniewa¿ przetwornik wymaga³ zasilania o napiêciu $5V$ co komplikowa³o uk³ad po stronie nieseparowanej. Dodatkowo takie podejœcie podra¿a³o znacz¹co uk³ad. Rozwi¹zanie to sprawdzi³o by siê w aplikacjach w których zale¿y nam na wysokiej dok³adnoœci pomiarów bez wprowadzania przek³amañ, które pojawiaj¹ siê przy separacji analogowej.
+Nastêpn¹ metod¹ separacji, któr¹ brano pod uwagê by³o wykorzystanie zewnêtrznego uk³adu ADC, który przesy³a³by dane po odseparowanej magistrali danych. Zaprojektowane rozwi¹zanie widaæ na \hyperref[fig:ADS]{Rysunku~\ref*{fig:ADS}}. Zosta³o odrzucone, poniewa¿ przetwornik wymaga³ zasilania o napiêciu $5V$ co komplikowa³o uk³ad po stronie nieseparowanej. Dodatkowo takie podejœcie podra¿a³o znacz¹co uk³ad. Rozwi¹zanie to sprawdzi³o by siê w aplikacjach w których zale¿y nam na wysokiej dok³adnoœci pomiarów bez wprowadzania przek³amañ, które pojawiaj¹ siê przy separacji analogowej.\newline
+Ostatnia opcja, która zosta³a wybrana to separacja przy u¿yciu uk³adu IL300. Uk³ad IL300 posiada jedn¹ diodê nadawcz¹ i dwie diody odbiorcze. Konfiguracja taka pozwala stworzyæ po stronie pierwotnej, sprzê¿enie przez jedn¹ z diod odbiorczych, steruj¹ce pr¹dem diody nadawczej. Kompensuje to nieliniowoœæ œwiecenia diody nadawczej wzglêdem jej pr¹du. Na stronie wtórnej uk³adu IL300 mamy drug¹ diodê odbiorcz¹, której pr¹d jest zale¿ny liniowo od pr¹du diody odbiorczej po stronie pierwotnej\cite{manual:IL300}.
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.75\textwidth]{figures/Il300.png}
+\caption{Separacja analogowa przy u¿yciu uk³adu IL300}
+\label{fig:IL300}
+\end {figure}
 
 \subsection{Obs³uga magistrali CAN}
