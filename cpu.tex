@@ -4,45 +4,51 @@ Nazwa serii reprezentuje kolejno nazwê producenta - STMicroelectronics, wielkoœæ
 \begin{itemize}
 \item byæ szybki - 168 MHz,
 \item byæ niezawodny - dwa timery typu watchdog,
-\item posiadaæ rozszerzenie SDIO do obs³ugi kart SD (\hyperref[ssec:sdio]{Sekcja~\ref*{ssec:sdio}: Secure Digital Card Input Output (SDIO)}),
-\item posiadaæ magistralê CAN do komunikacji z uk³adami pomocniczymi (\hyperref[sec:can]{Sekcja~\ref*{sec:can}: G³ówna magistrala komunikacyjna - CAN}),
-\item posiadaæ uk³ad UART do komunikacji z nadajnikiem XBee (\hyperref[ssec:uart]{Sekcja~\ref*{ssec:uart}: Universal Asynchronous Receiver and Transmitter - UART})
+\item posiadaæ rozszerzenie SDIO do obs³ugi kart SD\\
+(\hyperref[sec:sd]{Sekcja~\ref*{sec:sd}: Archiwizacja danych - SD}),
+\item posiadaæ magistralê CAN do komunikacji z uk³adami pomocniczymi\\ (\hyperref[sec:can]{Sekcja~\ref*{sec:can}: G³ówna magistrala komunikacyjna - CAN}),
+\item posiadaæ uk³ad UART do komunikacji z nadajnikiem XBee\\
+(\hyperref[sec:xbee]{Sekcja~\ref*{sec:xbee}: Komunikacja bezprzewodowa - XBee})
 \item byæ ³atwy w  programowaniu, co umo¿liwi³a rozbudowana biblioteka dostarczana przez producenta,
 \end{itemize}
 Zastosowanie nak³adki rozszerzaj¹cej funkcjonalnoœæ Discovery pozwala znacznie u³atwiæ proces projektowania skracaj¹c go znacznie.
 \subsection{Obs³uga magistrali CAN}
-G³ówn¹ magistral¹ komunikacyjn¹ w systemie jest Controller Area Network opisany w \hyperref[sec:can]{Sekcji~\ref*{sec:can}: G³ówna magistrala komunikacyjna - CAN}. Implementacja komunikacji przy wykorzystaniu tej magistrali by³a g³ównym celem projektu. Dziêki u¿yciu tego protoko³u system ma mo¿liwoœæ odczytywania danych ze sterownika silnika ECU serii PE3, który wysy³a wiadomoœci przy u¿yciu standardu bazuj¹cego na SAE J1939. Dok³adna znajomoœæ standardu SAE J1939 nie jest potrzebna w celu zbudowania systemu mog¹cego siê komunikowaæ ze sterownikiem. Producent do³¹cza notê katalogow¹~\cite{manual:ecu}, w której opisane s¹ wszystkie mo¿liwe komunikaty, które sterownik wysy³a. 
+G³ówn¹ magistral¹ komunikacyjn¹ w systemie jest Controller Area Network opisany w \hyperref[sec:can]{Sekcji~\ref*{sec:can}: G³ówna magistrala komunikacyjna - CAN}. Implementacja komunikacji przy wykorzystaniu tej magistrali by³a g³ównym celem projektu. Komunikacja mo¿liwa jest dziêki kontrolerowi magistrali CAN zintegrowanemu w mikrokontrolerze. Posiada on trzy skrzynki nadawcze i dwie odbiorcze, które mieszcz¹ po trzy wiadomoœci. Dodatkowo wyposa¿ony jest w bank filtrów akceptacyjnych, które mo¿na dowolnie przypisaæ do dwóch interfejsów CAN, po 14 do ka¿dego. Odbiór wiadomoœci odbywa siê automatycznie i jest realizowany sprzêtowo, podobnie jak wstêpna selekcja nadchodz¹cych komunikatów. Filtry odci¹¿aj¹ procesor, sortuj¹c wiadomoœci.~\cite{manual:stm32}.\\
+Dziêki u¿yciu protoko³u CAN system ma mo¿liwoœæ odczytywania danych ze sterownika silnika ECU serii PE3, który wysy³a wiadomoœci przy u¿yciu standardu bazuj¹cego na SAE J1939. Dok³adna znajomoœæ standardu SAE J1939 nie jest potrzebna w celu zbudowania systemu mog¹cego siê komunikowaæ ze sterownikiem. Producent do³¹cza notê katalogow¹~\cite{manual:ecu}, w której opisane s¹ wszystkie mo¿liwe komunikaty, które sterownik wysy³a. 
 \subsubsection{Przestrzeñ adresowa CAN}
 Ka¿dy identyfikator w standardzie SAE J1939, u¿ywanym w sterowniku ECU, oparty jest na rozszerzonej wersji standardu CAN i posiada 29 bitów. Ka¿da wiadomoœæ, posiadaj¹ca w³asny identyfikator, niesie ze sob¹ 7 lub 8 bajtów danych, czyli maksymaln¹ iloœæ przewidzian¹ przez standard CAN. Producent sterownika ECU do³¹cza instrukcjê s³u¿¹c¹ do dekodowania ramki, w celu uzyskania pojedynczych informacji zawartych w 8-bajtowym komunikacie~\cite{manual:ecu}. Na podstawie identyfikatorów u¿ywanych przez ECU zbudowano system identyfikatorów wystêpuj¹cych w systemie. Pomimo i¿ identyfikator przypisany jest do wiadomoœci, a nie do urz¹dzenia, utworzono system filtrów, który jednoznacznie okreœla, który wêze³ magistrali nades³a³ wiadomoœæ. Format identyfikatora przedstawiono na \hyperref[fig:identyfikatory]{Rysunku~\ref*{fig:identyfikatory}} i jest to przyk³ad identyfikatora u¿ywanego przez sterownik silnika ECU.
 
 \begin  {figure} [h] 
 \centering
-\includegraphics[width=0.75\textwidth]{figures/CAN.JPG}
-\caption{identyfikatory}
+\includegraphics[width=0.3\textwidth]{figures/Adress.JPG}
+\caption{Budowa identyfikatora CAN}
 \label{fig:identyfikatory}
 \end {figure}
+\begin{itemize}
+\item Segment A odpowiedzialny jest za adres urz¹dzenia i przybiera wartoœci od 0x06 do 0x12. Zakres ten umo¿liwia  obs³ugê do 13 pod³¹czonych urz¹dzeñ (HUB 0 - HUB 12). Jest to niewielka iloœæ, bior¹c pod uwagê mo¿liwoœci jakie oferuje standard CAN. Nie zak³ada siê jednak wiêkszej potrzeby. Adresowanie zosta³o tak skonstruowane, aby identyfikator ECU, którego segment A wynosi 0x0C znajdowa³ siê w œrodku zakresu (HUB 6). Pamiêtaj¹c, ¿e identyfikator wiadomoœci jest jednoczeœnie jej priorytetem, takie roz³o¿enie identyfikatorów pozwala z du¿¹ dowolnoœci¹ ustawiaæ system priorytetów pomiêdzy wêz³ami.\\
+\item Segment B odpowiedzialny jest za rozró¿nienie, co zawiera komunikat. W sterowniku ECU s¹ to wartoœci od 0x0 do 0x6. Aby zdekodowaæ komunikat nadawany przez ECU, nale¿y odnieœæ siê do noty katalogowej~\cite{manual:ecu}. Pozosta³e wêz³y przyjmuj¹ w segmencie B wartoœci od 0x0 do 0xA. Ka¿da identyfikator skojarzony jest z kana³em przetwornika anlogowo-cyfrowego, który jest czêœci¹ architektury jednostki pomiarowej. Przetworniki posiadaj¹ rozdzielczoœæ 12 bitów, dziêki czemu wystarcz¹ dwa bajty danych na przes³anie wiadomoœci. Ka¿da wiadomoœæ posiada swój identyfikator, dziêki czemu wynikiem filtrowania wiadomoœci bêdzie dok³adna informacja o stanie konkretnego wejœcia analogowego jednostki pomiarowej.
+\end{itemize}
+Adresowanie wiadomoœci przedstawiono na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}. Nieu¿ywane bajty w identyfikatorze stanowi¹ mo¿liwoœæ do rozszerzenia funkcjonalnoœci systemu.
 
-Segment A odpowiedzialny jest za adres urz¹dzenia i przybiera wartoœci od 0x06 do 0x13. Zakres ten umo¿liwia  obs³ugê do 13 pod³¹czonych urz¹dzeñ (HUB 0 - HUB 13). Jest to niewielka iloœæ, bior¹c pod uwagê mo¿liwoœci jakie oferuje standard CAN. Nie zak³ada siê jednak wiêkszej potrzeby. Adresowanie zosta³o tak skonstruowane, aby identyfikator ECU, którego segment A wynosi 0x0C znajdowa³ siê w œrodku zakresu (HUB 6). Pamiêtaj¹c, ¿e identyfikator wiadomoœci jest jednoczeœnie jej priorytetem, takie roz³o¿enie identyfikatorów pozwala z du¿¹ dowolnoœci¹ ustawiaæ system priorytetów pomiêdzy wêz³ami.\\
-Segment B odpowiedzialny jest za rozró¿nienie, co zawiera komunikat. W sterowniku ECU s¹ to wartoœci od 0x0 do 0x6. Aby zdekodowaæ komunikat nadawany przez ECU, nale¿y odnieœæ siê do noty katalogowej~\cite{manual:ecu}. Pozosta³e wêz³y przyjmuj¹ w segmencie B wartoœci od 0x0 do 0xA. Ka¿da wiadomoœæ skojarzona jest z kana³em przetwornika anlogowo-cyfrowego, który jest czêœci¹ architektury jednostki pomiarowej.\\
-Adresowanie wiadomoœci przedstawiono na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}
-Pozosta³e bity identyfikatora nie s¹ u¿ywane w systemie, stanowi¹c mo¿liwoœæ do rozszerzenia jego funkcjonalnoœci.
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=\textwidth]{figures/Adresowanie.JPG}
+\caption{Adresowanie}
+\label{fig:adresowanie}
+\end {figure}
 
-\begin{figure} [h]
-	\centering
-	\begin{minipage}[c]{0.5\linewidth}
-		\centering \includegraphics[width=0.75\linewidth]{figures/CAN.JPG}
-	\end{minipage}%
-	\begin{minipage}[c]{0.5\linewidth}
-		\centering \includegraphics[width=0.75\linewidth]{figures/HUB.JPG}
-	\end{minipage}
-	\caption{Adresowanie wiadomoœci w systemie}
-	\label{fig:adresowanie}
-\end{figure}
+\subsubsection{Filtry akceptacyjne}
+Kontroler magistrali CAN wyposa¿ony jest w w sprzêtowe filtry akceptacyjne. Na ka¿dy z dwóch interfejsów CAN przypada 14 filtrów akceptacyjnych. Bank filtrów mo¿na skonfigurowaæ na kilka sposobów. Po pierwsze nale¿y wybraæ wersjê wspieranego protoko³u (Wiêcej o wersjach protoko³u CAN w \hyperref[sec:can]{Sekcji~\ref*{sec:can}: G³ówna magistrala komunikacyjna - CAN}. W przypadku omawianego systemu jest to wersja z rozszerzonym polem identyfikatora. Programista uzyskuje dostêp do 32-bitowych rejestrów, które mo¿na ustawiæ w tryb listy identyfikatorów lub maskowania. Filtrowanie na podstawie listy identyfikatorów polega na porównaniu identyfikatora nadchodz¹cej wiadomoœci z identyfikatorem znajduj¹cym siê w 32-bitowym rejestrze. Tryb maskowania polega na dodatkowym zdefiniowaniu maski, która wskazuje, które bity identyfikatora nadchodz¹cej wiadomoœci maj¹ zostaæ porównane z rejestrem w pamiêci procesora. Nale¿y pamiêtaæ o tym, ¿e identyfikatory posiadaj¹ tylko 29 bitów, a wiêc wartoœæ w rejestrze jest wyrównana do lewej, czyli w stronê najbardziej znacz¹cego bitu. Odwo³uj¹c siê do wartoœci w rejestrze nale¿y przesun¹æ go o 3 bity w lewo, aby odczytywaæ 29 najbardziej znacz¹cych bitów. Przyk³ad przedstawiono na \hyperref[listing:mask]{Listingu~\ref*{listing:mask}} \\
 
+\begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Maska akceptacyjna, label=listing:mask]
+#define	CAN_ID_MASK 0x1F000000 // 1 1111 0000 0000 0000 0000 0000 0000
+CAN_FilterInitStructure.CAN_FilterMaskIdHigh = (uint16_t)((CAN_ID.Mask <<3) >>16);
+CAN_FilterInitStructure.CAN_FilterMaskIdLow = (uint16_t)(CAN_ID.Mask <<3);
+\end{lstlisting}
 
 
 \subsubsection{Transceiver CAN}
-Kontroler magistrali CAN, w który wyposa¿ony jest procesor, posiada dwie asynchroniczne linie danych. S¹ to linie Rx oraz Tx. Aby pod³¹czyæ kontroler do magistrali, na której wystêpuj¹ sygna³y Can High oraz Can Low, nale¿y szeregowe komunikaty binarne przekonwertowaæ na sygna³ ró¿nicowy. Konwersj¹ komunikatu oraz dostosowaniem napiêæ zajmuje siê Transceiver CAN. Jest to uk³ad scalony, który zasilany jest napiêciem 5V.
+Kontroler magistrali CAN, w który wyposa¿ony jest procesor, posiada dwie asynchroniczne linie danych. S¹ to jednokierunkowe linie Rx oraz Tx. Aby pod³¹czyæ kontroler do magistrali, na której wystêpuj¹ sygna³y Can High oraz Can Low, nale¿y szeregowe komunikaty binarne skonwertowaæ na sygna³ ró¿nicowy. Konwersj¹ komunikatu oraz dostosowaniem napiêæ zajmuje siê Transceiver CAN. Modu³ u¿yty w projekcie to L9616~\cite{manual:can}.
 \subsection{Obs³uga karty SD}
 \subsection{Obs³uga modu³u XBee}
 \subsection{Zasilanie}
