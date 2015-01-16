@@ -11,7 +11,38 @@ Nazwa serii reprezentuje kolejno nazwê producenta - STMicroelectronics, wielkoœæ
 \end{itemize}
 Zastosowanie nak³adki rozszerzaj¹cej funkcjonalnoœæ Discovery pozwala znacznie u³atwiæ proces projektowania skracaj¹c go znacznie.
 \subsection{Obs³uga magistrali CAN}
+G³ówn¹ magistral¹ komunikacyjn¹ w systemie jest Controller Area Network opisany w \hyperref[sec:can]{Sekcji~\ref*{sec:can}: G³ówna magistrala komunikacyjna - CAN}. Implementacja komunikacji przy wykorzystaniu tej magistrali by³a g³ównym celem projektu. Dziêki u¿yciu tego protoko³u system ma mo¿liwoœæ odczytywania danych ze sterownika silnika ECU serii PE3, który wysy³a wiadomoœci przy u¿yciu standardu bazuj¹cego na SAE J1939. Dok³adna znajomoœæ standardu SAE J1939 nie jest potrzebna w celu zbudowania systemu mog¹cego siê komunikowaæ ze sterownikiem. Producent do³¹cza notê katalogow¹~\cite{manual:ecu}, w której opisane s¹ wszystkie mo¿liwe komunikaty, które sterownik wysy³a. 
+\subsubsection{Przestrzeñ adresowa CAN}
+Ka¿dy identyfikator w standardzie SAE J1939, u¿ywanym w sterowniku ECU, oparty jest na rozszerzonej wersji standardu CAN i posiada 29 bitów. Ka¿da wiadomoœæ, posiadaj¹ca w³asny identyfikator, niesie ze sob¹ 7 lub 8 bajtów danych, czyli maksymaln¹ iloœæ przewidzian¹ przez standard CAN. Producent sterownika ECU do³¹cza instrukcjê s³u¿¹c¹ do dekodowania ramki, w celu uzyskania pojedynczych informacji zawartych w 8-bajtowym komunikacie~\cite{manual:ecu}. Na podstawie identyfikatorów u¿ywanych przez ECU zbudowano system identyfikatorów wystêpuj¹cych w systemie. Pomimo i¿ identyfikator przypisany jest do wiadomoœci, a nie do urz¹dzenia, utworzono system filtrów, który jednoznacznie okreœla, który wêze³ magistrali nades³a³ wiadomoœæ. Format identyfikatora przedstawiono na \hyperref[fig:identyfikatory]{Rysunku~\ref*{fig:identyfikatory}} i jest to przyk³ad identyfikatora u¿ywanego przez sterownik silnika ECU.
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.75\textwidth]{figures/CAN.JPG}
+\caption{identyfikatory}
+\label{fig:identyfikatory}
+\end {figure}
+
+Segment A odpowiedzialny jest za adres urz¹dzenia i przybiera wartoœci od 0x06 do 0x13. Zakres ten umo¿liwia  obs³ugê do 13 pod³¹czonych urz¹dzeñ (HUB 0 - HUB 13). Jest to niewielka iloœæ, bior¹c pod uwagê mo¿liwoœci jakie oferuje standard CAN. Nie zak³ada siê jednak wiêkszej potrzeby. Adresowanie zosta³o tak skonstruowane, aby identyfikator ECU, którego segment A wynosi 0x0C znajdowa³ siê w œrodku zakresu (HUB 6). Pamiêtaj¹c, ¿e identyfikator wiadomoœci jest jednoczeœnie jej priorytetem, takie roz³o¿enie identyfikatorów pozwala z du¿¹ dowolnoœci¹ ustawiaæ system priorytetów pomiêdzy wêz³ami.\\
+Segment B odpowiedzialny jest za rozró¿nienie, co zawiera komunikat. W sterowniku ECU s¹ to wartoœci od 0x0 do 0x6. Aby zdekodowaæ komunikat nadawany przez ECU, nale¿y odnieœæ siê do noty katalogowej~\cite{manual:ecu}. Pozosta³e wêz³y przyjmuj¹ w segmencie B wartoœci od 0x0 do 0xA. Ka¿da wiadomoœæ skojarzona jest z kana³em przetwornika anlogowo-cyfrowego, który jest czêœci¹ architektury jednostki pomiarowej.\\
+Adresowanie wiadomoœci przedstawiono na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}
+Pozosta³e bity identyfikatora nie s¹ u¿ywane w systemie, stanowi¹c mo¿liwoœæ do rozszerzenia jego funkcjonalnoœci.
+
+\begin{figure} [h]
+	\centering
+	\begin{minipage}[c]{0.5\linewidth}
+		\centering \includegraphics[width=0.75\linewidth]{figures/CAN.JPG}
+	\end{minipage}%
+	\begin{minipage}[c]{0.5\linewidth}
+		\centering \includegraphics[width=0.75\linewidth]{figures/HUB.JPG}
+	\end{minipage}
+	\caption{Adresowanie wiadomoœci w systemie}
+	\label{fig:adresowanie}
+\end{figure}
+
+
+
 \subsubsection{Transceiver CAN}
+Kontroler magistrali CAN, w który wyposa¿ony jest procesor, posiada dwie asynchroniczne linie danych. S¹ to linie Rx oraz Tx. Aby pod³¹czyæ kontroler do magistrali, na której wystêpuj¹ sygna³y Can High oraz Can Low, nale¿y szeregowe komunikaty binarne przekonwertowaæ na sygna³ ró¿nicowy. Konwersj¹ komunikatu oraz dostosowaniem napiêæ zajmuje siê Transceiver CAN. Jest to uk³ad scalony, który zasilany jest napiêciem 5V.
 \subsection{Obs³uga karty SD}
 \subsection{Obs³uga modu³u XBee}
 \subsection{Zasilanie}
