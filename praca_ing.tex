@@ -6,7 +6,8 @@
 \usepackage[OT4]{fontenc}
 
 \usepackage{hyperref}
-\usepackage{xcolor}
+\usepackage[table,xcdraw]{xcolor}
+\usepackage{multirow}
 \usepackage{subfig}
 \usepackage{float}
 \usepackage{amsfonts}
@@ -21,7 +22,6 @@ keywordstyle=\color{blue},
 language=C,
 linewidth=\textwidth
 }
-
 \linespread{1}
 
 \author{Marcin Aftowicz \and Jakub Baranowski} % Your name comes here
@@ -102,6 +102,11 @@ Niniejsza praca in¿ynierska stanowi dokumentacjê projektu realizowanego przez gr
 
 \chapter{Badania eksperymentalne} \label{ch:eksperyment}
 %=============================================================
+\section{Badanie magistrali CAN}
+\input{can_exp.tex}
+
+\section{Badanie protoko³ów karty SD}
+\input{sd_exp.tex}
 
 \chapter{Podsumowanie}
 %=============================================================

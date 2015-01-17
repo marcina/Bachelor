@@ -1,17 +1,40 @@
 Mimo i¿ dane s¹ na bie¿¹co wysy³ane do zdalnego interfejsu u¿ytkownika, trzeba wzi¹æ pod uwagê awaryjnoœæ takiego przesy³u oraz mo¿liwoœæ gubienia pakietów danych przy du¿ych odleg³oœciach. Potrzebny jest stabilny i szybki system zapisu zebranych danych, który bêdzie niezale¿ny od bezprzewodowej komunikacji. Wybrano zapis danych na kartê SD pod³¹czon¹ bezpoœrednio do g³ównego komputera pok³adowego. Standard kart SD jest standardem opracowanym przez trzech producentów: Toshiba, SanDisk i MEI~\cite{manual:sandisk}, który wyewoluowa³ ze starszego standardu MultiMediaCard (MMC). Zarówno budowa samej karty, po³¹czenia elektryczne jak i protokó³ s¹ czêœci¹ specyfikacji SD Card (SDC), podzielonej na wiele mniejszych dokumentów~\cite{spec:sd}\cite{spec:sdio}. SDC oferuje zaawansowany interfejs 9 linii elektrycznych (zegarowej, komend, 4 linie danych i 3 linie zasilania), który mo¿e pracowaæ z maksymaln¹ czêstotliwoœci¹ 50~MHz~\cite{spec:sd}.(\hyperref[fig:sd]{Rysunek~\ref*{fig:sd}}).
-\begin{figure} [h]
-	\centering
-	\begin{minipage}[c]{0.25\linewidth}
-		\centering \includegraphics[width=0.75\linewidth]{figures/SD_diagram.JPG}
-	\end{minipage}%
-	\begin{minipage}[c]{0.75\linewidth}
-		\centering \includegraphics[width=\linewidth]{figures/SD_pinout.JPG}
-	\end{minipage}
-	\caption{Diagram Karty SD~\cite{manual:sandisk}}
-	\label{fig:sd}
+
+\begin{figure}[h]
+\centering \includegraphics[width=0.3\linewidth]{figures/SD_diagram1.JPG}
+\caption{Schemat wyprowadzeñ karty SD} \label{fig:sd}
 \end{figure}
 
-Z \hyperref[fig:sd]{Rysunku~\ref*{fig:sd}} wynika, ¿e karty SD wspieraj¹ dwa fizyczne protoko³y komunikacyjne: SD Bus (\hyperref[sec:sub:sdbus]{Sekcja~\ref*{sec:sub:sdbus}: SD Bus}) oraz SPI (\hyperref[sec:sub:spi]{Sekcja~\ref*{sec:sub:spi}: Serial Peripheral Interface (SPI)}).\\
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l|l|l|l|}
+	\hline 
+  	\cellcolor{gray!50} \textbf{Pin} & \cellcolor{gray!50} \textbf{Nazwa} & \cellcolor{gray!50} \textbf{Funkcja (SD Bus)} & \cellcolor{gray!50} \textbf{Funkcja (SPI)}\\
+ 	 \hline \hline
+ 	  \textbf{1}& DAT3/CS & Linia danych 3 & Chip Select/Slave Select\\
+ 	 \hline
+ 	  \textbf{2}& CMD/DI & Linia komend & Master Output Slave Input (MOSI)\\
+ 	 \hline
+ 	  \textbf{3}& VSS1 & Masa & Masa\\
+ 	 \hline
+ 	  \textbf{4}& VDD & Napiêcie zasilaj¹ce & Napiêcie zasilaj¹ce\\
+ 	 \hline
+ 	  \textbf{5}& CLK & Linia zegarowa & Linia zegarowa (SCK)\\
+ 	 \hline
+ 	  \textbf{6}& VSS2 & Masa & Masa\\
+ 	 \hline
+ 	  \textbf{7}& DAT0/DO & Linia danych 0 & Master Input Slave Output (MISO)\\
+  	\hline
+  	 \textbf{8}& DAT1/NC & Linia danych 1 & Niepod³¹czony\\
+  	\hline 
+  	 \textbf{9}& DAT2/NC & Linia danych 2 & Niepod³¹czony\\
+  	\hline
+	\end{tabular} 
+	\caption{Opis wyprowadzeñ karty SD}\label{tab:sd}
+	\end{center}
+	\end{table}
+	
+Z \hyperref[tab:sd]{Tabeli~\ref*{tab:sd}} wynika, ¿e karty SD wspieraj¹ dwa fizyczne protoko³y komunikacyjne: SD Bus (\hyperref[sec:sub:sdbus]{Sekcja~\ref*{sec:sub:sdbus}: SD Bus}) oraz SPI (\hyperref[sec:sub:spi]{Sekcja~\ref*{sec:sub:spi}: Serial Peripheral Interface (SPI)}).\\
 Protokó³ komunikacyjny kart SD opiera siê na prostym systemie komend i odpowiedzi. Wszystkie komendy s¹ inicjowane przez mastera. Karta SD odpowiada na zapytanie ramk¹ odpowiedzi, po której mo¿e nast¹piæ przesy³ danych, je¿eli taka by³a komenda, lub zg³oszenie b³êdu. Ca³y protokó³ s³u¿y do obs³ugi systemu plików zawartego na karcie. 
 
 \subsection{FatFs} \label{sec:sub:fat}

@@ -1,4 +1,4 @@
-Wybór magistrali CAN spe³nia wszystkie za³o¿enia projektu zawarte w \hyperref[sec:analiza]{Sekcji~\ref*{sec:analiza}: Analiza problemu}). Jest to protokó³ komunikacyjny wykorzystywany przez sterowniki silnika ECU serii PE3\cite{manual:ecu}, który zosta³ wybrany przez konstruktorów pojazdu. Jest to powszechnie stosowany standard w systemach automatyki przemys³owej i samochodowej. Charakteryzuje siê wysokim bezpieczeñstwem (odpornoœci¹ na b³êdy) transmisji. Pozwala na przesy³anie mikrostrumieni danych, takich jak uzyskiwane dane z czujników, sk³adaj¹cych siê z 1 do 8 bitów na komunikat.
+Wybór magistrali CAN spe³nia wszystkie za³o¿enia projektu zawarte w \hyperref[sec:analiza]{Sekcji~\ref*{sec:analiza}: Analiza problemu}). Jest to protokó³ komunikacyjny wykorzystywany przez sterowniki silnika ECU serii PE3~\cite{manual:ecu}, który zosta³ wybrany przez konstruktorów pojazdu. Jest to powszechnie stosowany standard w systemach automatyki przemys³owej i samochodowej. Charakteryzuje siê wysokim bezpieczeñstwem (odpornoœci¹ na b³êdy) transmisji. Pozwala na przesy³anie mikrostrumieni danych, takich jak uzyskiwane dane z czujników, sk³adaj¹cych siê z 1 do 8 bitów na komunikat.
 \subsection{CAN w modelu ISO/OSI} \label{sec:sub:iso}
 Controller Area Network to standard przemys³owej sieci transmisyjnej, stworzonej na pocz¹tku lat osiemdziesi¹tych przez niemieck¹ firmê Bosch. Jak ka¿dy powszechnie stosowany protokó³ komunikacyjny, tak i CAN zosta³ w roku 1993  zestandaryzowany i opisany przez \textit{International Standard Organisation (ISO)} na warstwach modelu ISO/OSI i przyjêty za normê ISO-11898~\cite{article:siecican} (\hyperref[fig:ISO/OSI]{Rysunek~\ref*{fig:ISO/OSI}}).  Standard CAN mia³ obejmowaæ warstwy 1.~(fizyczn¹) 2.~(³¹cza danych) oraz 7.~(aplikacji) \cite{article:can}.
 
@@ -22,15 +22,23 @@ W nowszej wersji specyfikacji (oznaczanej CAN 2.0), która jest odpowiedzi¹ na ro
 \item \textit{Media Access Control (MAC)} odpowiedzialn¹ za dostêp do medium, kodowanie i enkapsulacjê danych oraz wykrywanie b³êdów transmisji.
 \end{itemize}
 
-Dostêp do medium realizowany jest poprzez wyró¿nienie dwóch stanów magistrali: dominuj¹cego i recesywnego. (Wartoœci napiêæ przedstawiono na \hyperref[fig:canvolt]{Rysunku~\ref*{fig:canvolt}}. Standard ISO-11898 mo¿e byæ stosowany równie¿ w sieciach o ni¿szych prêdkoœciach, dlatego zaprezentowano go jako uniwersalny). 
+Dostêp do medium realizowany jest poprzez wyró¿nienie dwóch stanów magistrali: dominuj¹cego i recesywnego. (Wartoœci napiêæ przedstawiono w \hyperref[tab:voltage]{Tabeli~\ref*{tab:voltage}}. Standard ISO-11898 mo¿e byæ stosowany równie¿ w sieciach o ni¿szych prêdkoœciach, dlatego zaprezentowano go jako uniwersalny). 
 
-\begin  {figure} [h] 
-\centering
-\captionsetup{justification=centering}
-\includegraphics[width=0.5\textwidth]{figures/CAN_voltage}
-\caption{Poziomy bezwzglêdne linii magistrali w odniesieniu do (lokalnej) masy zgodnie z ISO-11898~\cite{article:can}}
-\label{fig:canvolt}
-\end {figure}
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{|l|c|c|}
+\hline
+\rowcolor[HTML]{C0C0C0} 
+\cellcolor[HTML]{C0C0C0} & \multicolumn{2}{l|}{\cellcolor[HTML]{C0C0C0}\textbf{Stan magistrali}} \\ \cline{2-3} 
+\rowcolor[HTML]{C0C0C0} 
+\multirow{-2}{*}{\cellcolor[HTML]{C0C0C0}\textbf{\begin{tabular}[c]{@{}l@{}}Napiêcie na \\ magistrali\end{tabular}}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\textbf{recesywny}} & \multicolumn{1}{l|}{\cellcolor[HTML]{C0C0C0}\textbf{dominuj¹cy}} \\ \hline \hline
+CANH & 2.5 V & 3.5 V \\ \hline
+CANL & 2.5 V & 1.5 V \\ \hline
+\begin{tabular}[c]{@{}l@{}}dopuszczalne\\ napiêcie\\ ró¿nicowe\\ $U_{0}=CANH-CANL$\end{tabular} & 0 - 0.5 V & 0.9 - 2.0 V \\ \hline
+\end{tabular}
+\end{center}
+\caption{Wartoœci napiêæ na magistrali CAN}\label{tab:voltage}
+\end{table}
 
 Je¿eli urz¹dzenia magistrali wymusz¹ jednoczeœnie stan recesywny i dominuj¹cy, to na linii ustabilizuje siê stan dominuj¹cy. System dostêpu do medium jest potocznie zwany "iloczynem na drucie" (wiêcej informacji w \hyperref[sec:sub:filtry]{Sekcji~\ref*{sec:sub:filtry}: Filtry akceptacyjne})\\
 Warstwa ³¹cza danych czêsto obs³ugiwana jest sprzêtowo przez kontrolery magistrali CAN, które spotykane s¹ jako integralne czêœci niektórych mikrokontrolerów.\\
