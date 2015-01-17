@@ -36,7 +36,7 @@ Adresowanie wiadomoœci przedstawiono na \hyperref[fig:adresowanie]{Rysunku~\ref*
 
 \begin  {figure} [h] 
 \centering
-\includegraphics[width=\textwidth]{figures/Adresowanie.JPG}
+\includegraphics[width=0.75\textwidth]{figures/Adresowanie.JPG}
 \caption{Adresowanie}
 \label{fig:adresowanie}
 \end {figure}
@@ -44,7 +44,7 @@ Adresowanie wiadomoœci przedstawiono na \hyperref[fig:adresowanie]{Rysunku~\ref*
 \subsubsection{Filtry akceptacyjne}
 Kontroler magistrali CAN wyposa¿ony jest w w sprzêtowe filtry akceptacyjne. Na ka¿dy z dwóch interfejsów CAN przypada 14 filtrów akceptacyjnych. Bank filtrów mo¿na skonfigurowaæ na kilka sposobów. Po pierwsze nale¿y wybraæ wersjê wspieranego protoko³u (Wiêcej o wersjach protoko³u CAN w \hyperref[sec:can]{Sekcji~\ref*{sec:can}: G³ówna magistrala komunikacyjna - CAN}. W przypadku omawianego systemu jest to wersja z rozszerzonym polem identyfikatora. Programista uzyskuje dostêp do 32-bitowych rejestrów, które mo¿na ustawiæ w tryb listy identyfikatorów lub maskowania. Filtrowanie na podstawie listy identyfikatorów polega na porównaniu identyfikatora nadchodz¹cej wiadomoœci z identyfikatorem znajduj¹cym siê w 32-bitowym rejestrze. Tryb maskowania polega na dodatkowym zdefiniowaniu maski, która wskazuje, które bity identyfikatora nadchodz¹cej wiadomoœci maj¹ zostaæ porównane z rejestrem w pamiêci procesora. Nale¿y pamiêtaæ o tym, ¿e identyfikatory posiadaj¹ tylko 29 bitów, a wiêc wartoœæ w rejestrze jest wyrównana do lewej, czyli w stronê najbardziej znacz¹cego bitu. Odwo³uj¹c siê do wartoœci w rejestrze nale¿y przesun¹æ go o 3 bity w lewo, aby odczytywaæ 29 najbardziej znacz¹cych bitów. Przyk³ad przedstawiono na \hyperref[listing:mask]{Listingu~\ref*{listing:mask}}.
 
-\begin{minipage}{\textwidth}
+\noindent \begin{minipage}{\textwidth}
 \begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Maska akceptacyjna, label=listing:mask]
 #define CAN_ID_HUB6 0x0CFFF048 // 0 1100 1111 1111 1111 0000 0100 1000
 #define CAN_ID_MASK 0x1F000000 // 1 1111 0000 0000 0000 0000 0000 0000
@@ -70,9 +70,33 @@ Kontroler magistrali CAN, w który wyposa¿ony jest procesor, posiada dwie asynchr
 Zworki JP1 oraz JP2 umo¿liwiaj¹ zasilenie magistrali z tego samego Ÿród³a, z którego zasilany jest g³ówny komputer pok³adowy (lub HUB, gdy¿ w obu urz¹dzeniach wystêpuj¹ bliŸniacze uk³ady transceiverów). Diody sygnalizuj¹, czy aktualnie odbywa siê transmisja. 
 
 \subsection{Obs³uga karty SD}
+Obs³uga karty SD odbywa siê poprzez protokó³ SD Bus, przy u¿yciu zintegrowanego peryferium SDIO (Secure Digital Input Output) mikrokontrolera. SDIO s³u¿y do obs³ugi funkcji wejœcia/wyjœcia urz¹dzeñ zgodnych ze standardem SD~\cite{spec:sd}. Wyró¿niane s¹ trzy fizyczne topologie sieci. Przy u¿yciu fizycznej warstwy protoko³u SPI, SD Bus z jedn¹ lub czterema liniami danych. W projekcie u¿yto standardu 4-bitowego. Na \hyperref[fig:sd_schemat]{Rysunku~\ref*{fig:sd_schemat}} pokazano realizacjê warstwy fizycznej protoko³u SD Bus u¿yt¹ w projekcie. Linie danych i komend musz¹ posiadaæ podci¹gniêcia do zasilania. Interfejs SPI oraz SD Bus 1-bitowy (na którym wykonywano testy) nie s¹ kompatybilnymi interfejsami. Nale¿y przygotowaæ odpowiednio warstwê fizyczn¹ aby unikn¹æ problemów podczas implementacji programu.
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.5\textwidth]{figures/sd_schemat.JPG}
+\caption{Schemat pod³¹czenia slotu karty SD zgodnie z SD Bus 4-bitowym}
+\label{fig:sd_schemat}
+\end {figure}
+
+Wszystkie karty SD s¹ kompatybilne ze standardem SDIO, który zapewnia ich obs³ugê w ich ograniczonym zakresie (bez u¿ycia poleceñ wejœcia/wyjœcia). Do urz¹dzeñ wykorzystuj¹cych pe³niê potencja³u protoko³u SDIO zalicza siê miêdzy innymi kamery, karty bluetooth, odbiorniki GPS. Obs³uga tych urz¹dzeñ ró¿ni siê, ale wszystkie s¹ zgodne ze standardem SDIO.\\
+Bazuj¹c na za³o¿eniach projektu zaimplementowano obs³ugê karty SD przez kontroler DMA, skracaj¹c czas operacji na plikach. U¿yta w tym celu biblioteka jest autorstwa Tilen'a Majerle~\cite{lib:sd}. Tilen Majerle zapewnia sta³e wsparcie dla biblioteki, która posiada swoje wady i udziela odpowiedzi na pytania u¿ytkowników. U³atwia to w znacz¹cym stopniu implementacjê biblioteki i jej póŸniejsze u¿ycie i zintegrowanie z pozosta³¹ czêœci¹ programu. Wa¿nym elementem biblioteki jest funkcja pozwalaj¹ca na zapisywanie sformatowanego tekstu do pliku \textit{fprintf (FILE * stream, const char * format, ... )}.\\
+Mikrokontroler posiada dwa kontrolery DMA, ka¿dy maj¹cy 8 strumieni, dziel¹cych siê na 8 kana³ów. Utworzona w ten sposób macierz 64 pól oraz przypisane do nich peryferia przedstawiono w tabelach 35. oraz 36. RM0090 Reference manual~\cite{manual:stm32}. Ró¿nice w obs³udze karty przy u¿yciu protoko³u SPI, SD BUS 1-bitowego oraz 4-bitowego zawarto w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}.
 
 \subsection{Obs³uga modu³u XBee}
 
 \subsection{Zasilanie}
 
-\subsection{System przerwañ (NVIC)}
+\subsection{System przerwañ}
+Przy obs³udze tak wielu uk³adów peryferyjnych wa¿ne jest zachowanie pewnego systemu priorytetów przerwañ, które mog¹ zostaæ zg³oszone jednoczeœnie. S³u¿y do tego uk³ad NVIC (Nested Vector Interrupt Controller) zintegrowany w procesorze. W systemie wyró¿niamy nastêpuj¹ce przerwania:
+\begin{itemize}
+\item odbioru wiadomoœci na magistrali CAN,
+\item koñca przesy³u wiadomoœci przez kontroler DMA,
+\item koñca przetwarzania wiadomoœci przez SDIO,
+\item od modu³u UART,
+\item wsuniêcia/wysuniêcia karty SD do/ze slotu,
+\item od timera watchdog,
+\item od timerów pomocniczych.
+\end{itemize}
+
+Procesor umo¿liwia zdefiniowanie grup przerwañ, które maj¹ wy¿szy priorytet. W systemie u¿yto dwóch grup g³ównych (preemption priority group) z siedmioma podgrupami (sub priority group) w celu uszeregowania priorytetów. Zapewniono najwy¿szy priorytet timerowi watchdog, gdy¿ jest istotne aby zosta³o ono obs³u¿one w skoñczonym czasie. W przypadku, gdy podczas obs³ugi dowolnego przerwania (lub wykonywania pêtli while()), system zawiesi siê i nie zostanie obs³u¿one przerwanie od timera watchdog, system ulegnie resetowi. Kolejn¹ grup¹ s¹ przerwania odpowiedzialne za timery, nastêpnie za komunikacjê, a na koñcu przerwanie zewnêtrzne (karta SD). Taki system priorytetów zapewnia spe³nienie czasowych ograniczeñ narzuconych systemowi przez iloœæ operacji do wykonania w okresie próbkowania przetworników.
