@@ -79,7 +79,7 @@ Podzia³ ten ogranicza siê do budowy ramki, a przede wszystkim do d³ugoœci pola a
 	\label{fig:canframe} %% label for entire figure
 \end{figure}
 
-Po polu arbitra¿u nastêpuje pole kontrolne, w którym zapisana jest informacja o iloœci przesy³anych danych. Kod DLC (Data Length Code) to nic innego, tylko zapis binarny liczby bajtów przes³anych w polu danych. Maksymalna liczba to 8, czyli zakres wartoœci DLC wynosi <0b0000, 0b1000>~\cite{manual:stm32f4}.\\
+Po polu arbitra¿u nastêpuje pole kontrolne, w którym zapisana jest informacja o iloœci przesy³anych danych. Kod DLC (Data Length Code) to nic innego, tylko zapis binarny liczby bajtów przes³anych w polu danych. Maksymalna liczba to 8, czyli zakres wartoœci DLC wynosi od 0b0000 do 0b1000>~\cite{manual:stm32f4}.\\
 Pole danych jest opcjonalne, gdy¿ istniej¹ ramki, które s¹ go pozbawione, jak ramka ¿¹dania transmisji, czy ramka przepe³nienia.
 
 \subsection{Filtry akceptacyjne} \label{sec:sub:filtry}

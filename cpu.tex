@@ -85,7 +85,16 @@ Mikrokontroler posiada dwa kontrolery DMA, ka¿dy maj¹cy 8 strumieni, dziel¹cych 
 Polecenia u¿yte podczas obs³ugi karty SD s¹ standardowymi zestawami komend oraz argumentów. Przyk³adowe komendy omówione s¹ w specyfikacji Secure Digital Card Product Manual (Sekcja 4.7 Commands)~\cite{manual:sandisk}.
 
 \subsection{Obs³uga modu³u XBee}
+Wyró¿niane s¹ dwie wersjê modu³u XBee. Jedna zawiera wbudowan¹ antenê radiow¹, druga umo¿liwia wyprowadzenie anteny poza p³ytkê PCB. Zdecydowano siê na tañszy wariant urz¹dzenia, który przy zachowaniu odpowiednich wytycznych podczas projektowania p³ytki, zapewnia wystarczaj¹c¹ funkcjonalnoœæ. Zrezygnowano z pinów RTS oraz CTS, rezygnuj¹c tym samym z kontroli przep³ywu danych. Modu³ dzia³a wiêc jednokierunkowo, bez sprawdzania, czy wiadomoœæ dotar³a do celu. Aby uzyskaæ szybszy przekaz danych ustawiono modu³ w tryb transparentny. (wiêcej w \hyperref[sec:sub:uart]{Sekcji~\ref*{sec:sub:uart}: Universal Asynchronous Receiver/Transmitter (UART)}). Schemat modu³u przedstawiono na \hyperref[fig:xbee_schemat]{Rysunku~\ref*{fig:xbee_schemat}}
 
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.5\textwidth]{figures/xbee_schemat.JPG}
+\caption{Schemat pod³¹czenia radiowego modu³u XBee}
+\label{fig:xbee_schemat}
+\end {figure}
+
+Dioda sygnalizuje, czy urz¹dzenie zosta³o sparowane czy nie, zmieniaj¹c czêstotliwoœæ œwiecenia.
 \subsection{Zasilanie}
 
 \subsection{System przerwañ}
