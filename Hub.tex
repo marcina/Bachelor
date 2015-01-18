@@ -34,6 +34,6 @@ Ostatnia opcja, która zosta³a wybrana to separacja przy u¿yciu uk³adu IL300. Uk³
 \end {figure}
 
 \subsection{Obs³uga magistrali CAN}
-Zadaniem jednostki pomiarowej jest wysy³anie zebranych informacji do g³ównego komputera pok³adowego. Nie musi ona odbieraæ ¿adnych wiadomoœci, st¹d maska równa jest 0x0000000 (wiêcej o maskach w \hyperref[ssec:filtry]{Sekcji~\ref*{ssec:filtry}: Filtry akceptacyjne}.\\
+Zadaniem jednostki pomiarowej jest wysy³anie zebranych informacji do g³ównego komputera pok³adowego. Nie musi ona odbieraæ ¿adnych wiadomoœci, st¹d maska równa jest 0x0000000 (wiêcej o maskach w \hyperref[ssec:filtry]{Sekcji~\ref*{ssec:filtry}: Filtry akceptacyjne}).\\
 Realizacja fizyczna transceivera CAN przedstawiona jest na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.\\
 Ka¿da wiadomoœæ odpowiada innemu kana³owi przetwornika analogowo-cyfrowego. Czas próbkowania definiuje siê w pliku \textit{defines.h}. Ka¿dy HUB posiada swój unikalny adres, który zdefiniowany jest w pliku \textit{defines.h} (wiêcej o adresowaniu w \hyperref[ssec:adresowanie]{Sekcji~\ref*{ssec:adresowanie}: Przestrzeñ adresowa CAN} i na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}).

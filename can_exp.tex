@@ -2,14 +2,12 @@
 \subsection{Bank filtrów akceptacyjnych}
 Po otrzymaniu wiadomoœci na magistrali CAN, gdy ta przejdzie przez filtr akceptacyjny, wraz z wiadomoœci¹ przechowywana jest informacja o filtrze, który wiadomoœæ dopuœci³ do systemu. Informacja ta zapisana jest w zmiennej FMI (Filter Match Index). Numer filtra nie pokrywa siê jednak z wartoœci¹ przechowywan¹ w FMI. Podczas inicjalizacji filtrów, przed uruchomienie kontrolera CAN, nadaje siê ka¿demu filtrowi unikalny numer i przypisuje siê go do konkretnej skrzynki odbiorczej FIFO (0 lub 1). W \hyperref[tab:FMI]{Tabeli~\ref*{tab:FMI}} przedstawiono odczytane wartoœci FMI wraz z wczeœniej nadanymi numerami filtrów.
 
-
-
 \begin{table}[h]
 \caption{Numer filtru, a wartoœæ FMI}\label{tab:FMI}
 \begin{center}
 \begin{tabular}{|c|c|c|}
   \hline 
-  \cellcolor{gray!50} Numer filtru & \cellcolor{gray!50} Numer FIFO & \cellcolor{gray!50} zwrócone FMI\\
+  \cellcolor{gray!50} \textbf{Numer filtru} & \cellcolor{gray!50} \textbf{Numer FIFO} & \cellcolor{gray!50} \textbf{zwrócone FMI}\\
   \hline
    0 & 0 & 0\\
   \hline
@@ -42,7 +40,5 @@ Po otrzymaniu wiadomoœci na magistrali CAN, gdy ta przejdzie przez filtr akcepta
 \end{tabular} 
 \end{center}
 \end{table}
-
-
 
 Widaæ, ¿e numer FMI zale¿y od kolejnoœci przyporz¹dkowania filtru do konkretnego FIFO, a nie od numeru nadanego podczas inicjalizacji. Najprostszym sposobem na ominiêcie problemu z³ej numeracji, jest przypisanie wszystkich filtrów do jednego FIFO (bez pomijania ¿adnego filtru). Wtedy wartoœæ FMI pokryje siê z numerem filtru, czyli w przypadku opisywanego projektu, z numerem wêz³a, który nades³a³ wiadomoœæ.
