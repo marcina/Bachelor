@@ -71,11 +71,17 @@ Niniejsza praca in¿ynierska stanowi dokumentacjê projektu realizowanego przez gr
 
 \cleardoublepage
 \mainmatter
+
 \chapter{Wstêp oraz motywacja} \label{ch:wstep}
+\textit{Autor: Marcin Aftowicz, Jakub Baranowski}\\ \\
+\textit{Formula Student (FS)} to najbardziej presti¿owy, europejski konkurs w dziedzinie Motorsport, prowadzony przez \textit{Institution of Mechanical Engineers}. Wspierany przez przemys³, konkurs ma na celu inspirowanie i rozwijanie przedsiêbiorczoœci i innowacyjnoœci u m³odych in¿ynierów. Uczelnie z ca³ego œwiata maj¹ za zadanie zaprojektowaæ i zbudowaæ w pe³ni funkcjonalny samochód wyœcigowy, który ukoñczy statyczne i dynamiczne konkurencje testuj¹ce zarówno wiedzê studentów, jak i wydajnoœæ pojazdu.~\cite{misc:formula}\\
+Zespó³ wyœcigowy Politechniki Poznañskiej - PUT Motorsport to dru¿yna sk³adaj¹ca siê z 23 studentów tworz¹cych 6 grup, która podjê³a siê wyzwania wystartowania w konkursie i skonstruowania w³asnego bolidu. Wyró¿nia siê 5 technicznych grup projektowych odpowiedzialnych za: poszycie, zawieszenie, ramê, silnik oraz elektronikê. Wszystkie grupy pracuj¹ równolegle i dbaj¹ o zachowanie spójnoœci oraz kompatybilnoœci projektowanych elementów. Specyfika takiej pracy nak³ada ograniczenia i wymusza elastycznoœæ rozwi¹zañ, tak aby mog³y one zostaæ dopasowane do ca³oœci\cite{misc:motorsport}. Niniejsza praca jest udokumentowaniem postêpów grupy odpowiedzialnej za elektronikê, z pierwszego pó³rocza prac nad uk³adem pomiarowym. Jest ona kontynuacj¹ projektu przejœciowego~\cite{manual:projekt}, w którym opisano utworzenie prototypu systemu. 
 %=============================================================
 \input{wstep.tex}
 
-\chapter{Omówienie protoko³ów komunikacyjnych} \label{ch:can}
+\chapter{Przegl¹d literatury} \label{ch:teoria}
+\textit{Autor: Marcin Aftowicz}\\ \\
+W tym rozdziale opisano protoko³y komunikacyjne brane pod uwagê podczas projektowania systemu oraz omówiono sposób dzia³ania u¿ytych modu³ów. Jest to zbiór wiedzy teoretycznej, niezbêdnej w celu zaprojektowania omawianego systemu oraz pe³nego zrozumienia jego funkcjonowania.
 %=============================================================
 \section{G³ówna magistrala komunikacyjna - CAN} \label{sec:can}
 \input{can.tex}
@@ -86,21 +92,28 @@ Niniejsza praca in¿ynierska stanowi dokumentacjê projektu realizowanego przez gr
 \section{Komunikacja bezprzewodowa - XBee} \label{sec:xbee}
 \input{xbee.tex}
 
-\chapter{Realizacja projektu}
+\chapter{Realizacja projektu} \label{ch:praktyka}
+W tym rozdziale przedstawiono realizacjê poszczególnych czêœci projektu, które sk³adaj¹ siê na system pomiarowy, w odniesieniu do podstaw teoretycznych omówionych w poprzednim rozdziale. Zaprezentowano u¿yte rozwi¹zania techniczne, implementacjê protoko³ów oraz dzia³anie programu.
 %=============================================================
 \section{Model systemu} \label{sec:model}
+\textit{Autor: Marcin Aftowicz}\\ \\
 \input{model.tex}
 
 \section{G³ówny komputer pok³adowy - Motherboard}
+\textit{Autor: Marcin Aftowicz}\\ \\
 \input{cpu.tex}
 
 \section{Rozproszone jednostki pomiarowe - HUB}
+\textit{Autor: Jakub Baranowski}\\ \\
 \input{Hub.tex}
 
 \section{Zdalny interfejs u¿ytkownika}
+\textit{Autor: Jakub Baranowski}\\ \\
 \input{interface.tex}
 
 \chapter{Badania eksperymentalne} \label{ch:eksperyment}
+\textit{Autor: Marcin Aftowicz, Jakub Baranowski}\\ \\
+Rozdzia³ poœwiêcony jest badaniu dzia³ania systemu. Przedstawiono w nim dowód na poprawne jego funkcjonowanie oraz na spe³nienie za³o¿eñ projektowych. Zbadano przebiegi sygna³ów i skonfrontowano je z teori¹. Porównano protoko³y oraz rozwi¹zania u¿yte w prototypie systemu, z tymi z wersji aktualnej.
 %=============================================================
 \section{Badanie magistrali CAN}
 \input{can_exp.tex}
