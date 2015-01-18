@@ -27,14 +27,33 @@ Najprostszym rozwi¹zaniem jest rezystancyjny dzielnik napiêcia jest to czwórnik 
 \end {figure}
 
 Nastêpn¹ metod¹ separacji, któr¹ brano pod uwagê by³o wykorzystanie zewnêtrznego uk³adu ADC, który przesy³a³by dane po odseparowanej magistrali danych. Zaprojektowane rozwi¹zanie widaæ na \hyperref[fig:ADS]{Rysunku~\ref*{fig:ADS}}. Zosta³o odrzucone, poniewa¿ przetwornik wymaga³ zasilania o napiêciu $5V$ co komplikowa³o uk³ad po stronie nieseparowanej. Dodatkowo takie podejœcie podra¿a³o znacz¹co uk³ad. Rozwi¹zanie to sprawdzi³o by siê w aplikacjach w których zale¿y nam na wysokiej dok³adnoœci pomiarów bez wprowadzania przek³amañ, które pojawiaj¹ siê przy separacji analogowej.\newline
-Ostatnia opcja, która zosta³a wybrana to separacja przy u¿yciu uk³adu IL300. Uk³ad IL300 posiada jedn¹ diodê nadawcz¹ i dwie diody odbiorcze. Konfiguracja taka pozwala stworzyæ po stronie pierwotnej, sprzê¿enie przez jedn¹ z diod odbiorczych, steruj¹ce pr¹dem diody nadawczej. Kompensuje to nieliniowoœæ œwiecenia diody nadawczej wzglêdem jej pr¹du. Na stronie wtórnej uk³adu IL300 mamy drug¹ diodê odbiorcz¹, której pr¹d jest zale¿ny liniowo od pr¹du diody odbiorczej po stronie pierwotnej\cite{manual:IL300}.
+Ostatnia opcja, która zosta³a wybrana to separacja przy u¿yciu uk³adu IL300. Uk³ad IL300 posiada jedn¹ diodê nadawcz¹ i dwie diody odbiorcze. Konfiguracja taka pozwala stworzyæ po stronie pierwotnej, sprzê¿enie przez jedn¹ z diod odbiorczych, steruj¹ce pr¹dem diody nadawczej. Kompensuje to nieliniowoœæ œwiecenia diody nadawczej wzglêdem jej pr¹du. Na stronie wtórnej uk³adu IL300 mamy drug¹ diodê odbiorcz¹, której pr¹d jest zale¿ny liniowo od pr¹du diody odbiorczej po stronie pierwotnej\cite{manual:DesIL300}.\newline
 \begin  {figure} [h] 
 \centering
 \includegraphics[width=0.75\textwidth]{figures/Il300.png}
 \caption{Separacja analogowa przy u¿yciu uk³adu IL300}
 \label{fig:IL300}
 \end {figure}
-
+Na \hyperref[fig:IL300]{Rysunku~\ref*{fig:IL300}} zosta³a pokazana realizacja separacji na uk³adzie IL300. Po stronie pierwotnej mamy uk³ad $U8A$, który przez sprzê¿enie zwrotne linearyzuje diodê nadawcz¹.  Na dodatnie wejœcie wzmacniacza wchodzi sygna³ mierzony podzielony przez dzielnik napiêcia. Sygna³ ten jest porównywany z napiêciem na rezystorze, które jest wymuszone przez pr¹d p³yn¹cy przez diodê odbiorcz¹. Pr¹d diody odbiorczej jest sterowany przez œwiecenie siê diody nadawczej, która jest sterowana przez pr¹d wzmacniacza\cite{manual:DesIL300}. Wzór na obliczenie wartoœci rezystora to:\newline
+\begin{equation} \label{K1} I_F=\frac{V_{in}}{K_1*R_1} \end{equation}
+gdzie:\newline
+$I_F$ - pr¹d diody nadawczej\newline
+$V_{in}$ - napiêcie na wejœciu nieodwracaj¹cym wzmacniacza\newline
+$K_1$-wzmocnienie strony pierwotnej transoptora\newline
+$R_1$-Rezystor bocznikowy\newline
+Wzmacniacz $U13A$ po stronie wtórnej jest w konfiguracji wtórnika napiêciowego. Na wejœcie nieodwracaj¹ce jest podane napiêcie odk³adaj¹ce siê na boczniku rezystancyjnym. Przez bocznik p³ynie pr¹d diody odbiorczej strony wtórnej\cite{manual:DesIL300}. Wzór na obliczenie wartoœci rezystora to:\newline
+\begin{equation} \label{K2} I_F=\frac{V_{out}}{K_2*R_2} \end{equation}
+gdzie:\newline
+$I_F$ - pr¹d diody nadawczej\newline
+$V_{out}$ - napiêcie na wyjœciu wzmacniacza\newline
+$K_2$-wzmocnienie strony wtórnej transoptora\newline
+$R_2$-Rezystor bocznikowy\newline
+Z podstawienia wzoru \ref{K1} do wzoru \ref{K2} dostajemy wzór:\newline
+\begin{equation} \label{Pod} \frac{V_{out}}{V_{in}}=\frac{K_2*R_2}{K_1*R_1} \end{equation}
+W dokumentacji mamy podany wspó³czynnik $K_3$, który siê równa:\newline
+\begin{equation} \label{K3} K_3=\frac{K_2}{K_1} \end{equation}
+Z tej zale¿noœci wynika ostateczny wzór na rezystancje boczników:\newline
+\begin{equation} \label{Ost} \frac{V_{out}}{V_{in}}=\frac{K_3*R_2}{R_1} \end{equation}
 \subsection{Obs³uga magistrali CAN}
 Zadaniem jednostki pomiarowej jest wysy³anie zebranych informacji do g³ównego komputera pok³adowego. Nie musi ona odbieraæ ¿adnych wiadomoœci, st¹d maska równa jest 0x0000000 (wiêcej o maskach w \hyperref[ssec:filtry]{Sekcji~\ref*{ssec:filtry}: Filtry akceptacyjne}).\\
 Realizacja fizyczna transceivera CAN przedstawiona jest na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.\\
