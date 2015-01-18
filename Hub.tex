@@ -9,6 +9,8 @@ Mikrokontroler STM32f103 pochodzi z rodziny uk³adów o rdzeniu Cortex\texttradema
 \end{itemize}
 Uk³ad dostarcza tak¿e 7 timerów sprzêtowych, które mog¹ pracowaæ w wielu zaawansowanych trybach. Do wykonywania pomiarów z okreœlonym próbkowaniem wystarcz¹ podstawowe tryby dzia³ania dostarczonych timerów.
 \subsection{Zasilanie}
+Bolid wyposa¿ony jest w zasilanie akumulatorowe $12V$. Do zasilania czêœci mikrokontrolerowej i strony wtórnej separacji analogowej zastosowano przetwornice DC/DC firmy aimtec o napiêciu wyjœciowym $3.3V$. Przetwornica charakteryzuje siê efektywnoœci¹ na poziomie $78\%$ i zapewnia separacje galwaniczn¹ do $3000VDC$ \cite{manual:aimtec}. Dla stabilnej pracy przetwornicy po stronie pierwotnej i wtórnej zastosowano po dwa kondensatory(tantalowy i elektrolityczny) o wartoœciach $47\mu F$ i $100nF$.\newline
+Kontroler do poprawnego dzia³ania wymaga kondensatorów filtruj¹cych $100nF$ na ka¿dym pinie zasilaj¹cym kontrolera oraz dodatkowego kondensatora $4.7uF$ pod³¹czonego bezpoœrednio do pinu $V_{DD3}$. Zasilanie bloku ADC kontrolera wymaga dwóch kondensatorów o wartoœciach $10nF$ oraz $1\mu F$\cite{manual:STM32f3}.
 \subsection{Separacja sygna³ów analogowych}
 Dokonywanie pomiaru odbywa siê za pomoc¹ kana³ów ADC mikrokontrolera. Przyjêty przez nas standard napiêcia wymusza na nas sprowadzenie poziomów napiêæ sygna³u do zakresu pracy przetwornika ADC. Podczas projektowania rozpatrywano 3 rozwi¹zania:\newline
 \begin{itemize}
