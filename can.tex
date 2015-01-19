@@ -81,6 +81,38 @@ Podzia³ ten ogranicza siê do budowy ramki, a przede wszystkim do d³ugoœci pola a
 Po polu arbitra¿u nastêpuje pole kontrolne, w którym zapisana jest informacja o iloœci przesy³anych danych. Kod DLC (Data Length Code) to nic innego, tylko zapis binarny liczby bajtów przes³anych w polu danych. Maksymalna liczba to 8, czyli zakres wartoœci DLC wynosi od 0b0000 do 0b1000>~\cite{manual:stm32f4}.\\
 Pole danych jest opcjonalne, gdy¿ istniej¹ ramki, które s¹ go pozbawione, jak ramka ¿¹dania transmisji, czy ramka przepe³nienia.
 
+\subsection{Czas trwania bitu}
+Czas trwania jednego przesy³anego bitu podzielony jest na segmenty (\hyperref[fig:timing]{Rysunek~\ref*{fig:timing}}):
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.75\textwidth]{figures/Bit_timing.JPG}
+\caption{Podzia³ czasu trwania bitu na magistrali CAN}
+\label{fig:timing}
+\end {figure}
+
+\begin{itemize}
+\item Segment synchronizacyjny
+\item Segment 1 (BS1) sk³adaj¹cy siê z segmentu propagacji sygna³u oraz segmentu fazy
+\item Segment 2 (BS2) bêd¹cy segmentem fazy
+\end{itemize}
+
+Ka¿dy segment trwa wielokrotnoœæ kwantu czasu. Segment synchronizacji zawsze trwa jeden kwant czasu. Jest to czas, w którym oczekiwane jest zbocze przesy³anego bitu. Segment propagacji to kompensacja opóŸnienia transportowego sygna³u, bêd¹cego sum¹ opóŸnieñ urz¹dzeñ wejœciowych, wyjœciowych oraz medium. Segmenty fazy okreœlaj¹ wyst¹pienie punktu próbkowania, który porównany z poprzednim punktem próbkowania daje informacjê o zmianie stanu linii. Punkt próbkowania wypada dok³adnie na granicy segmentów fazy.\\
+
+D³ugoœæ kwantu czasu wyliczana jest z nastêpuj¹cej zale¿noœci:
+\begin{equation}\label{eq:tq}
+t_{q}=\frac{BRP}{f_{clk}}
+\end{equation}
+gdzie:\\
+$t_{q}$ - kwant czasu\\
+$BRP$ - Preskaler\\
+$f_{clk}$ - czêstotliwoœæ taktowania kontrolera CAN\\
+
+Prêdkoœæ transmisji wyznacza siê ze wzoru:
+\begin{equation}
+BaudRate=\frac{1}{t_{q}+t_{BS1}+_{BS2}}
+\end{equation} 
+
 \subsection{Filtry akceptacyjne} \label{sec:sub:filtry}
 Ogromn¹ zalet¹ systemu opartego na protokole CAN jest obecnoœæ filtrów wiadomoœci. W sieci CAN identyfikator wiadomoœci jest jednoczeœnie jej priorytetem. Im ni¿szy identyfikator, tym wy¿szy priorytet. Wynika to z faktu, ¿e za stan logiczny 0 odpowiada bit dominuj¹cy na magistrali. Dlatego nag³ówek ramki zawieraj¹cy identyfikator nazywany jest polem arbitra¿u. Wêze³, który chce wys³aæ wiadomoœæ o najmniejszym identyfikatorze, uzyska dostêp do magistrali jako pierwszy. Wszystkie wêz³y monitoruj¹ sieæ, równie¿ w trakcie nadawania. Gdy wykryj¹, ¿e wiadomoœæ któr¹ nadaj¹, nie pokrywa siê z t¹ na magistrali, przestaj¹ nadawaæ i oczekuj¹ na koniec ramki. Wtedy ponawiaj¹ próbê nadania wiadomoœci~\cite{article:can}\cite{article:siecican}.\\
 Wa¿nym spostrze¿eniem oraz znacz¹c¹ ró¿nic¹ miêdzy protoko³em CAN, a innymi protoko³ami, jest fakt i¿ protokó³ nie posiada adresów. Identyfikator jest powi¹zany z wiadomoœci¹, a nie z urz¹dzeniem. Jako, ¿e ka¿de urz¹dzenie odczytuje stan na magistrali, wysy³anie wiadomoœci odbywa siê w trybie broadcast. W wersji podstawowej, dziêki 11-bitowemu identyfikatorowi istnieje 2048 ró¿nych ramek, w rozszerzonej ponad 500 milionów. Nie ma potrzeby aby wszystkie ramki by³y przetwarzane przez wszystkie wêz³y magistrali~\cite{article:can}. Kontrolery CAN umo¿liwiaj¹ filtracjê ramek na poziomie sprzêtowym, bez potrzeby anga¿owania jednostki centralnej. Istniej¹ dwa podstawowe sposoby filtracji wiadomoœci:
