@@ -85,7 +85,7 @@ Mikrokontroler posiada dwa kontrolery DMA, ka¿dy maj¹cy 8 strumieni, dziel¹cych 
 Polecenia u¿yte podczas obs³ugi karty SD s¹ standardowymi zestawami komend oraz argumentów. Przyk³adowe komendy omówione s¹ w specyfikacji Secure Digital Card Product Manual (Sekcja 4.7 Commands)~\cite{manual:sandisk}.
 
 \subsection{Obs³uga modu³u XBee}
-Wyró¿niane s¹ dwie wersjê modu³u XBee. Jedna zawiera wbudowan¹ antenê radiow¹, druga umo¿liwia wyprowadzenie anteny poza p³ytkê PCB. Zdecydowano siê na tañszy wariant urz¹dzenia, który przy zachowaniu odpowiednich wytycznych podczas projektowania p³ytki, zapewnia wystarczaj¹c¹ funkcjonalnoœæ. Zrezygnowano z pinów RTS oraz CTS, rezygnuj¹c tym samym z kontroli przep³ywu danych. Modu³ dzia³a wiêc jednokierunkowo, bez sprawdzania, czy wiadomoœæ dotar³a do celu. Aby uzyskaæ szybszy przekaz danych ustawiono modu³ w tryb transparentny (wiêcej w \hyperref[sec:sub:tryby]{Sekcji~\ref*{sec:sub:tryby}: Tryby pracy modu³u XBee}). Schemat modu³u przedstawiono na \hyperref[fig:xbee_schemat]{Rysunku~\ref*{fig:xbee_schemat}}
+Wyró¿niane s¹ dwie wersjê modu³u XBee. Jedna zawiera wbudowan¹ antenê radiow¹, druga umo¿liwia wyprowadzenie anteny poza p³ytkê PCB. Zdecydowano siê na wariant urz¹dzenia z zewnêtrzn¹ anten¹ w celu zwiêkszenia zasiêgu.  Zrezygnowano z pinów RTS oraz CTS, rezygnuj¹c tym samym z kontroli przep³ywu danych, ale przy dobrze zaprogramowanej komunikacji nie s¹ one wymagane. Modu³ dzia³a jednokierunkowo, bez sprawdzania, czy wiadomoœæ dotar³a do celu. Aby uzyskaæ szybszy przekaz danych ustawiono modu³ w tryb transparentny (wiêcej w \hyperref[sec:sub:tryby]{Sekcji~\ref*{sec:sub:tryby}: Tryby pracy modu³u XBee}). Schemat modu³u przedstawiono na \hyperref[fig:xbee_schemat]{Rysunku~\ref*{fig:xbee_schemat}}
 
 \begin  {figure} [h] 
 \centering
@@ -94,8 +94,36 @@ Wyró¿niane s¹ dwie wersjê modu³u XBee. Jedna zawiera wbudowan¹ antenê radiow¹, d
 \label{fig:xbee_schemat}
 \end {figure}
 
-Komunikacja z modu³em odbywa siê dziêki zintegrowanemu w mikrokontrolerze modu³owi UART. Na linii DOUT modu³u mikrokontrolera wysy³ana jest kopia ramki CAN, tak aby umo¿liwiæ jej podgl¹d w interfejsie u¿ytkownika. Jest to na³o¿enie protoko³u CAN na asynchroniczn¹ szeregow¹ pojedyncz¹ liniê danych.\\
-Aby rozpocz¹æ pracê z modu³em nale¿y zdefiniowaæ wpierw jego parametry. Ustawiæ inn¹ prêdkoœæ transmisji (BD), parzystoœæ (NB), bity stopu (SB) oraz inne parametry modu³u przy u¿yciu komend AT (dostêpnych w Rozdziale 10. XBee®/XBee-PRO® ZB SMT RF Modules Datasheet~\cite{manual:xbee}). W tym celu nale¿y wprowadziæ modu³ w tryb odbioru komend AT przy u¿yciu specjalnej komendy oraz parametrów domyœlnych transmisji, czyli 9600 b/s, 1 bit stopu i brak bitu parzystoœci. Po zakoñczeniu inicjalizacji mo¿na albo poczekaæ a¿ modu³ sam wróci do trybu wysy³ania danych przez antenê, albo wymusiæ powrót. Po powrocie w tryb przesy³ania danych, modu³ przesy³a kopiê ramki CAN, która zosta³a w danej chwili odebrana przez komputer g³ówny i wysy³a j¹ do uk³adu odbiorczego, wspó³pracuj¹cego z interfejsem u¿ytkownika.
+Komunikacja z modu³em odbywa siê dziêki zintegrowanemu w mikrokontrolerze modu³owi UART. Na linii DOUT modu³u mikrokontrolera wysy³ana jest kopia ramki CAN, tak aby umo¿liwiæ jej podgl¹d w interfejsie u¿ytkownika. Jest to na³o¿enie protoko³u CAN na asynchroniczn¹ szeregow¹ pojedyncz¹ liniê danych. Ramka przesy³ana jest jako strumieñ, czyli ci¹g znaków ASCII (tablica znaków koñcz¹ca siê znakiem NULL). Jest to reprezentacja wartoœci ramki w systemie szesnastkowym. Do przes³ania sformatowanego tekstu po UART u¿yto funkcji USARTSendCan, przedstawionej na \hyperref[listing:usart]{Listingu~\ref*{listing:usart}}\\
+
+%\noindent\begin{minipage}{\textwidth}
+%\begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Funkcja enkaspulacyji danych USART_SendCan, label=listing:usart]
+%%void USART_SendCanFrame (CanRxMsg RxMessage)
+%%{
+%%	int i = 0;
+%%	char string[27];
+%%	string[0]='\\0';
+%%	char b[9];
+%%	b[0] = '\\0';
+%%	sprintf(b,"%08x",(unsigned int)RxMessage.ExtId);
+%%	strcat(string,b);
+%%	sprintf(b,"%02x",(unsigned int)RxMessage.DLC);
+%%	strcat(string,b);
+%%	for (;i<RxMessage.DLC;i++)
+%%	{
+%%		sprintf(b,"%02x",(unsigned int)RxMessage.Data[i]);
+%%		strcat(string,b);
+%%	}
+%%	USART\_printf("%s",string);
+%%}
+%\end{lstlisting}
+%\end{minipage}
+%\\
+Dla przyk³adu, chc¹c przes³aæ wartoœæ 0x01ABC, zostanie przes³ane s³owo "01abc", czyli ci¹g znaków 0x30 0x31 0x61 0x62 0x63 0x00.\\
+
+Takie podejœcie umo¿liwia kontrolê koñca ramki CAN (znak NULL). Ramka sk³ada siê tylko z identyfikatora CAN, kody DLC oraz pola danych.\\
+Aby rozpocz¹æ pracê z modu³em nale¿y zdefiniowaæ wpierw jego parametry. Ustawiæ inn¹ prêdkoœæ transmisji (BD), parzystoœæ (NB), bity stopu (SB) oraz inne parametry modu³u przy u¿yciu komend AT (dostêpnych w Rozdziale 10. XBee®/XBee-PRO® ZB SMT RF Modules Datasheet~\cite{manual:xbee}). W tym celu nale¿y wprowadziæ modu³ w tryb odbioru komend AT przy u¿yciu specjalnej komendy oraz parametrów domyœlnych transmisji, czyli 9600 b/s, 1 bit stopu i brak bitu parzystoœci.\\
+Po zakoñczeniu inicjalizacji mo¿na albo poczekaæ a¿ modu³ sam wróci do trybu wysy³ania danych przez antenê, albo wymusiæ powrót. Po powrocie w tryb przesy³ania danych, modu³ przesy³a kopiê ramki CAN, która zosta³a w danej chwili odebrana przez komputer g³ówny i wysy³a j¹ do uk³adu odbiorczego, wspó³pracuj¹cego z interfejsem u¿ytkownika.
 Dioda sygnalizuje, czy urz¹dzenie zosta³o sparowane z odbiornikiem czy nie, zmieniaj¹c czêstotliwoœæ œwiecenia.
 
 \subsection{Zasilanie}
