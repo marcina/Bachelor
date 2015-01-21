@@ -2,11 +2,20 @@ G³ówne zadanie Rozproszonej Jednostki Pomiarowej (HUB) to dokonywanie pomiaru wi
 Uk³ad Jednostki Pomiarowej sk³ada siê z 3 odseparowanych galwanicznie czêœci: pomiarowej, mikrokontrolerowej i transmisji CAN.\newline
 Uk³ad realizuj¹cy dzia³anie Jednostki to STM32f103, zapewniaj¹c peryferia pomiarowe jak i komunikacyjne.
 \subsection{Mikrokontroler}
-Mikrokontroler STM32f103 pochodzi z rodziny uk³adów o rdzeniu Cortex\texttrademark-M3, dostêpny od paru lat na rynku, sprawdza siê w rozwi¹zaniach wymagaj¹cych ma³ego i prostego kontrolera. Szereg peryferiów w które wyposa¿ony jest ten uk³ad stawia go w kategorii uniwersalnoœci nie osi¹galnej przez inne uk³ady na rynku tej klasy. Najwa¿niejsze peryferia wykorzystane w Hubie to:\newline
+
+Mikrokontroler STM32f103 (\hyperref[fig:STM32F1]{Rysunek~\ref*{fig:STM32F1}}) pochodzi z rodziny uk³adów o rdzeniu Cortex\texttrademark-M3, dostêpny od paru lat na rynku, sprawdza siê w rozwi¹zaniach wymagaj¹cych ma³ego i prostego kontrolera. Szereg peryferiów w które wyposa¿ony jest ten uk³ad stawia go w kategorii uniwersalnoœci nie osi¹galnej przez inne uk³ady na rynku tej klasy. Najwa¿niejsze peryferia wykorzystane w Hubie to:\newline
 \begin{itemize}
 	\item Dwa 12 bitowe przetworniki analogowo-cyfrowe, potrafi¹ce obs³u¿yæ do 16 kana³ów
 	\item Interfejs komunikacyjny CAN 2.0B
 \end{itemize}
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.3\textwidth]{figures/STM32.JPG}
+\caption{STM32 Cortex™-M3}
+\label{fig:STM32F1}
+
+\end {figure}
 Uk³ad dostarcza tak¿e 7 timerów sprzêtowych, które mog¹ pracowaæ w wielu zaawansowanych trybach. Do wykonywania pomiarów z okreœlonym próbkowaniem wystarcz¹ podstawowe tryby dzia³ania dostarczonych timerów.
 \subsection{Zasilanie}
 Bolid wyposa¿ony jest w zasilanie akumulatorowe $12V$. Do zasilania czêœci mikrokontrolerowej i strony wtórnej separacji analogowej zastosowano przetwornice DC/DC firmy aimtec o napiêciu wyjœciowym $3.3V$. Przetwornica charakteryzuje siê efektywnoœci¹ na poziomie $78\%$ i zapewnia separacje galwaniczn¹ do $3000VDC$ \cite{manual:aimtec}. Dla stabilnej pracy przetwornicy po stronie pierwotnej i wtórnej zastosowano po dwa kondensatory(tantalowy i elektrolityczny) o wartoœciach $47\mu F$ i $100nF$.\newline

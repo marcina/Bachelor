@@ -1,6 +1,7 @@
-Komputer pok³adowy sk³ada siê z dwóch elementów: p³ytki ewaluacyjnej STM32\-F4\-Dis\-co\-ve\-ry oraz nak³adki rozszerzaj¹cej jej mo¿liwoœci. G³ównym podzespo³em komputera pok³adowego jest mikrokontroler serii STM32F4.
+Komputer pok³adowy sk³ada siê z dwóch elementów: p³ytki ewaluacyjnej STM32\-F4\-Dis\-co\-ve\-ry oraz nak³adki rozszerzaj¹cej jej mo¿liwoœci. G³ównym podzespo³em komputera pok³adowego jest mikrokontroler serii STM32F4 (\hyperref[fig:STM32F4]{Rysunek~\ref*{fig:STM32F4}}).
 
 \subsection{Mikrokontroler} \label{sec:sub:mcu}
+
 Nazwa serii reprezentuje kolejno nazwê producenta - STMicroelectronics, wielkoœæ pojedynczego rejestru - 32 bity oraz wersjê rdzenia - Cortex™-M4 CPU firmy ARM \cite{article:discovery}\cite{manual:discovery}. Jest to podrodzina rdzeni zoptymalizowana pod k¹tem minimalizacji ceny przy zachowaniu du¿ej wydajnoœci, przeznaczona do zastosowañ konsumenckich i przemys³owych \cite{book:paprocki}. Powodem wyboru tej platformy sprzêtowej jest spe³nienie przez ni¹ wszystkich za³o¿eñ projektu odnoœnie jednostki steruj¹cej oraz posiadanych uk³adów peryferyjnych \cite{manual:stm32f4d}. Uk³ad musi 
 \begin{itemize}
 \item byæ szybki - 168 MHz,
@@ -12,7 +13,15 @@ Nazwa serii reprezentuje kolejno nazwê producenta - STMicroelectronics, wielkoœæ
 (\hyperref[sec:xbee]{Sekcja~\ref*{sec:xbee}: Komunikacja bezprzewodowa - XBee})
 \item byæ ³atwy w  programowaniu, co umo¿liwi³a rozbudowana biblioteka dostarczana przez producenta,
 \end{itemize}
-Zastosowanie nak³adki rozszerzaj¹cej funkcjonalnoœæ Discovery pozwala znacznie u³atwiæ proces projektowania skracaj¹c go znacznie.
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.3\textwidth]{figures/STM32_F4.JPG}
+\caption{STM32 Cortex™-M4}
+\label{fig:STM32F4}
+\end {figure}
+
+P³ytka STM32 Discovery to zestaw ewaluacyjny pomagaj¹cy zrozumieæ dzia³anie procesorów 32-bitowych serii F4. Posiada procesor STM32F407VG. Zastosowanie nak³adki rozszerzaj¹cej funkcjonalnoœæ Discovery pozwala znacznie u³atwiæ proces projektowania skracaj¹c go znacznie. Zestaw posiada wbudowany programator ST-LINK/V2 z interfejsem USB, s³u¿¹cy do programowania i debugowania programu. Dodatkowo posiada port USB OTG, akcelerometr, mikrofon, diody oraz przyciski. Wszystkie uk³ady peryferyjne maj¹ swoje wyprowadzenia i w ³atwy sposób mo¿na stworzyæ prototypowy system przy u¿yciu przewodów i p³ytki stykowej. Dodatkowo firma STMicroelectronics udostêpnia przyk³adowe programy oraz biblioteki do u¿ytku na Discovery~\cite{manual:discovery}.
 
 \subsection{Obs³uga magistrali CAN}
 G³ówn¹ magistral¹ komunikacyjn¹ w systemie jest Controller Area Network opisany w \hyperref[sec:can]{Sekcji~\ref*{sec:can}: G³ówna magistrala komunikacyjna - CAN}. Implementacja komunikacji przy wykorzystaniu tej magistrali by³a g³ównym celem projektu. Komunikacja mo¿liwa jest dziêki kontrolerowi magistrali CAN zintegrowanemu w mikrokontrolerze. Posiada on trzy skrzynki nadawcze i dwie odbiorcze, które mieszcz¹ po trzy wiadomoœci. Dodatkowo wyposa¿ony jest w bank filtrów akceptacyjnych, które mo¿na dowolnie przypisaæ do dwóch interfejsów CAN, po 14 do ka¿dego. Odbiór wiadomoœci odbywa siê automatycznie i jest realizowany sprzêtowo, podobnie jak wstêpna selekcja nadchodz¹cych komunikatów. Filtry odci¹¿aj¹ procesor, sortuj¹c wiadomoœci.~\cite{manual:stm32f4}.\\
@@ -37,7 +46,7 @@ Adresowanie wiadomoœci przedstawiono na \hyperref[fig:adresowanie]{Rysunku~\ref*
 \begin  {figure} [h] 
 \centering
 \includegraphics[width=0.75\textwidth]{figures/Adresowanie.JPG}
-\caption{Adresowanie}
+\caption{Adresowanie ramki CAN w systemie}
 \label{fig:adresowanie}
 \end {figure}
 
@@ -48,14 +57,25 @@ Kontroler magistrali CAN wyposa¿ony jest w w sprzêtowe filtry akceptacyjne. Na k
 \begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Maska akceptacyjna, label=listing:mask]
 #define CAN_ID_HUB6 0x0CFFF048 // 0 1100 1111 1111 1111 0000 0100 1000
 #define CAN_ID_MASK 0x1F000000 // 1 1111 0000 0000 0000 0000 0000 0000
-CAN_FilterInitStructure.CAN_FilterIdHigh = (uint16_t)((CAN_ID.HUB[i].ID <<3) >>16);
-CAN_FilterInitStructure.CAN_FilterIdLow = (uint16_t)(CAN_ID.HUB[i].ID<<3);
-CAN_FilterInitStructure.CAN_FilterMaskIdHigh = (uint16_t)((CAN_ID.Mask <<3) >>16);
-CAN_FilterInitStructure.CAN_FilterMaskIdLow = (uint16_t)(CAN_ID.Mask <<3);
+CAN_FilterInitStructure.CAN_FilterIdHigh = (uint16_t)((CAN_ID_HUB6<<3) >>16);
+CAN_FilterInitStructure.CAN_FilterIdLow = (uint16_t)(CAN_ID_HUB6<<3);
+CAN_FilterInitStructure.CAN_FilterMaskIdHigh = (uint16_t)((CAN_ID_MASK<<3) >>16);
+CAN_FilterInitStructure.CAN_FilterMaskIdLow = (uint16_t)(CAN_ID_MASK<<3);
 \end{lstlisting}
 \end{minipage}
 
-W systemie u¿yto trybu maskowania filtrów. Utworzono bank 14 filtrów przypisanych do interfejsu CAN1. Ka¿dy filtr ma tê sam¹ maskê 0x1F000000, przedstawion¹ na \hyperref[listing:mask]{Listingu~\ref*{listing:mask}} oraz w³asne ID, na które maska jest nak³adana. Porównywanych jest tylko 5 pierwszych bitów (zamiast 29) identyfikatora, co skraca czas odbierania wiadomoœci. Proces akceptacji wiadomoœci polega na wykonaniu iloczynu logicznego maski oraz identyfikatora nadchodz¹cej wiadomoœci, a nastêpnie porównaniu maskowanych bitów (gdzie maska jest równa 1) z identyfikatorem zapisanym w rejestrze procesowa. W przypadku niezgodnoœci operacja powtarzana jest dla kolejnych filtrów. Przy dalszej niezgodnoœci, wiadomoœæ jest ignorowana (bez u¿ycia zasobów procesora). W przypadku udanego porównania, wiadomoœæ trafia do skrzynki odbiorczej i wywo³ywane jest przerwanie odbioru wiadomoœci. Dziêki formie maski porównaniu ulega tylko segment A identyfikatora (patrz: \hyperref[fig:identyfikatory]{Rysunek~\ref*{fig:identyfikatory}}). Do skrzynki odbiorczej trafia wiadomoœæ z numerem filtru, czyli poœrednio z numerem wêz³a, który wiadomoœæ wys³a³. Numer filtru przechowywany jest wraz z wiadomoœci¹ w zmiennej FMI (Filter Match Index) (wiêcej w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}). Program ma za zadanie porównanie tylko jednego bajtu identyfikatora (segmentu B) w celu odkrycia, który kana³ przetwornika ADC zosta³ zapisany do pola danych wiadomoœci.
+W systemie u¿yto trybu maskowania filtrów. Utworzono bank 14 filtrów przypisanych do interfejsu CAN1. Ka¿dy filtr ma tê sam¹ maskê 0x1F000000, przedstawion¹ na \hyperref[listing:mask]{Listingu~\ref*{listing:mask}} oraz w³asne ID, na które maska jest nak³adana. Porównywanych jest tylko 5 pierwszych bitów (zamiast 29) identyfikatora, co skraca czas odbierania wiadomoœci. Proces akceptacji wiadomoœci (\hyperref[fig:accept]{Rysunek~\ref*{fig:accept}} polega na wykonaniu iloczynu logicznego maski oraz identyfikatora nadchodz¹cej wiadomoœci, a nastêpnie porównaniu maskowanych bitów (gdzie maska jest równa 1) z identyfikatorem zapisanym w rejestrze procesora. W przypadku niezgodnoœci operacja powtarzana jest dla kolejnych filtrów. Przy dalszej niezgodnoœci, wiadomoœæ jest ignorowana (bez u¿ycia zasobów procesora). W przypadku udanego porównania, wiadomoœæ trafia do skrzynki odbiorczej i wywo³ywane jest przerwanie odbioru wiadomoœci. Dziêki formie maski porównaniu ulega tylko segment A identyfikatora (patrz: \hyperref[fig:identyfikatory]{Rysunek~\ref*{fig:identyfikatory}}).\\
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.75\textwidth]{figures/accept.JPG}
+\caption{Filtrowanie wiadomoœci CAN}
+\label{fig:accept}
+\end {figure}
+
+Do skrzynki odbiorczej trafia wiadomoœæ z numerem filtru, czyli poœrednio z numerem wêz³a, który wiadomoœæ wys³a³. Numer filtru przechowywany jest wraz z wiadomoœci¹ w zmiennej FMI (Filter Match Index) (wiêcej w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}). Program ma za zadanie porównanie tylko jednego bajtu identyfikatora (segmentu B) w celu odkrycia, który kana³ przetwornika ADC zosta³ zapisany do pola danych wiadomoœci lub któr¹ informacjê wys³a³ sterownik silnika.\\
+\\
+Niezale¿nie od tego czy chce siê u¿ywaæ filtrów akceptacyjnych czy nie, trzeba zdefiniowaæ chocia¿ jeden filtr. W przeciwnym wypadku ¿adna wiadomoœæ nie zostanie przyjêta do programu.
 
 \subsubsection{Transceiver CAN}
 Kontroler magistrali CAN, w który wyposa¿ony jest procesor, posiada dwie asynchroniczne linie danych. S¹ to jednokierunkowe linie Rx oraz Tx. Aby pod³¹czyæ kontroler do magistrali, na której wystêpuj¹ sygna³y Can High oraz Can Low, nale¿y szeregowe komunikaty binarne skonwertowaæ na sygna³ ró¿nicowy. Konwersj¹ komunikatu oraz dostosowaniem napiêæ zajmuje siê Transceiver CAN. Modu³ u¿yty w projekcie to L9616~\cite{manual:can}. Aby uchroniæ uk³ad g³ównego komputera od szpilek wysokich napiêæ, które mog³yby przedostaæ siê z magistrali, oraz od zak³óceñ na masie, u¿yto dwukana³owej izolacji galwanicznej w module ISO7221~\cite{manual:iso}. Izoluje ona zarówno linie sygna³owe, jak i zasilania, oddzielaj¹c uk³ad transceivera od g³ównego komputera. Schemat przedstawiono na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.
@@ -94,36 +114,39 @@ Wyró¿niane s¹ dwie wersjê modu³u XBee. Jedna zawiera wbudowan¹ antenê radiow¹, d
 \label{fig:xbee_schemat}
 \end {figure}
 
-Komunikacja z modu³em odbywa siê dziêki zintegrowanemu w mikrokontrolerze modu³owi UART. Na linii DOUT modu³u mikrokontrolera wysy³ana jest kopia ramki CAN, tak aby umo¿liwiæ jej podgl¹d w interfejsie u¿ytkownika. Jest to na³o¿enie protoko³u CAN na asynchroniczn¹ szeregow¹ pojedyncz¹ liniê danych. Ramka przesy³ana jest jako strumieñ, czyli ci¹g znaków ASCII (tablica znaków koñcz¹ca siê znakiem NULL). Jest to reprezentacja wartoœci ramki w systemie szesnastkowym. Do przes³ania sformatowanego tekstu po UART u¿yto funkcji USARTSendCan, przedstawionej na \hyperref[listing:usart]{Listingu~\ref*{listing:usart}}\\
+Komunikacja z modu³em odbywa siê dziêki zintegrowanemu w mikrokontrolerze modu³owi UART. Na linii DOUT modu³u mikrokontrolera wysy³ana jest kopia ramki CAN, tak aby umo¿liwiæ jej podgl¹d w interfejsie u¿ytkownika. Jest to na³o¿enie protoko³u CAN na asynchroniczn¹ szeregow¹ pojedyncz¹ liniê danych. Ramka przesy³ana jest jako strumieñ, czyli ci¹g znaków ASCII (tablica znaków koñcz¹ca siê znakiem NULL). Jest to reprezentacja wartoœci ramki w systemie szesnastkowym. Do przes³ania sformatowanego tekstu po UART u¿yto funkcji USART\_SendCan, przedstawionej na \hyperref[listing:usart]{Listingu~\ref*{listing:usart}}\\
 
-%\noindent\begin{minipage}{\textwidth}
-%\begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Funkcja enkaspulacyji danych USART_SendCan, label=listing:usart]
-%%void USART_SendCanFrame (CanRxMsg RxMessage)
-%%{
-%%	int i = 0;
-%%	char string[27];
-%%	string[0]='\\0';
-%%	char b[9];
-%%	b[0] = '\\0';
-%%	sprintf(b,"%08x",(unsigned int)RxMessage.ExtId);
-%%	strcat(string,b);
-%%	sprintf(b,"%02x",(unsigned int)RxMessage.DLC);
-%%	strcat(string,b);
-%%	for (;i<RxMessage.DLC;i++)
-%%	{
-%%		sprintf(b,"%02x",(unsigned int)RxMessage.Data[i]);
-%%		strcat(string,b);
-%%	}
-%%	USART\_printf("%s",string);
-%%}
-%\end{lstlisting}
-%\end{minipage}
-%\\
-Dla przyk³adu, chc¹c przes³aæ wartoœæ 0x01ABC, zostanie przes³ane s³owo "01abc", czyli ci¹g znaków 0x30 0x31 0x61 0x62 0x63 0x00.\\
+\noindent\begin{minipage}{\textwidth}
+\begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Funkcja enkaspulacji danych na UART, label=listing:usart]
+void USART_SendCanFrame (CanRxMsg RxMessage)
+{
+	int i = 0;
+	char string[27];
+	string[0]='\0';
+	char b[9];
+	b[0] = '\0';
+	sprintf(b,"%08x",(unsigned int)RxMessage.ExtId);
+	strcat(string,b);
+	sprintf(b,"%02x",(unsigned int)RxMessage.DLC);
+	strcat(string,b);
+	for (;i<RxMessage.DLC;i++)
+	{
+		sprintf(b,"%02x",(unsigned int)RxMessage.Data[i]);
+		strcat(string,b);
+	}
+	USART_printf("%s",string);
+}
+\end{lstlisting}
+\end{minipage}
+\\
+Dla przyk³adu, chc¹c przes³aæ wartoœæ 0x01ABC, zostanie przes³ane s³owo "01abc", czyli ci¹g znaków 0x30 0x31 0x61 0x62 0x63 0x00. Takie podejœcie umo¿liwia kontrolê koñca ramki CAN (znak NULL). Ramka sk³ada siê tylko z identyfikatora CAN, kodu DLC oraz pól danych. D³ugoœæ informacji w bajtach to:
+\begin{equation}
+ExtID+DLC+Data=4+1+DLC*1
+\end{equation}
+Maksymalna iloœæ danych to 8 bajtów ($DLC = 8$), st¹d maksymalna d³ugoœæ komunikatu wynosi 13 bajtów. W zapisie hexadecymalnym jest to 26 znaków, które stanowi¹ maksymaln¹ d³ugoœæ ramki.\\
+Aby rozpocz¹æ pracê z modu³em z w³asnymi ustawieniami transmisji nale¿y ustawiæ prêdkoœæ transmisji (BD), parzystoœæ (NB) i bity stopu (SB). Wszystkie parametry modu³u mo¿na zmieniaæ przy u¿yciu komend AT (dostêpnych w Rozdziale 10. XBee®/XBee-PRO® ZB SMT RF Modules Datasheet~\cite{manual:xbee}). Aby u¿ywaæ komend nale¿y wprowadziæ modu³ w tryb odbioru komend AT przy u¿yciu specjalnej komendy oraz parametrów domyœlnych transmisji, czyli 9600 b/s, 1 bit stopu i brak bitu parzystoœci.\\
 
-Takie podejœcie umo¿liwia kontrolê koñca ramki CAN (znak NULL). Ramka sk³ada siê tylko z identyfikatora CAN, kody DLC oraz pola danych.\\
-Aby rozpocz¹æ pracê z modu³em nale¿y zdefiniowaæ wpierw jego parametry. Ustawiæ inn¹ prêdkoœæ transmisji (BD), parzystoœæ (NB), bity stopu (SB) oraz inne parametry modu³u przy u¿yciu komend AT (dostêpnych w Rozdziale 10. XBee®/XBee-PRO® ZB SMT RF Modules Datasheet~\cite{manual:xbee}). W tym celu nale¿y wprowadziæ modu³ w tryb odbioru komend AT przy u¿yciu specjalnej komendy oraz parametrów domyœlnych transmisji, czyli 9600 b/s, 1 bit stopu i brak bitu parzystoœci.\\
-Po zakoñczeniu inicjalizacji mo¿na albo poczekaæ a¿ modu³ sam wróci do trybu wysy³ania danych przez antenê, albo wymusiæ powrót. Po powrocie w tryb przesy³ania danych, modu³ przesy³a kopiê ramki CAN, która zosta³a w danej chwili odebrana przez komputer g³ówny i wysy³a j¹ do uk³adu odbiorczego, wspó³pracuj¹cego z interfejsem u¿ytkownika.
+Po zakoñczeniu inicjalizacji mo¿na albo poczekaæ a¿ modu³ sam wróci do trybu wysy³ania danych przez antenê, albo wymusiæ powrót. Po powrocie w tryb przesy³ania danych, modu³ powraca do buforowania danych z magistrali szeregowej.
 Dioda sygnalizuje, czy urz¹dzenie zosta³o sparowane z odbiornikiem czy nie, zmieniaj¹c czêstotliwoœæ œwiecenia.
 
 \subsection{Zasilanie}
