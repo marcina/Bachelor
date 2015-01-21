@@ -39,6 +39,23 @@ Ka¿dy identyfikator w standardzie SAE J1939, u¿ywanym w sterowniku ECU, oparty j
 
 \begin{itemize}
 \item Segment A odpowiedzialny jest za adres urz¹dzenia i przybiera wartoœci od 0x06 do 0x12. Zakres ten umo¿liwia  obs³ugê do 13 pod³¹czonych urz¹dzeñ (HUB 0 - HUB 12). Jest to niewielka iloœæ, bior¹c pod uwagê mo¿liwoœci jakie oferuje standard CAN. Nie zak³ada siê jednak wiêkszej potrzeby. Adresowanie zosta³o tak skonstruowane, aby identyfikator ECU, którego segment A wynosi 0x0C znajdowa³ siê w œrodku zakresu (HUB 6). Pamiêtaj¹c, ¿e identyfikator wiadomoœci jest jednoczeœnie jej priorytetem, takie roz³o¿enie identyfikatorów pozwala z du¿¹ dowolnoœci¹ ustawiaæ system priorytetów pomiêdzy wêz³ami.\\
+\noindent \begin{minipage}{\textwidth}
+\begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Rozk³ad identyfikatorów, label=listing:identyfikatory]
+#define	CAN_ID_HUB12	0x12FFF048	//	1 0010 *** Lowest Priority ***
+#define	CAN_ID_HUB11	0x11FFF048	//	1 0001
+#define	CAN_ID_HUB10	0x10FFF048	//	1 0000
+#define	CAN_ID_HUB9		0x0FFFF048	//	0 1111
+#define	CAN_ID_HUB8		0x0EFFF048	//	0 1110
+#define	CAN_ID_HUB7		0x0DFFF048	//	0 1101
+#define	CAN_ID_HUB6		0x0CFFF048	//	0 1100 ECU
+#define	CAN_ID_HUB5		0x0BFFF048	//	0 1011 
+#define	CAN_ID_HUB4		0x0AFFF048	//	0 1010 
+#define	CAN_ID_HUB3		0x09FFF048	//	0 1001 
+#define	CAN_ID_HUB2		0x08FFF048	//	0 1000 
+#define	CAN_ID_HUB1		0x07FFF048	//	0 0111 
+#define	CAN_ID_HUB0		0x06FFF048	//	0 0110 *** Highest Priority ***
+\end{lstlisting}
+\end{minipage}
 \item Segment B odpowiedzialny jest za rozró¿nienie, co zawiera komunikat. W sterowniku ECU s¹ to wartoœci od 0x0 do 0x6. Aby zdekodowaæ komunikat nadawany przez ECU, nale¿y odnieœæ siê do noty katalogowej~\cite{manual:ecu}. Pozosta³e wêz³y przyjmuj¹ w segmencie B wartoœci od 0x0 do 0xA. Ka¿da identyfikator skojarzony jest z kana³em przetwornika anlogowo-cyfrowego, który jest czêœci¹ architektury jednostki pomiarowej. Przetworniki posiadaj¹ rozdzielczoœæ 12 bitów, dziêki czemu wystarcz¹ dwa bajty danych na przes³anie wiadomoœci. Ka¿da wiadomoœæ posiada swój identyfikator, dziêki czemu wynikiem filtrowania wiadomoœci bêdzie dok³adna informacja o stanie konkretnego wejœcia analogowego jednostki pomiarowej.
 \end{itemize}
 Adresowanie wiadomoœci przedstawiono na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}. Nieu¿ywane bajty w identyfikatorze stanowi¹ mo¿liwoœæ do rozszerzenia funkcjonalnoœci systemu.
