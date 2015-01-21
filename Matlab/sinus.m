@@ -1,23 +1,23 @@
 x= 0:0.01:2*pi;
 y=2047+2047*sin(x);
 id = '11FFF048';
-dlc = '2';
+dlc = '02';
 
 
 x1= 0:0.01:2*pi;
 y1=2047+2047*sin(2*x);
 id1 = '11FFF148';
-dlc1 = '2'
+dlc1 = '02'
 
 
 x9= 0:0.01:2*pi;
 y9=2048+2048*sin(4*x);
 id9 = '11FFFa48';
-dlc9 = '2'
+dlc9 = '02'
 
 r = 2047*rand(1,length(y));
 id3 = '11FFF348';
-dlc3 = '2'
+dlc3 = '02'
 
 fid = fopen('HUB_1.txt', 'w+'); 
    for i=1:length(z)
