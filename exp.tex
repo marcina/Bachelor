@@ -71,13 +71,43 @@ $ t_{UART} $ - czas wys³ania wiadomoœci przez UART\\
 
 \begin  {figure} [h] 
 \centering
-\includegraphics[width=0.4\textwidth]{figures/Gant.JPG}
+\includegraphics[width=0.35\textwidth]{figures/Gant.JPG}
 \caption{Minimalny czas próbkowania}
 \label{fig:gant}
 \end {figure}
 
 Na \hyperref[fig:gant]{Rysunku~\ref*{fig:gant}} przedstawiono diagram Ganta obrazuj¹cy minimalny czas próbkowania. Przy zbyt czêstym nadsy³aniu wiadomoœci, informacje w systemie bêd¹ gubione.
 
-Na podstawie \hyperref[eq:sum_can]{Wzoru~\ref*{eq:sum_can}} obliczono ca³kowit¹ iloœæ wiadomoœci w systemie równ¹ 127. Oznacza to ¿e czas miêdzy kolejnymi wiadomoœciami musi byæ 127 d³u¿szy ni¿ czas przetwarzania wiadomoœci.
+Na podstawie \hyperref[eq:sum_can]{Wzoru~\ref*{eq:sum_can}} obliczono ca³kowit¹ iloœæ wiadomoœci w systemie równ¹ 127. Oznacza to ¿e czas miêdzy kolejnymi wiadomoœciami musi byæ 127 razy d³u¿szy ni¿ czas przetwarzania wiadomoœci. Czas zapisu wiadomoœci $ t_{SD} $ zmierzono u¿ywaj¹c wewnêtrznego timera. Wartoœæ timera zerowano przed operacj¹, a po operacji zapisywano do osobnego pliku. Rezultat przedstawiono na \hyperref[fig:sd_timing]{Rysunku~\ref*{fig:sd_timing}}.
 
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=\textwidth]{figures/SD_timing1.JPG}
+\caption{Wykres s³upkowy przedstawiaj¹cy czas trwania zapisu danych do pliku}
+\label{fig:sd_timing}
+\end {figure}
+
+Raz na 17 operacji zapisu, czas operacji wykracza³ w znacz¹cym stopniu poza dopuszczaln¹ wartoœæ. Czas zapisu wiadomoœci utrzymywa³ siê na poziomie 200 us, a w maksimach osi¹ga³ wartoœci nawet dochodz¹ce do 55 ms. D³ugie czasy zapisu wynikaj¹ z wewnêtrznych operacji, które karta wykonuje, zg³aszaj¹c stan zajêtoœci. Aby system funkcjonowa³ poprawnie nale¿y wprowadziæ bufor, który przechowuje nadchodz¹ce dane w trakcie przerw w zapisie na kartê. Jest to powszechnie znany problem wspominany na forach internetowych. Implementacja buforu to jedna z pierwszych planowanych modernizacji systemu.\\ \\
+
+Czas wysy³ania wiadomoœci przez UART $ t_{UART} $ zbadano dok³adnie tak samo jak  $ t_{SD} $. Wynik badania przedstawiono \hyperref[fig:usart_timing]{Rysunku~\ref*{fig:usart_timing}}.
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=\textwidth]{figures/USART_timing.JPG}
+\caption{Wykres s³upkowy przedstawiaj¹cy czas wys³ania wiadomoœci przez UART}
+\label{fig:usart_timing}
+\end {figure}
+
+W przypadku komunikacji przez UART, bez zaimplementowanej obs³ugi przez DMA, czas przes³ania wiadomoœci wynosi oko³o 60 ms. Jest to bardzo du¿a wartoœæ, która musi zostaæ zmniejszona aby system móg³ dzia³aæ zgodnie z za³o¿eniami.\\
+Dla aktualnego stanu systemu, chc¹c obs³u¿yæ wszystkie pod³¹czone wêz³y, wg wzorów{~\ref{eq:sum_can} i \ref{eq:T}, najkrótszy mo¿liwy czas próbkowania wynosi³by:
+\begin{equation}\label{eq:sum_can}
+t_{p_{min}}=N*T=127*(55+60)=14605ms
+\end{equation}
+Chc¹c obs³u¿yæ tylko sterownik silnika w aktualnym stanie systemu, najkrótszy czas próbkowania musia³by wynosiæ 805 ms. Po wprowadzeniu bufora, który zniweluje problem czekania na zapis do pliku, mo¿na za³o¿yæ, ¿e minimalny czas próbkowania zmniejszy³by siê do: 407 ms.\\
+Po wprowadzeniu obs³ugi UART przez kontroler DMA, mo¿na by uzyskaæ prêdkoœæ wysy³ania danych zbli¿on¹ do prêdkoœci zapisu do pliku. Wtedy minimalny czas próbkowania w systemie prezentowa³by siê nastêpuj¹co:
+\begin{equation}\label{eq:sum_can}
+t_{p_{min}}=N*T=127*(0,2+0,2)=50.8ms
+\end{equation}
+50ms  to wartoœæ, która w pe³ni wystarczy³aby do próbkowania szybko-zmiennych procesów zachodz¹cych w pojeŸdzie. Jest to wartoœæ u¿ywana przez sterownik silnika do próbkowania wartoœci takich jak: prêdkoœæ obrotowa silnika, po³o¿enie przepustnicy (TPS) czy iloœæ tlenu w spalinach (sonda Lambda).\\
+Czêœæ czujników, na przyk³ad temperatury, nie wymaga tak krótkiego czasu próbkowania, gdy¿ zmiana temperatury jest procesem wolno-zmiennym.
 \section{Porównanie protoko³ów SDIO oraz SPI}\label{sec:exp:sdio}
