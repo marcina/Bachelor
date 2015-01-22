@@ -41,7 +41,15 @@ CANL & 2.5 V & 1.5 V \\ \hline
 \caption{Wartoœci napiêæ na magistrali CAN}\label{tab:voltage}
 \end{table}
 
-Je¿eli urz¹dzenia magistrali wymusz¹ jednoczeœnie stan recesywny i dominuj¹cy, to na linii ustabilizuje siê stan dominuj¹cy. System dostêpu do medium jest potocznie zwany "iloczynem na drucie" (wiêcej informacji w \hyperref[sec:sub:filtry]{Sekcji~\ref*{sec:sub:filtry}: Filtry akceptacyjne})\\
+Je¿eli urz¹dzenia magistrali wymusz¹ jednoczeœnie stan recesywny i dominuj¹cy, to na linii ustabilizuje siê stan dominuj¹cy. System dostêpu do medium jest potocznie zwany "iloczynem na drucie" (wiêcej informacji w \hyperref[sec:sub:filtry]{Sekcji~\ref*{sec:sub:filtry}: Filtry akceptacyjne}). Na \hyperref[fig:CAN_bit]{Rysunku~\ref*{fig:CAN_bit}} przedstawiono ró¿nicowy sygna³ bêd¹cy reprezentacj¹ jednego bitu.
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.75\textwidth]{figures/CAN_bit.JPG}
+\caption{Sygna³ ró¿nicowy miêdzy CANH i CANL~\cite{manual:transceiver1}}
+\label{fig:CAN_bit}
+\end {figure}
+
 Warstwa ³¹cza danych czêsto obs³ugiwana jest sprzêtowo przez kontrolery magistrali CAN, które spotykane s¹ jako integralne czêœci niektórych mikrokontrolerów.\\
 
 Istnieje bardzo wiele ró¿nych standardów opartych na warstwie aplikacji. Ka¿dy producent opracowuje swój standard. Istniej¹: 
