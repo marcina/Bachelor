@@ -28,6 +28,7 @@ Ka¿dy identyfikator w standardzie SAE J1939, u¿ywanym w sterowniku ECU, oparty j
 \caption{Budowa identyfikatora CAN}
 \label{fig:identyfikatory}
 \end {figure}
+
 \begin{itemize}
 \item Segment A odpowiedzialny jest za adres urz¹dzenia i przybiera wartoœci od 0x06 do 0x12. Zakres ten umo¿liwia  obs³ugê do 13 pod³¹czonych urz¹dzeñ (HUB 0 - HUB 12). Jest to niewielka iloœæ, bior¹c pod uwagê mo¿liwoœci jakie oferuje standard CAN. Nie zak³ada siê jednak wiêkszej potrzeby. Adresowanie zosta³o tak skonstruowane, aby identyfikator ECU, którego segment A wynosi 0x0C znajdowa³ siê w œrodku zakresu (HUB 6). Pamiêtaj¹c, ¿e identyfikator wiadomoœci jest jednoczeœnie jej priorytetem, takie roz³o¿enie identyfikatorów pozwala z du¿¹ dowolnoœci¹ ustawiaæ system priorytetów pomiêdzy wêz³ami.\\
 \noindent \begin{minipage}{\textwidth}
@@ -111,7 +112,14 @@ Wszystkie karty SD s¹ kompatybilne ze standardem SDIO, który zapewnia pe³n¹ obs³
 Bazuj¹c na za³o¿eniach projektu zaimplementowano obs³ugê karty SD przez kontroler DMA, skracaj¹c czas operacji na plikach. U¿yta w tym celu biblioteka jest autorstwa Tilen'a Majerle~\cite{lib:sd}. Tilen Majerle zapewnia sta³e wsparcie dla biblioteki i udziela odpowiedzi na pytania u¿ytkowników. U³atwia to w znacz¹cym stopniu implementacjê biblioteki i jej póŸniejsze u¿ycie i zintegrowanie z pozosta³¹ czêœci¹ programu. 
 
 \subsubsection{Zapis do pliku}
-Wa¿nym elementem biblioteki jest funkcja pozwalaj¹ca na zapisywanie sformatowanego tekstu do pliku \textit{fprintf (FILE * stream, const char * format, ... )}. Przyk³ad u¿ycia  funkcji przedstawiono na \hyperref[listing:fprintf]{Listingu~\ref*{listing:fprintf}}. Nale¿y okreœliæ plik docelowy, oraz ramkê CAN, któr¹ chce siê zapisaæ do pliku. Format danych w pliku, które s¹ ju¿ wstêpnie posortowane na jednostki pomiarowe, to zapis w formacie kodu ASCII szesnastkowej postaci identyfikatora, kodu DLC oraz danych. Z identyfikatora mo¿na odczytaæ, którego wejœcia przetwornika ADC dotyczy ramka lub w przypadku HUB\_6, który zestaw parametrów przesy³any jest przez sterownik silnika. Dziêki kodowi DLC wiadomo ile nast¹pi po nim bajtów danych. Ramka zakoñczona jest znakiem nowej linii '$\backslash$n'
+Wa¿nym elementem biblioteki jest funkcja pozwalaj¹ca na zapisywanie sformatowanego tekstu do pliku \textit{fprintf (FILE * stream, const char * format, ... )}. Przyk³ad u¿ycia  funkcji przedstawiono na \hyperref[listing:fprintf]{Listingu~\ref*{listing:fprintf}}. Nale¿y okreœliæ plik docelowy, oraz ramkê CAN, któr¹ chce siê zapisaæ do pliku. Format danych w pliku, które s¹ ju¿ wstêpnie posortowane na jednostki pomiarowe, to zapis w formacie kodu ASCII szesnastkowej postaci identyfikatora, kodu DLC oraz danych. Z identyfikatora mo¿na odczytaæ, którego wejœcia przetwornika ADC dotyczy ramka lub w przypadku HUB\_6, który zestaw parametrów przesy³any jest przez sterownik silnika. Dziêki kodowi DLC wiadomo ile nast¹pi po nim bajtów danych. Zapis koñczy siê znakiem nowej linii '$\backslash$n'. Na \hyperref[fig:zapis]{Rysunku~\ref*{fig:zapis}}.
+
+\begin  {figure} [h] 
+\centering
+\includegraphics[width=0.75\textwidth]{figures/zapis.JPG}
+\caption{Przyk³ad ramki zapisanej w pliku HUB\_6.txt}
+\label{fig:zapis}
+\end {figure}
 
 \noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Funkcja zapisu danych na kartê SD, label=listing:fprintf]
