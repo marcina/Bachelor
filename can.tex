@@ -105,7 +105,8 @@ Czas trwania jednego przesy³anego bitu podzielony jest na segmenty (\hyperref[fi
 \item Segment 2 (BS2) bêd¹cy segmentem fazy
 \end{itemize}
 
-Ka¿dy segment trwa wielokrotnoœæ kwantu czasu. Segment synchronizacji zawsze trwa jeden kwant czasu. Jest to czas, w którym oczekiwane jest zbocze przesy³anego bitu. Segment propagacji to kompensacja opóŸnienia transportowego sygna³u, bêd¹cego sum¹ opóŸnieñ urz¹dzeñ wejœciowych, wyjœciowych oraz medium. Segmenty fazy okreœlaj¹ wyst¹pienie punktu próbkowania, który porównany z poprzednim punktem próbkowania daje informacjê o zmianie stanu linii. Punkt próbkowania wypada dok³adnie na granicy segmentów fazy.\\
+Ka¿dy segment trwa wielokrotnoœæ kwantu czasu. Segment synchronizacji zawsze trwa jeden kwant czasu. Jest to czas, w którym oczekiwane jest zbocze przesy³anego bitu. Segment propagacji to kompensacja opóŸnienia transportowego sygna³u, bêd¹cego sum¹ opóŸnieñ urz¹dzeñ wejœciowych, wyjœciowych oraz medium. Segmenty fazy okreœlaj¹ wyst¹pienie punktu próbkowania (Sample Point), który wypada dok³adnie na granicy segmentów BS1 i BS2.\\
+Stan linii badany jest co kwant czasu i porównywany jest ze stanem odczytanym w punkcie próbowania poprzedniego bitu. W ten sposób wykrywane jest wyst¹pienie zbocza sygna³u. Je¿eli zbocze wyst¹pi³o poza segmentem synchronizacji, mówi siê o tzw. b³êdzie fazy, czyli niesynchronicznoœci bitu. Synchronizacja czasów mo¿e odbyæ siê tylko po wykryciu zbocza narastaj¹cego, czyli przejœcia magistrali w stan dominuj¹cy z recesywnego w czasie od ostatniego punktu próbkowania do chwili wykrycia zbocza. W celu kompensacji b³êdu fazy definiuje siê wielkoœæ skoku synchronizacji (Synchronization Jump Width (SJW)). Jest to wartoœæ maksymalna, o któr¹ w chwili synchronizacji, ma prawo zostaæ wyd³u¿ony segment BS1, b¹dŸ skrócony segment BS2. Wartoœæ SJW wyra¿ana jest w kwantach czasu. B³¹d fazy bierze siê z ró¿nic w taktowaniu zegarów wêz³ów sieci. Przy u¿ywaniu ma³o dok³adnych, podatnych na temperaturê, tanich rezonatorów, nale¿y dobraæ du¿¹ wartoœæ SJW~\cite{manual:timing}.
 
 D³ugoœæ kwantu czasu wyliczana jest z nastêpuj¹cej zale¿noœci:
 \begin{equation}\label{eq:tq}
@@ -117,9 +118,11 @@ $BRP$ - Preskaler\\
 $f_{clk}$ - czêstotliwoœæ taktowania kontrolera CAN\\
 
 Prêdkoœæ transmisji wyznacza siê ze wzoru:
-\begin{equation}
+\begin{equation}\label{eq:baud}
 BaudRate=\frac{1}{t_{q}+t_{BS1}+_{BS2}}
 \end{equation} 
+
+Instrukcja jak dobieraæ d³ugoœci trwania poszczególnych segmentów zawarta jest w instrukcji~\cite{manual:timing}
 
 \subsection{Filtry akceptacyjne} \label{sec:sub:filtry}
 Ogromn¹ zalet¹ systemu opartego na protokole CAN jest obecnoœæ filtrów wiadomoœci. W sieci CAN identyfikator wiadomoœci jest jednoczeœnie jej priorytetem. Im ni¿szy identyfikator, tym wy¿szy priorytet. Wynika to z faktu, ¿e za stan logiczny 0 odpowiada bit dominuj¹cy na magistrali. Dlatego nag³ówek ramki zawieraj¹cy identyfikator nazywany jest polem arbitra¿u. Wêze³, który chce wys³aæ wiadomoœæ o najmniejszym identyfikatorze, uzyska dostêp do magistrali jako pierwszy. Wszystkie wêz³y monitoruj¹ sieæ, równie¿ w trakcie nadawania. Gdy wykryj¹, ¿e wiadomoœæ któr¹ nadaj¹, nie pokrywa siê z t¹ na magistrali, przestaj¹ nadawaæ i oczekuj¹ na koniec ramki. Wtedy ponawiaj¹ próbê nadania wiadomoœci~\cite{article:can}\cite{article:siecican}.\\
