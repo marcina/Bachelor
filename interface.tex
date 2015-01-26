@@ -1,11 +1,12 @@
-\subsection{Wymagania sprzêtowe}
-\subsection{Modu³ odbiorczy XBee}
-\subsection{Grphical User Interface (GUI)}
-W œrodowisku Visual Studio zosta³ stworzony interfejs u¿ytkownika. Zadaniem GUI jest monitorowanie magistrali CAN oraz akwizycja danych przesy³anych przez UART do programu. Program mo¿e dzia³aæ w dwóch trybach:\newline
+Zadaniem GUI jest monitorowanie magistrali CAN oraz akwizycja danych przesy³anych przez UART do programu. Program mo¿e pracowaæ w dwóch trybach:\newline
 \begin{itemize}
 	\item Offline- Wczytywanie danych z karty SD
 	\item Online- Monitorowanie magistali CAN w czasie rzeczywistym
 \end{itemize}
+\subsection{Komunikacja UART}
+Zdecydowano siê na komunikacje $UART$ w zwi¹zku z du¿¹ liczb¹ modu³ów bezprzewodowych obs³uguj¹cych ten typ transmisji.
+Obs³uga komunikacji realizowana jest przez kontrolkê $SerialPort$, która jest czêœci¹ œrodowiska Visual Studio. Dostarcza ona metod pozwalaj¹cych na ³atw¹ obs³ugê portu szeregowego.
+\subsection{Grphical User Interface (GUI)}
 W g³ównym komputerze pomiarowym zaimplementowano zapis ramek przesy³anych przez magistrale bezpoœrednio na kartê SD. Stworzone przez nas GUI posiada opcje wczytania logu magistrali do programu oraz manipulowania danymi. \newline
 \begin  {figure} [h] 
 \centering
@@ -46,14 +47,14 @@ Tryb online polega na przesy³aniu w czasie rzeczywistym ramek pojawiaj¹cych siê 
             }
 \end{lstlisting}
 
-Na listingu widzimy odczytywanie pierwszych 4 bajtów adresu oraz d³ugoœci transmisji DLC. Nastêpnie jest ona parsowana z kodu szesnastkowego do zmiennej integer. Na podstawie d³ugoœci DLC tworzymy tablice w których zostan¹ ulokowane przes³ane pomiary. Przyjêto, ¿e ka¿dy kana³ pomiarowy bêdzie posiada³ swój adres, a pomiar bêdzie przesy³any w 2 bajtach danych. Klasa $Frame$ zosta³a przystosowana tak¿e do obs³ugi wielu 2 bajtowych zestawów danych, wys³anych przez jedn¹ ramkê.\newline
+Na \hyperref[listing:FrameMake]{Listingu~\ref*{listing:FrameMake}} widzimy odczytywanie pierwszych 4 bajtów adresu oraz d³ugoœci transmisji DLC. Nastêpnie jest ona parsowana z kodu szesnastkowego do zmiennej integer. Na podstawie d³ugoœci DLC tworzymy tablice w których zostan¹ ulokowane przes³ane pomiary. Przyjêto, ¿e ka¿dy kana³ pomiarowy bêdzie posiada³ swój adres, a pomiar bêdzie przesy³any w 2 bajtach danych. Klasa $Frame$ zosta³a przystosowana tak¿e do obs³ugi wielu 2 bajtowych zestawów danych, wys³anych przez jedn¹ ramkê.\newline
 \begin  {figure} [h] 
 \centering
 \includegraphics[width=\textwidth]{figures/GUI_Main.PNG}
 \caption{G³ówne okno programu}
 \label{fig:GUI_Main}
 \end {figure}
-Po uruchomieniu programu mamy dostêp do rozwijanego menu w którym mo¿emy wybraæ na jakim porcie COM ma byæ prowadzony nas³uch lub mo¿liwoœæ wczytania danych w trybie offline przyciskiem $Load Data$. Po pojawieniu siê ramki na magistrali lub wczytaniu danych z pliku w oknie dialogowym widzimy z jakich adresów przychodzi³y pomiary. Na pozycji Canal widzimy pomiar szesnastkowo, który zosta³ wys³any z uk³adu pomiarowego. Wartoœæ pozycji Value jest przeskalowana przez wspó³czynniki $a$ i $b$ które domyœlnie s¹ ustawione na $1$ i $0$. Aplikacja oferuje mo¿liwoœæ nazwania sygna³u oraz napisania komentarza co pozwala ³atwiej operowaæ na przychodz¹cych danych. Na tej karcie mo¿na obserwowaæ tylko ostatni¹ próbkê, która pojawi³a siê na magistrali.\newline
+Po uruchomieniu programu mamy dostêp do rozwijanego menu w którym mo¿emy wybraæ na jakim porcie COM ma byæ prowadzony nas³uch lub mo¿liwoœæ wczytania danych w trybie offline przyciskiem $Load Data$, tak jak na \hyperref[fig:GUI_Main]{Rysunku~\ref*{fig:GUI_Main}}. Po pojawieniu siê ramki na magistrali lub wczytaniu danych z pliku w oknie dialogowym widzimy z jakich adresów przychodzi³y pomiary. Na pozycji Canal widzimy pomiar szesnastkowo, który zosta³ wys³any z uk³adu pomiarowego. Wartoœæ pozycji Value jest przeskalowana przez wspó³czynniki $a$ i $b$ które domyœlnie s¹ ustawione na $1$ i $0$. Aplikacja oferuje mo¿liwoœæ nazwania sygna³u oraz napisania komentarza co pozwala ³atwiej operowaæ na przychodz¹cych danych. Na tej karcie mo¿na obserwowaæ tylko ostatni¹ próbkê, która pojawi³a siê na magistrali.\newline
 
 \begin  {figure} [h] 
 \centering

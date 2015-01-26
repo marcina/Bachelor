@@ -263,7 +263,7 @@ Po zakoñczeniu inicjalizacji mo¿na albo poczekaæ a¿ modu³ sam wróci do trybu wys
 Dioda sygnalizuje, czy urz¹dzenie zosta³o sparowane z odbiornikiem czy nie, zmieniaj¹c czêstotliwoœæ œwiecenia.
 
 \subsection{Zasilanie}
-
+P³ytka ewaluacyjna STM32F4-Discovery do poprawnego dzia³ania wszystkich peryferiów wymaga napiêcia $5V$. Zdecydowano, ¿e napiêcie to bêdzie dostarczane przez przetwornice step-down firmy POLOLU o pr¹dzie wyjœciowym $600mA$. Na wejœciu przetwornicy zastosowano diodê prostownicz¹ jako zabezpieczenie przed pod³¹czeniem odwrotnej polaryzacji napiêcia oraz bezpiecznik polimerowy. Na wejœciu oraz wyjœciu przetwornicy zosta³y umieszczone kondensatory tantalowe o wartoœciach $ podaæ wartoœæ$ w celu filtrowania napiêcia zasilania.
 \subsection{System przerwañ}
 Przy obs³udze tak wielu uk³adów peryferyjnych wa¿ne jest zachowanie pewnego systemu priorytetów przerwañ, które mog¹ zostaæ zg³oszone jednoczeœnie. S³u¿y do tego uk³ad NVIC (Nested Vector Interrupt Controller) zintegrowany w procesorze. W systemie wyró¿niamy nastêpuj¹ce przerwania:
 \begin{itemize}
