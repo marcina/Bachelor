@@ -46,27 +46,27 @@ Tryb online polega na przesy³aniu w czasie rzeczywistym ramek pojawiaj¹cych siê 
 
 Na \hyperref[listing:FrameMake]{Listingu~\ref*{listing:FrameMake}} zaprezentowano odczytywanie pierwszych 4 bajtów adresu oraz d³ugoœci transmisji DLC, która jest nastêpnie parsowana z kodu szesnastkowego do zmiennej typu ca³kowitego (integer). Na podstawie d³ugoœci DLC tworzone s¹ tablice, w których zostan¹ ulokowane przes³ane pomiary. Przyjêto, ¿e ka¿dy kana³ pomiarowy bêdzie posiada³ swój adres, a pomiar bêdzie przesy³any w 2 bajtach danych (wiêcej w \hyperref[ssec:adresowanie]{Sekcji~\ref*{ssec:adresowanie}: Przestrzeñ adresowa CAN}). Klasa $Frame$ zosta³a przystosowana tak¿e do obs³ugi wielu 2 bajtowych zestawów danych, wys³anych przez jedn¹ ramkê. S³u¿y ona do obs³ugi komunikatów pochodz¹cych z ECU. \newline
 
-\begin  {figure} [h] 
+\begin  {figure}  
 \centering
-\includegraphics[width=\textwidth]{figures/GUI_Main.PNG}
+\includegraphics[width=0.7\textwidth]{figures/GUI_Main.PNG}
 \caption{G³ówne okno programu}
 \label{fig:GUI_Main}
 \end {figure}
 
 Po uruchomieniu programu pojawia siê okno widoczne na \hyperref[fig:GUI_Main]{Rysunku~\ref*{fig:GUI_Main}}. W górnym lewym rogu ekranu znajduje siê rozwijane menu, w którym mo¿na wybraæ na jakim porcie COM ma byæ prowadzony nas³uch. W prawym górnym rogu ekranu znajduje siê przycisk $Load Data$, który umo¿liwia wybór wczytywania danych w trybie offline. Po nadejœciu ramki na magistrali lub wczytaniu danych z pliku, w oknie dialogowym pojawia siê informacja z jakich adresów nadchodzi³y pomiary. Na pozycji Canal widzimy pomiar szesnastkowo, który zosta³ wys³any z uk³adu pomiarowego. Wartoœæ pozycji Value jest przeskalowana przez wspó³czynniki $a$ i $b$ które domyœlnie s¹ ustawione na $1$ i $0$. Aplikacja oferuje mo¿liwoœæ nazwania sygna³u oraz napisania komentarza co pozwala ³atwiej operowaæ na przychodz¹cych danych. W karcie $Data$ mo¿na obserwowaæ tylko ostatni¹ próbkê, która pojawi³a siê na magistrali.\newline
 
-\begin  {figure} [h] 
+\begin  {figure} 
 \centering
-\includegraphics[width=\textwidth]{figures/GUI_Chart.PNG}
+\includegraphics[width=0.7\textwidth]{figures/GUI_Chart.PNG}
 \caption{Okno wykresu}
 \label{fig:GUI_Chart}
 \end {figure}
 
 Dwukrotne klikniêcie na sygna³ lub zaznaczenie paru sygna³ów i naciœniêcie klawisza $Enter$ powoduje otwarcie okna z wykresem danego sygna³u, widoczne na \hyperref[fig:GUI_Chart]{Rysunku~\ref*{fig:GUI_Chart}}. W oknie wykresu mo¿na obserwowaæ, w czasie rzeczywistym lub offline, przebieg sygna³u odczytywanego z magistrali. Przy u¿yciu menu rozwijanego $Chart$ mo¿na decydowaæ, które sygna³y maj¹ byæ obserwowane na wykresie.\newline
 
-\begin  {figure} [h] 
+\begin  {figure} 
 \centering
-\includegraphics[width=0.5\textwidth]{figures/GUI_Menu.PNG}
+\includegraphics[width=0.3\textwidth]{figures/GUI_Menu.PNG}
 \caption{Menu w oknie Chart}
 \label{fig:GUI_Chart}
 \end {figure}
@@ -74,7 +74,7 @@ Dwukrotne klikniêcie na sygna³ lub zaznaczenie paru sygna³ów i naciœniêcie klawi
 Menu $File$ w oknie wykresu, dostarcza takich opcji jak zapis wykresu do obrazu lub generowanie pliku w formacie obs³ugiwanym przez programy kalkulacyjne.\newline
 GUI dostarcza mo¿liwoœæ pracy na stanowiskach wielomonitorowych. Mo¿na otworzyæ okno wykresu dla ka¿dego kana³u przesy³anego po magistrali CAN i rozmieœciæ je w wygodny dla u¿ytkownika sposób. Przyk³adowe rozmiesczenie okien zaprezentowano na \hyperref[fig:GUI_Charts]{Rysunku~\ref*{fig:GUI_Charts}}.\newline
 
-\begin  {figure} [h] 
+\begin  {figure} 
 \centering
 \includegraphics[width=0.8\textwidth]{figures/GUI_All.PNG}
 \caption{Praca z wykresami}
