@@ -1,4 +1,4 @@
-Komputer pok³adowy sk³ada siê z dwóch elementów: p³ytki ewaluacyjnej STM32\-F4\-Dis\-co\-ve\-ry~/cite{manula:discovery} oraz nak³adki rozszerzaj¹cej jej mo¿liwoœci.  Oprogramowanie komputera pok³adowego stanowi zestaw funkcji oraz projektów, w których testowane s¹ poszczególne podzespo³y oraz ich wzajemna integracja. Fragmenty kodu programu umieszczone s¹ w niniejszym rozdziale, w odpowiadaj¹cych im sekcjach. W ramach tworzenia projektu powsta³ projekt p³ytki drukowanej wraz z modelem 3D aby zilustrowaæ  wygl¹d nak³adki do modu³u Discovery. Model przedstawiono na \hyperref[fig:3D]{Rysnuku~\ref*{fig:3D}}.
+Komputer pok³adowy sk³ada siê z dwóch elementów: p³ytki ewaluacyjnej STM32\-F4\-Dis\-co\-ve\-ry~\cite{manual:discovery} oraz nak³adki rozszerzaj¹cej jej mo¿liwoœci.  Oprogramowanie komputera pok³adowego stanowi zestaw funkcji oraz projektów, w których testowane s¹ poszczególne podzespo³y oraz ich wzajemna integracja. Fragmenty kodu programu umieszczone s¹ w niniejszym rozdziale, w odpowiadaj¹cych im sekcjach. W ramach tworzenia projektu powsta³ projekt p³ytki drukowanej wraz z modelem $3D$ aby zilustrowaæ  wygl¹d nak³adki do modu³u Discovery. Model przedstawiono na \hyperref[fig:3D]{Rysnuku~\ref*{fig:3D}}.
 
 \subsection{Mikrokontroler} \label{sec:sub:mcu}
 G³ównym podzespo³em komputera pok³adowego jest mikrokontroler serii STM32F4. Nazwa serii reprezentuje kolejno nazwê producenta - STMicroelectronics, wielkoœæ pojedynczego rejestru - 32 bity oraz wersjê rdzenia - Cortex™-M4 CPU firmy ARM \cite{article:discovery}\cite{manual:discovery}. Jest to podrodzina rdzeni zoptymalizowana pod k¹tem minimalizacji ceny przy zachowaniu du¿ej wydajnoœci, przeznaczona do zastosowañ konsumenckich i przemys³owych \cite{book:paprocki}. Powodem wyboru tej platformy sprzêtowej jest spe³nienie przez ni¹ wszystkich za³o¿eñ projektu odnoœnie jednostki steruj¹cej oraz posiadanych uk³adów peryferyjnych \cite{manual:stm32f4d}. Uk³ad musi 
@@ -17,10 +17,10 @@ P³ytka STM32 Discovery to zestaw ewaluacyjny pomagaj¹cy zrozumieæ dzia³anie proc
 
 \subsection{Obs³uga magistrali CAN}
 G³ówn¹ magistral¹ komunikacyjn¹ w systemie jest Controller Area Network opisany w \hyperref[sec:can]{Sekcji~\ref*{sec:can}: G³ówna magistrala komunikacyjna}. Implementacja komunikacji przy wykorzystaniu tej magistrali by³a g³ównym celem projektu. Komunikacja mo¿liwa jest dziêki kontrolerowi magistrali $CAN$ zintegrowanemu w mikrokontrolerze. Posiada on trzy skrzynki nadawcze i dwie odbiorcze, które mieszcz¹ po trzy wiadomoœci. Dodatkowo wyposa¿ony jest w bank filtrów akceptacyjnych, które mo¿na dowolnie przypisaæ do dwóch interfejsów $CAN$, po 14 do ka¿dego. Odbiór wiadomoœci odbywa siê automatycznie i jest realizowany sprzêtowo, podobnie jak wstêpna selekcja nadchodz¹cych komunikatów. Filtry odci¹¿aj¹ procesor, sortuj¹c wiadomoœci.~\cite{manual:stm32f4}.\\
-Dziêki u¿yciu protoko³u $CAN$ system ma mo¿liwoœæ odczytywania danych ze sterownika silnika ECU serii PE3~\cite{manual:ecu}, który wysy³a wiadomoœci przy u¿yciu standardu bazuj¹cego na SAE J1939~\cite{sae:1939}. Dok³adna znajomoœæ standardu SAE J1939 nie jest potrzebna w celu zbudowania systemu mog¹cego siê komunikowaæ ze sterownikiem. Producent do³¹cza notê katalogow¹~\cite{manual:ecu}, w której opisane s¹ wszystkie mo¿liwe komunikaty, które sterownik wysy³a. 
+Dziêki u¿yciu protoko³u $CAN$ system ma mo¿liwoœæ odczytywania danych ze sterownika silnika $ECU$ serii PE3~\cite{manual:ecu}, który wysy³a wiadomoœci przy u¿yciu standardu bazuj¹cego na SAE J1939~\cite{sae:j1939}. Dok³adna znajomoœæ standardu SAE J1939 nie jest potrzebna w celu zbudowania systemu mog¹cego siê komunikowaæ ze sterownikiem. Producent do³¹cza notê katalogow¹~\cite{manual:ecu}, w której opisane s¹ wszystkie mo¿liwe komunikaty, które sterownik wysy³a. 
 
 \subsubsection{Przestrzeñ adresowa CAN} \label{ssec:adresowanie}
-Ka¿dy identyfikator w standardzie SAE J1939, u¿ywanym w sterowniku ECU, oparty jest na rozszerzonej wersji standardu $CAN$ i posiada 29 bitów. Ka¿da wiadomoœæ, posiadaj¹ca w³asny identyfikator, niesie ze sob¹ 7 lub 8 bajtów danych, czyli maksymaln¹ iloœæ przewidzian¹ przez standard $CAN$. Producent sterownika ECU do³¹cza instrukcjê s³u¿¹c¹ do dekodowania ramki, w celu uzyskania pojedynczych informacji zawartych w 8-bajtowym komunikacie~\cite{manual:ecu}. Na podstawie identyfikatorów u¿ywanych przez ECU zbudowano system identyfikatorów wystêpuj¹cych w systemie. Pomimo i¿ identyfikator przypisany jest do wiadomoœci, a nie do urz¹dzenia, utworzono system filtrów, który jednoznacznie okreœla, który wêze³ magistrali nades³a³ wiadomoœæ. Format identyfikatora przedstawiono na \hyperref[fig:identyfikatory]{Rysunku~\ref*{fig:identyfikatory}} i jest to przyk³ad identyfikatora u¿ywanego przez sterownik silnika ECU.
+Ka¿dy identyfikator w standardzie SAE J1939, u¿ywanym w sterowniku $ECU$, oparty jest na rozszerzonej wersji standardu $CAN$ i posiada 29 bitów. Ka¿da wiadomoœæ, posiadaj¹ca w³asny identyfikator, niesie ze sob¹ 7 lub 8 bajtów danych, czyli maksymaln¹ iloœæ przewidzian¹ przez standard $CAN$. Producent sterownika $ECU$ do³¹cza instrukcjê s³u¿¹c¹ do dekodowania ramki, w celu uzyskania pojedynczych informacji zawartych w 8-bajtowym komunikacie~\cite{manual:ecu}. Na podstawie identyfikatorów u¿ywanych przez $ECU$ zbudowano system identyfikatorów wystêpuj¹cych w systemie. Pomimo i¿ identyfikator przypisany jest do wiadomoœci, a nie do urz¹dzenia, utworzono system filtrów, który jednoznacznie okreœla, który wêze³ magistrali nades³a³ wiadomoœæ. Format identyfikatora przedstawiono na \hyperref[fig:identyfikatory]{Rysunku~\ref*{fig:identyfikatory}} i jest to przyk³ad identyfikatora u¿ywanego przez sterownik silnika $ECU$.
 
 \begin  {figure} [h] 
 \centering
@@ -30,7 +30,7 @@ Ka¿dy identyfikator w standardzie SAE J1939, u¿ywanym w sterowniku ECU, oparty j
 \end {figure}
 
 \begin{itemize}
-\item Segment A odpowiedzialny jest za adres urz¹dzenia i przybiera wartoœci od 0x06 do 0x12. Zakres ten umo¿liwia  obs³ugê do 13 pod³¹czonych urz¹dzeñ (HUB 0 - HUB 12). Jest to niewielka iloœæ, bior¹c pod uwagê mo¿liwoœci jakie oferuje standard $CAN$. Nie zak³ada siê jednak wiêkszej potrzeby. Adresowanie zosta³o tak skonstruowane, aby identyfikator ECU, którego segment A wynosi 0x0C znajdowa³ siê w œrodku zakresu (HUB 6). Pamiêtaj¹c, ¿e identyfikator wiadomoœci jest jednoczeœnie jej priorytetem, takie roz³o¿enie identyfikatorów pozwala z du¿¹ dowolnoœci¹ ustawiaæ system priorytetów pomiêdzy wêz³ami.\\
+\item Segment A odpowiedzialny jest za adres urz¹dzenia i przybiera wartoœci od 0x06 do 0x12. Zakres ten umo¿liwia  obs³ugê do 13 pod³¹czonych urz¹dzeñ (HUB 0 - HUB 12). Jest to niewielka iloœæ, bior¹c pod uwagê mo¿liwoœci jakie oferuje standard $CAN$. Nie zak³ada siê jednak wiêkszej potrzeby. Adresowanie zosta³o tak skonstruowane, aby identyfikator $ECU$, którego segment A wynosi 0x0C znajdowa³ siê w œrodku zakresu (HUB 6). Pamiêtaj¹c, ¿e identyfikator wiadomoœci jest jednoczeœnie jej priorytetem, takie roz³o¿enie identyfikatorów pozwala z du¿¹ dowolnoœci¹ ustawiaæ system priorytetów pomiêdzy wêz³ami.\\
 \noindent \begin{minipage}{\textwidth}
 \begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Lista mo¿liwych identyfikatorów $CAN$, label=listing:identyfikatory]
 #define	CAN_ID_HUB12	0x12FFF048 // 1 0010 *** Lowest Priority ***
@@ -48,7 +48,7 @@ Ka¿dy identyfikator w standardzie SAE J1939, u¿ywanym w sterowniku ECU, oparty j
 #define	CAN_ID_HUB0	0x06FFF048 // 0 0110 *** Highest Priority ***
 \end{lstlisting}
 \end{minipage}
-\item Segment B odpowiedzialny jest za rozró¿nienie, co zawiera komunikat. W sterowniku ECU s¹ to wartoœci od 0x0 do 0x6. Aby zdekodowaæ komunikat nadawany przez ECU, nale¿y odnieœæ siê do noty katalogowej~\cite{manual:ecu}. Pozosta³e wêz³y przyjmuj¹ w segmencie B wartoœci od 0x0 do 0xA. Ka¿dy identyfikator skojarzony jest z kana³em przetwornika anlogowo-cyfrowego, który jest czêœci¹ architektury jednostki pomiarowej. Przetworniki posiadaj¹ rozdzielczoœæ 12 bitów, dziêki czemu wystarcz¹ dwa bajty danych na przes³anie wiadomoœci. Ka¿da wiadomoœæ posiada swój identyfikator, dziêki czemu wynikiem filtrowania wiadomoœci bêdzie dok³adna informacja o stanie konkretnego wejœcia analogowego jednostki pomiarowej.
+\item Segment B odpowiedzialny jest za rozró¿nienie, co zawiera komunikat. W sterowniku $ECU$ s¹ to wartoœci od 0x0 do 0x6. Aby zdekodowaæ komunikat nadawany przez $ECU$, nale¿y odnieœæ siê do noty katalogowej~\cite{manual:ecu}. Pozosta³e wêz³y przyjmuj¹ w segmencie B wartoœci od 0x0 do 0xA. Ka¿dy identyfikator skojarzony jest z kana³em przetwornika anlogowo-cyfrowego, który jest czêœci¹ architektury jednostki pomiarowej. Przetworniki posiadaj¹ rozdzielczoœæ 12 bitów, dziêki czemu wystarcz¹ dwa bajty danych na przes³anie wiadomoœci. Ka¿da wiadomoœæ posiada swój identyfikator, dziêki czemu wynikiem filtrowania wiadomoœci bêdzie dok³adna informacja o stanie konkretnego wejœcia analogowego jednostki pomiarowej.
 \end{itemize}
 Adresowanie wiadomoœci przedstawiono na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}. Nieu¿ywane bajty w identyfikatorze stanowi¹ mo¿liwoœæ do rozszerzenia funkcjonalnoœci systemu.
 
@@ -66,14 +66,14 @@ Kontroler magistrali $CAN$ wyposa¿ony jest w w sprzêtowe filtry akceptacyjne. Na
 \begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Maska akceptacyjna $CAN$, label=listing:mask]
 #define CAN_ID_HUB6 0x0CFFF048 // 0 1100 1111 1111 1111 0000 0100 1000
 #define CAN_ID_MASK 0x1F000000 // 1 1111 0000 0000 0000 0000 0000 0000
-CAN_FilterInitStructure.CAN_FilterIdHigh = (uint16_t)((CAN_ID_HUB6<<3) >>16);
-CAN_FilterInitStructure.CAN_FilterIdLow = (uint16_t)(CAN_ID_HUB6<<3);
-CAN_FilterInitStructure.CAN_FilterMaskIdHigh = (uint16_t)((CAN_ID_MASK<<3) >>16);
-CAN_FilterInitStructure.CAN_FilterMaskIdLow = (uint16_t)(CAN_ID_MASK<<3);
+CAN_FilterInitStructure.CAN_FilterIdHigh=(uint16_t)((CAN_ID_HUB6<<3)>>16);
+CAN_FilterInitStructure.CAN_FilterIdLow=(uint16_t)(CAN_ID_HUB6<<3);
+CAN_FilterInitStructure.CAN_FilterMaskIdHigh=(uint16_t)((CAN_ID_MASK<<3)>>16);
+CAN_FilterInitStructure.CAN_FilterMaskIdLow=(uint16_t)(CAN_ID_MASK<<3);
 \end{lstlisting}
 \end{minipage}
 
-W systemie wykorzystano tryb maskowania filtrów. Utworzono bank 13 filtrów przypisanych do interfejsu $CAN1$. Ka¿dy filtr ma tê sam¹ maskê 0x1F000000, przedstawion¹ na \hyperref[listing:mask]{Listingu~\ref*{listing:mask}} oraz w³asne ID, na które maska jest nak³adana. Porównywanych jest tylko 5 pierwszych bitów (zamiast 29) identyfikatora, co skraca czas odbierania wiadomoœci. Proces akceptacji wiadomoœci (\hyperref[fig:accept]{Rysunek~\ref*{fig:accept}} polega na wykonaniu iloczynu logicznego maski oraz identyfikatora nadchodz¹cej wiadomoœci, a nastêpnie porównaniu maskowanych bitów (gdzie maska przyjmuje wartoœæ 1) z identyfikatorem zapisanym w rejestrze procesora. W przypadku niezgodnoœci operacja powtarzana jest dla kolejnych filtrów. Przy dalszej niezgodnoœci, wiadomoœæ jest ignorowana (bez u¿ycia zasobów procesora). W przypadku udanego porównania, wiadomoœæ trafia do skrzynki odbiorczej i wywo³ywane jest przerwanie odbioru wiadomoœci. Dziêki formie maski porównaniu ulega tylko segment A identyfikatora (patrz: \hyperref[fig:identyfikatory]{Rysunek~\ref*{fig:identyfikatory}}).
+W systemie wykorzystano tryb maskowania filtrów. Utworzono bank 13 filtrów przypisanych do interfejsu $CAN1$. Ka¿dy filtr ma tê sam¹ maskê 0x1F000000, przedstawion¹ na \hyperref[listing:mask]{Listingu~\ref*{listing:mask}} oraz w³asne ID, na które maska jest nak³adana. Porównywanych jest tylko 5 pierwszych bitów (zamiast 29) identyfikatora, co skraca czas odbierania wiadomoœci. Proces akceptacji wiadomoœci (\hyperref[fig:accept]{Rysunek~\ref*{fig:accept}}) polega na wykonaniu iloczynu logicznego maski oraz identyfikatora nadchodz¹cej wiadomoœci, a nastêpnie porównaniu maskowanych bitów (gdzie maska przyjmuje wartoœæ 1) z identyfikatorem zapisanym w rejestrze procesora. W przypadku niezgodnoœci operacja powtarzana jest dla kolejnych filtrów. Przy dalszej niezgodnoœci, wiadomoœæ jest ignorowana (bez u¿ycia zasobów procesora). W przypadku udanego porównania, wiadomoœæ trafia do skrzynki odbiorczej i wywo³ywane jest przerwanie odbioru wiadomoœci. Dziêki formie maski porównaniu ulega tylko segment A identyfikatora (patrz: \hyperref[fig:identyfikatory]{Rysunek~\ref*{fig:identyfikatory}}).
 
 \begin  {figure} [h] 
 \centering
@@ -82,12 +82,12 @@ W systemie wykorzystano tryb maskowania filtrów. Utworzono bank 13 filtrów przyp
 \label{fig:accept}
 \end {figure}
 
-Do skrzynki odbiorczej trafia wiadomoœæ z numerem filtru, czyli poœrednio z numerem wêz³a, który wiadomoœæ wys³a³. Numer filtru przechowywany jest wraz z wiadomoœci¹ w zmiennej FMI (Filter Match Index) (wiêcej w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}). Program ma za zadanie porównanie tylko jednego bajtu identyfikatora (segmentu B) w celu odkrycia, który kana³ przetwornika ADC zosta³ zapisany do pola danych wiadomoœci lub któr¹ informacjê wys³a³ sterownik silnika. Porównanie dokonywane jest dopiero na poziomie interfejsu u¿ytkownika.\\
+Do skrzynki odbiorczej trafia wiadomoœæ z numerem filtru, czyli poœrednio z numerem wêz³a, który wiadomoœæ wys³a³. Numer filtru przechowywany jest wraz z wiadomoœci¹ w zmiennej $FMI$ (Filter Match Index). Sposób numeracji $FMI$ przedstawiono w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}. Program ma za zadanie porównanie tylko jednego bajtu identyfikatora (segmentu B) w celu odkrycia, który kana³ przetwornika ADC zosta³ zapisany do pola danych wiadomoœci lub któr¹ informacjê wys³a³ sterownik silnika. Porównanie dokonywane jest dopiero na poziomie interfejsu u¿ytkownika.\\
 \\
 Niezale¿nie od tego czy chce siê u¿ywaæ filtrów akceptacyjnych czy nie, trzeba zdefiniowaæ chocia¿ jeden filtr. W przeciwnym wypadku ¿adna wiadomoœæ nie zostanie przyjêta do programu.
 
 \subsubsection{Transceiver CAN}
-Kontroler magistrali $CAN$, w który wyposa¿ony jest procesor, posiada dwie asynchroniczne linie danych. S¹ to jednokierunkowe linie $Rx$ oraz $Tx$. Aby pod³¹czyæ kontroler do magistrali, na której wystêpuj¹ sygna³y $CAN$ $High$ oraz $CAN$ $Low$, nale¿y szeregowe komunikaty binarne skonwertowaæ na sygna³ ró¿nicowy. Konwersj¹ komunikatu oraz dostosowaniem napiêæ zajmuje siê Transceiver $CAN$. Modu³ u¿yty w projekcie to L9616~\cite{manual:can}. Aby uchroniæ uk³ad g³ównego komputera od szpilek wysokich napiêæ, które mog³yby przedostaæ siê z magistrali, oraz od zak³óceñ na masie, u¿yto dwukana³owej izolacji galwanicznej w module ISO7221~\cite{manual:iso}. Izoluje ona zarówno linie sygna³owe, jak i zasilania, oddzielaj¹c uk³ad transceivera od g³ównego komputera. Schemat przedstawiono na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.
+Kontroler magistrali $CAN$, w który wyposa¿ony jest procesor, posiada dwie asynchroniczne linie danych. S¹ to jednokierunkowe linie $Rx$ oraz $Tx$. Aby pod³¹czyæ kontroler do magistrali, na której wystêpuj¹ sygna³y $CAN$ $High$ oraz $CAN$ $Low$, nale¿y szeregowe komunikaty binarne skonwertowaæ na sygna³ ró¿nicowy. Konwersj¹ komunikatu oraz dostosowaniem napiêæ zajmuje siê Transceiver $CAN$. Modu³ u¿yty w projekcie to L9616~\cite{manual:can}. Aby uchroniæ uk³ad g³ównego komputera od szpilek wysokich napiêæ, które mog³yby przedostaæ siê z magistrali, oraz od zak³óceñ na masie, u¿yto dwukana³owej izolacji galwanicznej w module ISO7221~\cite{manual:iso}. Izoluje ona zarówno linie sygna³owe, jak i zasilania, oddzielaj¹c uk³ad Transceivera od g³ównego komputera. Schemat przedstawiono na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.
 
 \begin  {figure} [h] 
 \centering
@@ -96,7 +96,7 @@ Kontroler magistrali $CAN$, w który wyposa¿ony jest procesor, posiada dwie async
 \label{fig:transceiver}
 \end {figure}
 
-Zworki JP1 oraz JP2 umo¿liwiaj¹ zasilenie magistrali z tego samego Ÿród³a, z którego zasilany jest g³ówny komputer pok³adowy (lub HUB, gdy¿ w obu urz¹dzeniach wystêpuj¹ bliŸniacze uk³ady transceiverów). Mo¿na równie¿ w ten sposób zasiliæ urz¹dzenia pod³¹czone do magistrali. Diody sygnalizuj¹, czy aktualnie odbywa siê transmisja. 
+Zworki JP1 oraz JP2 umo¿liwiaj¹ zasilenie magistrali z tego samego Ÿród³a, z którego zasilany jest g³ówny komputer pok³adowy (lub HUB, gdy¿ w obu urz¹dzeniach wystêpuj¹ bliŸniacze uk³ady Transceiverów). Mo¿na równie¿ w ten sposób zasiliæ urz¹dzenia pod³¹czone do magistrali. Diody sygnalizuj¹, czy aktualnie odbywa siê transmisja. 
 
 \subsubsection{Prêdkoœæ transmisji}
 Standard SAE J1939 wymusza ustawienie w systemie prêdkoœci przesy³u danych równej 250~kb/s. Komunikacja jest asynchroniczna, wiêc wszystkie wêz³y musz¹ mieæ zaimplementowany w³asny system zegarowy, kontroluj¹cy prêdkoœæ wysy³ania wiadomoœci. Komputer pok³adowy taktowany jest sygna³em o czêstotliwoœci 168~MHz, potrzebne jest wyliczenie odpowiedniego preskalera, który zapewni ¿¹dan¹ czêstotliwoœæ. Aby u¿yæ \hyperref[eq:tq]{Wzoru~\ref*{eq:tq}} nale¿y pamiêtaæ, ¿e kontroler magistrali taktowany jest przez wewnêtrzny preskaler magistrali APB1 równy 4. St¹d czêstotliwoœæ taktuj¹ca kontroler magistrali jest równa 42~MHz. Mo¿na teraz wyprowadziæ wzór na d³ugoœæ trwania bitu ze \hyperref[eq:baud]{Wzoru~\ref*{eq:baud}}:
@@ -105,13 +105,13 @@ Standard SAE J1939 wymusza ustawienie w systemie prêdkoœci przesy³u danych równe
 T=\frac{1}{BaudRate}=1/250kb=4 \cdot 10^{-6}=4us
 \end{equation}
 
-4 us s¹ wielokrotnoœci¹ kwantu czasu. Iloœæ kwantów czasu musi siê zawieraæ pomiêdzy 8 a 25. W systemie podzielono bit na 8 czêœci, uzyskuj¹c d³ugoœæ kwantu równ¹ 500 ns, czyli czêstotliwoœæ transmisji 2 MHz. Na podstawie tej decyzji oraz \hyperref[eq:tq]{Wzoru~\ref*{eq:tq}} dobrano preskaler równy:
+4~us s¹ wielokrotnoœci¹ kwantu czasu. Iloœæ kwantów czasu musi siê zawieraæ pomiêdzy 8 a 25. W systemie podzielono bit na 8 czêœci, uzyskuj¹c d³ugoœæ kwantu równ¹ 500~ns. Na podstawie tej decyzji oraz \hyperref[eq:tq]{Wzoru~\ref*{eq:tq}} dobrano preskaler równy:
 
 \begin{equation}
 BRP=t_{q} \cdot f_{clk} = 5 \cdot 10^{-7} \cdot 42 \cdot10^{6} = 21
 \end{equation}
 
-Nastêpnym etapem jest dobór d³ugoœci trwania segmentów BS1 oraz BS2. Przyjêto, ¿e punkt próbkowania powinien przypadaæ w okolicy 87,5\% czasu trwania bitu. Wartoœæ ta pochodzi z forów internetowych i jest powszechnie stosowana w sieciach $CAN$ (m.in. w protokole $CANopen$). Istnieje jednak du¿a grupa osób, która uwa¿a takie podejœcie za b³êdne, umieszczaj¹c punkt próbkowania w 30\% lub 95\%. Aby dobraæ d³ugoœci trwania segmentów wyprowadzono zale¿noœæ na podstawie \hyperref[eq:baud]{Wzoru~\ref*{eq:baud}}:
+Nastêpnym etapem jest dobór d³ugoœci trwania segmentów $BS1$ oraz $BS2$. Przyjêto, ¿e punkt próbkowania powinien przypadaæ w okolicy 87,5\% czasu trwania bitu. Wartoœæ ta pochodzi z forów internetowych i jest powszechnie stosowana w sieciach $CAN$ (m.in. w protokole $CANopen$). Istnieje jednak du¿a grupa osób, która uwa¿a takie podejœcie za b³êdne, umieszczaj¹c punkt próbkowania w 30\% lub 95\%. Aby dobraæ d³ugoœci trwania segmentów wyprowadzono zale¿noœæ na podstawie \hyperref[eq:baud]{Wzoru~\ref*{eq:baud}}:
 
 \begin{equation}
 \frac{t_{BS1}+t_{q}}{t_{q}+t_{BS1}+t_{BS2}}=87,5\%
@@ -122,18 +122,18 @@ W mianowniku wyra¿ono ca³kowity czas trwania bitu, który równy jest $8t_{q}$, st
 \begin{equation}
 t_{BS1}=(8 \cdot 87,5\%-1)t_{q}=6t_{q}
 \end{equation}
-\begin{center}
-$t_{BS2}=t_{q}$\\
-\end{center}
+\begin{equation}
+t_{BS2}=t_{q}
+\end{equation}
 Komunikacja przebiega pomyœlnie w œrodowisku wolnym od zak³óceñ przy ma³ym natê¿eniu ruchu na sieci. Dobór czasów bêdzie musia³ zostaæ zweryfikowany w rzeczywistym systemie w rzeczywistych warunkach po pod³¹czeniu wszystkich wêz³ów, okablowania oraz rozmieszczenia elementów wewn¹trz pojazdu. Wtedy segment propagacji sygna³u bêdzie musia³ zostaæ dobrany metod¹ eksperymentaln¹.
 
 \subsection{Obs³uga karty SD}
-Obs³uga karty SD odbywa siê poprzez protokó³ SD Bus, przy u¿yciu zintegrowanego peryferium $SDIO$ (Secure Digital Input Output) mikrokontrolera. $SDIO$ s³u¿y do obs³ugi funkcji wejœcia/wyjœcia urz¹dzeñ zgodnych ze standardem SD~\cite{spec:sd}. Wyró¿niane s¹ trzy fizyczne topologie sieci. Przy u¿yciu fizycznej warstwy protoko³u SPI, SD Bus z jedn¹ lub czterema liniami danych. W projekcie u¿yto standardu 4-bitowego. Na \hyperref[fig:sd_schemat]{Rysunku~\ref*{fig:sd_schemat}} pokazano realizacjê warstwy fizycznej protoko³u SD Bus u¿yt¹ w projekcie. Linie danych i komend musz¹ posiadaæ podci¹gniêcia do zasilania. Interfejs SPI oraz SD Bus 1-bitowy (na którym wykonywano testy) nie s¹ kompatybilnymi interfejsami. Nale¿y przygotowaæ odpowiednio warstwê fizyczn¹ aby unikn¹æ problemów podczas implementacji programu.
+Obs³uga karty SD odbywa siê poprzez protokó³ $SD$ $Bus$, przy u¿yciu zintegrowanego peryferium $SDIO$ (Secure Digital Input Output) mikrokontrolera. $SDIO$ s³u¿y do obs³ugi funkcji wejœcia/wyjœcia urz¹dzeñ zgodnych ze standardem SD~\cite{spec:sd}. Wyró¿niane s¹ trzy fizyczne topologie sieci. Przy u¿yciu fizycznej warstwy protoko³u $SPI$, $SD$ $Bus$ z jedn¹ lub czterema liniami danych. W projekcie u¿yto standardu 4-bitowego. Na \hyperref[fig:sd_schemat]{Rysunku~\ref*{fig:sd_schemat}} pokazano realizacjê warstwy fizycznej protoko³u $SD$ $Bus$ u¿yt¹ w projekcie. Linie danych i komend musz¹ posiadaæ podci¹gniêcia do zasilania. Interfejs $SPI$ oraz $SD$ $Bus$ 1-bitowy (na którym wykonywano testy) nie s¹ kompatybilnymi interfejsami. Nale¿y przygotowaæ odpowiednio warstwê fizyczn¹ aby unikn¹æ problemów podczas implementacji programu.
 
 \begin  {figure} [h] 
 \centering
 \includegraphics[width=0.5\textwidth]{figures/sd_schemat.JPG}
-\caption{Schemat pod³¹czenia slotu karty SD zgodnie z SD Bus 4-bitowym}
+\caption{Schemat pod³¹czenia slotu karty SD zgodnie z $SD$ $Bus$ 4-bitowym}
 \label{fig:sd_schemat}
 \end {figure}
 
@@ -165,7 +165,7 @@ void f_SendCanFrame (FIL* file, uint8_t sieze, CanRxMsg RxMessage)
 \end{lstlisting}
 \end{minipage}
 
-Podczas inicjalizacji systemu otwieranych jest 13 plików, które przechowuj¹ informacje o poszczególnych jednostkach pomiarowych. Numer pliku, do którego maj¹ trafiæ zapisane dane definiuje filtr, który dopuœci³ dane do systemu, czyli zmienna FMI struktury typu $CanRxMsg$. Pliki s¹ zamykane przed wyjêciem karty ze slotu SD oraz podczas wykrycia opadaj¹cego zbocza sygnalizuj¹cego od³¹czenie napiêcia zasilania przez jeden z g³ównych wy³¹czników w pojeŸdzie. Realizacja polega na obs³udze przerwañ zewnêtrznych, w których wywo³ywane s¹ funkcje fopen (przy w³o¿eniu karty SD do slotu lub w³¹czeniu napiêcia zasilaj¹cego - \hyperref[listing:fopen]{Listing~\ref*{listing:fopen}}) oraz fclose (przy wyjêciu karty SD ze slotu lub zaniku napiêcia zasilaj¹cego - \hyperref[listing:fclose]{Listingu~\ref*{listing:fclose}}).\\
+Podczas inicjalizacji systemu otwieranych jest 13 plików, które przechowuj¹ informacje o poszczególnych jednostkach pomiarowych. Numer pliku, do którego maj¹ trafiæ zapisane dane definiuje filtr, który dopuœci³ dane do systemu, czyli zmienna $FMI$ struktury typu $CanRxMsg$. Pliki s¹ zamykane przed wyjêciem karty ze slotu SD oraz podczas wykrycia opadaj¹cego zbocza sygnalizuj¹cego od³¹czenie napiêcia zasilania przez jeden z g³ównych wy³¹czników w pojeŸdzie. Realizacja polega na obs³udze przerwañ zewnêtrznych, w których wywo³ywane s¹ funkcje fopen (przy w³o¿eniu karty SD do slotu lub w³¹czeniu napiêcia zasilaj¹cego - \hyperref[listing:fopen]{Listing~\ref*{listing:fopen}}) oraz fclose (przy wyjêciu karty SD ze slotu lub zaniku napiêcia zasilaj¹cego - \hyperref[listing:fclose]{Listingu~\ref*{listing:fclose}}).\\
 
 \noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Funkcja otwarcia wielu plików, label=listing:fopen]
@@ -212,11 +212,11 @@ FRESULT f_close_files(FIL* file, uint8_t size)
 \end{lstlisting}
 \end{minipage}
 
-Mikrokontroler posiada dwa kontrolery $DMA$, ka¿dy maj¹cy 8 strumieni, dziel¹cych siê na 8 kana³ów. Utworzona w ten sposób macierz 64 pól oraz przypisane do nich peryferia przedstawiono w tabelach 35. oraz 36. RM0090 Reference manual~\cite{manual:stm32f4}. Ró¿nice w obs³udze karty przy u¿yciu protoko³u SPI, SD BUS oraz badania czasu zapisu zawarto w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}.\\
+Mikrokontroler posiada dwa kontrolery $DMA$, ka¿dy maj¹cy 8 strumieni, dziel¹cych siê na 8 kana³ów. Utworzona w ten sposób macierz 64 pól oraz przypisane do nich peryferia przedstawiono w tabelach 35. oraz 36. RM0090 Reference manual~\cite{manual:stm32f4}. Ró¿nice w obs³udze karty przy u¿yciu protoko³u $SPI$, $SD$ $Bus$ oraz badania czasu zapisu zawarto w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}.\\
 Polecenia u¿yte podczas obs³ugi karty SD s¹ standardowymi zestawami komend oraz argumentów, wysy³anych odpowiednio po liniach danych i komend. Przyk³adowe komendy omówione s¹ w specyfikacji Secure Digital Card Product Manual (Sekcja 4.7 Commands)~\cite{manual:sandisk}. 
 
 \subsection{Obs³uga modu³u XBee}
-Wyró¿niane s¹ dwie wersje modu³u XBee. Jedna zawiera wbudowan¹ antenê radiow¹, druga umo¿liwia wyprowadzenie anteny poza p³ytkê PCB. Zdecydowano siê na wariant urz¹dzenia z zewnêtrzn¹ anten¹ w celu zwiêkszenia zasiêgu.  Zrezygnowano z pinów RTS oraz CTS, rezygnuj¹c tym samym z kontroli przep³ywu danych, ale przy dobrze zaprogramowanej komunikacji nie s¹ one wymagane. Modu³ dzia³a jednokierunkowo, bez sprawdzania, czy wiadomoœæ dotar³a do celu. Aby uzyskaæ szybszy przekaz danych ustawiono modu³ w tryb transparentny (wiêcej w \hyperref[sec:sub:tryby]{Sekcji~\ref*{sec:sub:tryby}: Tryby pracy modu³u XBee}). Schemat modu³u przedstawiono na \hyperref[fig:xbee_schemat]{Rysunku~\ref*{fig:xbee_schemat}}
+Wyró¿niane s¹ dwie wersje modu³u XBee. Jedna zawiera wbudowan¹ antenê radiow¹, druga umo¿liwia wyprowadzenie anteny poza p³ytkê PCB. Zdecydowano siê na wariant urz¹dzenia z zewnêtrzn¹ anten¹ w celu zwiêkszenia zasiêgu.  Zrezygnowano z pinów $RTS$ oraz $CTS$, rezygnuj¹c tym samym z kontroli przep³ywu danych, ale przy dobrze zaprogramowanej komunikacji nie s¹ one wymagane. Modu³ dzia³a jednokierunkowo, bez sprawdzania, czy wiadomoœæ dotar³a do celu. Aby uzyskaæ szybszy przekaz danych ustawiono modu³ w tryb transparentny (wiêcej w \hyperref[sec:sub:tryby]{Sekcji~\ref*{sec:sub:tryby}: Tryby pracy modu³u XBee}). Schemat modu³u przedstawiono na \hyperref[fig:xbee_schemat]{Rysunku~\ref*{fig:xbee_schemat}}.
 
 \begin  {figure} [h] 
 \centering
@@ -225,7 +225,7 @@ Wyró¿niane s¹ dwie wersje modu³u XBee. Jedna zawiera wbudowan¹ antenê radiow¹, d
 \label{fig:xbee_schemat}
 \end {figure}
 
-Komunikacja z modu³em odbywa siê dziêki zintegrowanemu w mikrokontrolerze modu³owi $UART$. Na linii DOUT modu³u mikrokontrolera wysy³ana jest kopia ramki $CAN$, tak aby umo¿liwiæ jej podgl¹d w interfejsie u¿ytkownika. Jest to na³o¿enie protoko³u $CAN$ na asynchroniczn¹ szeregow¹ pojedyncz¹ liniê danych. Ramka przesy³ana jest jako strumieñ, czyli ci¹g znaków ASCII (tablica znaków koñcz¹ca siê znakiem NULL). Jest to reprezentacja wartoœci ramki w systemie szesnastkowym. Do przes³ania sformatowanego tekstu po $UART$ u¿yto funkcji USART\_SendCanFrame, przedstawionej na \hyperref[listing:usart]{Listingu~\ref*{listing:usart}}\\
+Komunikacja z modu³em odbywa siê dziêki zintegrowanemu w mikrokontrolerze modu³owi $UART$. Na linii $DOUT$ modu³u mikrokontrolera wysy³ana jest kopia ramki $CAN$, tak aby umo¿liwiæ jej podgl¹d w interfejsie u¿ytkownika. Jest to na³o¿enie protoko³u $CAN$ na asynchroniczn¹ szeregow¹ pojedyncz¹ liniê danych. Ramka przesy³ana jest jako strumieñ, czyli ci¹g znaków ASCII (tablica znaków koñcz¹ca siê znakiem $NULL$). Jest to reprezentacja wartoœci ramki w systemie szesnastkowym. Do przes³ania sformatowanego tekstu po $UART$ u¿yto funkcji \textit{USART\_SendCanFrame}, przedstawionej na \hyperref[listing:usart]{Listingu~\ref*{listing:usart}}.\\
 
 \noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Funkcja enkaspulacji danych na $UART$, label=listing:usart]
@@ -250,21 +250,22 @@ void USART_SendCanFrame (CanRxMsg RxMessage)
 \end{lstlisting}
 \end{minipage}
 \\
-Dla przyk³adu, chc¹c przes³aæ wartoœæ 0x01ABC, zostanie przes³ane s³owo "01abc", czyli ci¹g znaków 0x30 0x31 0x61 0x62 0x63 0x00. Takie podejœcie umo¿liwia kontrolê koñca ramki $CAN$ (znak NULL). Ramka sk³ada siê tylko z identyfikatora $CAN$, kodu DLC oraz pól danych. D³ugoœæ informacji w bajtach to:
+Dla przyk³adu, chc¹c przes³aæ wartoœæ 0x01ABC, zostanie przes³ane s³owo "01abc", czyli ci¹g znaków 0x30 0x31 0x61 0x62 0x63 0x00. Takie podejœcie umo¿liwia kontrolê koñca ramki $CAN$ (znak $NULL$). Ramka sk³ada siê tylko z identyfikatora $CAN$, kodu $DLC$ oraz pól danych. D³ugoœæ informacji w bajtach to:
 \begin{equation}
 ExtID+DLC+Data=4+1+DLC*1
 \end{equation}
 Maksymalna iloœæ danych to 8 bajtów ($DLC = 8$), st¹d maksymalna d³ugoœæ komunikatu wynosi 13 bajtów. W zapisie hexadecymalnym jest to 26 znaków, które stanowi¹ maksymaln¹ d³ugoœæ ramki.\\
-Aby rozpocz¹æ pracê z modu³em z w³asnymi ustawieniami transmisji nale¿y ustawiæ prêdkoœæ transmisji (BD), parzystoœæ (NB) i bity stopu (SB). Wszystkie parametry modu³u mo¿na zmieniaæ przy u¿yciu komend AT (dostêpnych w Rozdziale 10. XBee®/XBee-PRO® ZB SMT RF Modules Datasheet~\cite{manual:xbee}). Aby u¿ywaæ komend nale¿y wprowadziæ modu³ w tryb odbioru komend AT przy u¿yciu specjalnej komendy oraz parametrów domyœlnych transmisji, czyli 9600 b/s, 1 bit stopu i brak bitu parzystoœci.\\
+
+Aby rozpocz¹æ pracê z modu³em z w³asnymi ustawieniami transmisji nale¿y ustawiæ prêdkoœæ transmisji ($BD$), parzystoœæ ($NB$) i bity stopu ($SB$). Wszystkie parametry modu³u mo¿na zmieniaæ przy u¿yciu komend AT (dostêpnych w Rozdziale 10. XBee®/XBee-PRO® ZB SMT RF Modules Datasheet~\cite{manual:xbee}). Aby u¿ywaæ komend nale¿y wprowadziæ modu³ w tryb odbioru komend AT przy u¿yciu specjalnej komendy oraz parametrów domyœlnych transmisji, czyli 9600 b/s, 1 bit stopu i brak bitu parzystoœci.\\
 
 Po zakoñczeniu inicjalizacji mo¿na albo poczekaæ a¿ modu³ sam wróci do trybu wysy³ania danych przez antenê, albo wymusiæ powrót. Po powrocie w tryb przesy³ania danych, modu³ powraca do buforowania danych z magistrali szeregowej.
 Dioda sygnalizuje, czy urz¹dzenie zosta³o sparowane z odbiornikiem czy nie, zmieniaj¹c czêstotliwoœæ œwiecenia.
 
 \subsection{Zasilanie}
-P³ytka ewaluacyjna STM32F4-Discovery do poprawnego dzia³ania wszystkich peryferiów wymaga napiêcia $5V$. Zdecydowano, ¿e napiêcie to bêdzie dostarczane przez przetwornice step-down firmy POLOLU o pr¹dzie wyjœciowym $600mA$. Na wejœciu przetwornicy zastosowano diodê prostownicz¹ jako zabezpieczenie przed pod³¹czeniem odwrotnej polaryzacji napiêcia oraz bezpiecznik polimerowy. Na wejœciu oraz wyjœciu przetwornicy zosta³y umieszczone kondensatory tantalowe o wartoœciach $ podaæ wartoœæ$ w celu filtrowania napiêcia zasilania.
+P³ytka ewaluacyjna STM32F4-Discovery do poprawnego dzia³ania wszystkich peryferiów wymaga napiêcia 5 V. Zdecydowano, ¿e napiêcie to bêdzie dostarczane przez przetwornice step-down firmy POLOLU o pr¹dzie wyjœciowym 600 mA. Na wejœciu przetwornicy zastosowano diodê prostownicz¹ jako zabezpieczenie przed pod³¹czeniem odwrotnej polaryzacji napiêcia oraz bezpiecznik polimerowy. Na wejœciu oraz wyjœciu przetwornicy zosta³y umieszczone kondensatory tantalowe o wartoœciach 47 uF w celu filtrowania napiêcia zasilania.
 
 \subsection{System przerwañ}
-Przy obs³udze tak wielu uk³adów peryferyjnych wa¿ne jest zachowanie pewnego systemu priorytetów przerwañ, które mog¹ zostaæ zg³oszone jednoczeœnie. S³u¿y do tego uk³ad NVIC (Nested Vector Interrupt Controller) zintegrowany w procesorze. W systemie wyró¿niamy nastêpuj¹ce przerwania:
+Przy obs³udze tak wielu uk³adów peryferyjnych wa¿ne jest zachowanie pewnego systemu priorytetów przerwañ, które mog¹ zostaæ zg³oszone jednoczeœnie. S³u¿y do tego uk³ad $NVIC$ (Nested Vector Interrupt Controller) zintegrowany w procesorze. W systemie wyró¿niamy nastêpuj¹ce przerwania:
 \begin{itemize}
 \item odbioru wiadomoœci na magistrali $CAN$,
 \item koñca przesy³u wiadomoœci przez kontroler $DMA$,
@@ -275,4 +276,4 @@ Przy obs³udze tak wielu uk³adów peryferyjnych wa¿ne jest zachowanie pewnego syst
 \item od timerów pomocniczych.
 \end{itemize}
 
-Procesor umo¿liwia zdefiniowanie grup przerwañ, które maj¹ wy¿szy priorytet. W systemie u¿yto dwóch grup g³ównych (preemption priority group) z siedmioma podgrupami (sub priority group) w celu uszeregowania priorytetów. Zapewniono najwy¿szy priorytet przerwaniu zaniku zasilania oraz wysuniêciu karty SD, aby nie utraciæ zebranych na karcie danych. Kolejnym przerwaniem jest timer watchdog. W przypadku, gdy podczas obs³ugi dowolnego przerwania (lub wykonywania pêtli while()), system zawiesi siê i nie zostanie obs³u¿one przerwanie od timera watchdog, system ulegnie resetowi. Kolejn¹ grup¹ s¹ przerwania odpowiedzialne za timery, nastêpnie za odbiór ramki $CAN$. Taki system priorytetów zapewnia spe³nienie czasowych ograniczeñ narzuconych systemowi przez iloœæ operacji do wykonania w okresie próbkowania przetworników (wiêcej o okresie próbkowania oraz spe³nieniu wymogów czasowych w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}.\\
+Procesor umo¿liwia zdefiniowanie grup przerwañ, które maj¹ wy¿szy priorytet. W systemie u¿yto dwóch grup g³ównych (preemption priority group) z siedmioma podgrupami (sub priority group) w celu uszeregowania priorytetów. Zapewniono najwy¿szy priorytet przerwaniu zaniku zasilania oraz wysuniêciu karty SD, aby nie utraciæ zebranych na karcie danych. Kolejnym przerwaniem jest timer watchdog. W przypadku, gdy podczas obs³ugi dowolnego przerwania (lub wykonywania pêtli $while()$), system zawiesi siê i nie zostanie obs³u¿one przerwanie od timera watchdog, system ulegnie resetowi. Kolejn¹ grup¹ s¹ przerwania odpowiedzialne za timery, nastêpnie za odbiór ramki $CAN$. Taki system priorytetów zapewnia spe³nienie czasowych ograniczeñ narzuconych systemowi przez iloœæ operacji do wykonania w okresie próbkowania przetworników (wiêcej o okresie próbkowania oraz spe³nieniu wymogów czasowych w \hyperref[ch:eksperyment]{Rozdziale~\ref*{ch:eksperyment}: Badania eksperymentalne}.\\
