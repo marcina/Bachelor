@@ -10,9 +10,7 @@ Mikrokontroler STM32f103 pochodzi z rodziny uk³adów o rdzeniu Cortex\texttradema
 \end{itemize}
 
 Uk³ad dostarcza tak¿e 7 timerów sprzêtowych, które mog¹ pracowaæ w wielu zaawansowanych trybach. Do wykonywania pomiarów z okreœlonym próbkowaniem wystarcz¹ podstawowe tryby dzia³ania dostarczonych timerów.
-\subsection{Zasilanie}
-Bolid wyposa¿ony jest w zasilanie akumulatorowe $12V$. Do zasilania czêœci mikrokontrolerowej i strony wtórnej separacji analogowej zastosowano przetwornice DC/DC firmy aimtec o napiêciu wyjœciowym $3.3V$. Przetwornica charakteryzuje siê efektywnoœci¹ na poziomie $78\%$ i zapewnia separacje galwaniczn¹ do $3000VDC$ \cite{manual:aimtec}. Dla stabilnej pracy przetwornicy po stronie pierwotnej i wtórnej zastosowano po dwa kondensatory(tantalowy i elektrolityczny) o wartoœciach $47\mu F$ i $100nF$.\newline
-Kontroler do poprawnego dzia³ania wymaga kondensatorów filtruj¹cych $100nF$ na ka¿dym pinie zasilaj¹cym kontrolera oraz dodatkowego kondensatora $4.7uF$ pod³¹czonego bezpoœrednio do pinu $V_{DD3}$. Zasilanie bloku ADC kontrolera wymaga dwóch kondensatorów o wartoœciach $10nF$ oraz $1\mu F$\cite{manual:STM32f3}.
+
 \subsection{Separacja sygna³ów analogowych}
 Dokonywanie pomiaru odbywa siê za pomoc¹ kana³ów ADC mikrokontrolera. Przyjêty przez nas standard napiêcia wymusza na nas sprowadzenie poziomów napiêæ sygna³u do zakresu pracy przetwornika ADC. Podczas projektowania rozpatrywano 3 rozwi¹zania:\newline
 \begin{itemize}
@@ -56,7 +54,12 @@ W dokumentacji mamy podany wspó³czynnik $K_3$, który siê równa:\newline
 \begin{equation} \label{K3} K_3=\frac{K_2}{K_1} \end{equation}
 Z tej zale¿noœci wynika ostateczny wzór na rezystancje boczników:\newline
 \begin{equation} \label{Ost} \frac{V_{out}}{V_{in}}=\frac{K_3*R_2}{R_1} \end{equation}
+
 \subsection{Obs³uga magistrali CAN}
 Zadaniem jednostki pomiarowej jest wysy³anie zebranych informacji do g³ównego komputera pok³adowego. Nie musi ona odbieraæ ¿adnych wiadomoœci, st¹d maska równa jest 0x0000000 (wiêcej o maskach w \hyperref[ssec:filtry]{Sekcji~\ref*{ssec:filtry}: Filtry akceptacyjne}).\\
 Realizacja fizyczna transceivera CAN przedstawiona jest na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.\\
 Ka¿da wiadomoœæ odpowiada innemu kana³owi przetwornika analogowo-cyfrowego. Czas próbkowania definiuje siê w pliku \textit{defines.h}. Ka¿dy HUB posiada swój unikalny adres, który zdefiniowany jest w pliku \textit{defines.h} (wiêcej o adresowaniu w \hyperref[ssec:adresowanie]{Sekcji~\ref*{ssec:adresowanie}: Przestrzeñ adresowa CAN} i na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}).
+
+\subsection{Zasilanie}
+Bolid wyposa¿ony jest w zasilanie akumulatorowe $12V$. Do zasilania czêœci mikrokontrolerowej i strony wtórnej separacji analogowej zastosowano przetwornice DC/DC firmy aimtec o napiêciu wyjœciowym $3.3V$. Przetwornica charakteryzuje siê efektywnoœci¹ na poziomie $78\%$ i zapewnia separacje galwaniczn¹ do $3000VDC$ \cite{manual:aimtec}. Dla stabilnej pracy przetwornicy po stronie pierwotnej i wtórnej zastosowano po dwa kondensatory(tantalowy i elektrolityczny) o wartoœciach $47\mu F$ i $100nF$.\newline
+Kontroler do poprawnego dzia³ania wymaga kondensatorów filtruj¹cych $100nF$ na ka¿dym pinie zasilaj¹cym kontrolera oraz dodatkowego kondensatora $4.7uF$ pod³¹czonego bezpoœrednio do pinu $V_{DD3}$. Zasilanie bloku ADC kontrolera wymaga dwóch kondensatorów o wartoœciach $10nF$ oraz $1\mu F$\cite{manual:STM32f3}.
