@@ -102,10 +102,10 @@ Zworki JP1 oraz JP2 umo¿liwiaj¹ zasilenie magistrali z tego samego Ÿród³a, z któ
 Standard SAE J1939 wymusza ustawienie w systemie prêdkoœci przesy³u danych równej 250~kb/s. Komunikacja jest asynchroniczna, wiêc wszystkie wêz³y musz¹ mieæ zaimplementowany w³asny system zegarowy, kontroluj¹cy prêdkoœæ wysy³ania wiadomoœci. Komputer pok³adowy taktowany jest sygna³em o czêstotliwoœci 168~MHz, potrzebne jest wyliczenie odpowiedniego preskalera, który zapewni ¿¹dan¹ czêstotliwoœæ. Aby u¿yæ \hyperref[eq:tq]{Wzoru~\ref*{eq:tq}} nale¿y pamiêtaæ, ¿e kontroler magistrali taktowany jest przez wewnêtrzny preskaler magistrali APB1 równy 4. St¹d czêstotliwoœæ taktuj¹ca kontroler magistrali jest równa 42~MHz. Mo¿na teraz wyprowadziæ wzór na d³ugoœæ trwania bitu ze \hyperref[eq:baud]{Wzoru~\ref*{eq:baud}}:
 
 \begin{equation}
-T=\frac{1}{BaudRate}=1/250kb=4 \cdot 10^{-6}=4us
+T=\frac{1}{BaudRate}=1/250kb=4 \cdot 10^{-6}=4\mu s
 \end{equation}
 
-4~us s¹ wielokrotnoœci¹ kwantu czasu. Iloœæ kwantów czasu musi siê zawieraæ pomiêdzy 8 a 25. W systemie podzielono bit na 8 czêœci, uzyskuj¹c d³ugoœæ kwantu równ¹ 500~ns. Na podstawie tej decyzji oraz \hyperref[eq:tq]{Wzoru~\ref*{eq:tq}} dobrano preskaler równy:
+4 $\mu$s s¹ wielokrotnoœci¹ kwantu czasu. Iloœæ kwantów czasu musi siê zawieraæ pomiêdzy 8 a 25. W systemie podzielono bit na 8 czêœci, uzyskuj¹c d³ugoœæ kwantu równ¹ 500~ns. Na podstawie tej decyzji oraz \hyperref[eq:tq]{Wzoru~\ref*{eq:tq}} dobrano preskaler równy:
 
 \begin{equation}
 BRP=t_{q} \cdot f_{clk} = 5 \cdot 10^{-7} \cdot 42 \cdot10^{6} = 21

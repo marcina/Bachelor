@@ -1,12 +1,12 @@
 \section{Bank filtrów akceptacyjnych kontrolera CAN}\label{sec:exp:filtry}
-Po otrzymaniu wiadomoœci na magistrali CAN, gdy ta przejdzie przez filtr akceptacyjny, wraz z wiadomoœci¹ przechowywana jest informacja o filtrze, który wiadomoœæ dopuœci³ do systemu. Informacja ta zapisana jest w zmiennej FMI (Filter Match Index). Numer filtra nie pokrywa siê jednak z wartoœci¹ przechowywan¹ w FMI. Podczas inicjalizacji filtrów, przed uruchomieniem kontrolera CAN, nadaje siê ka¿demu filtrowi unikalny numer i przypisuje siê go do konkretnej skrzynki odbiorczej FIFO (0 lub 1). Przeprowadzono eksperyment w celu rozwik³ania zagadki numeracji FMI podczas odczytu ramki. Nadano na magistralê CAN wiadomoœci ze wszystkimi mo¿liwymi identyfikatorami wystêpuj¹cymi w systemie. W g³ównym komputerze pok³adowym zdefiniowano dwa banki filtrów akceptacyjnych, przypisuj¹c je do dwóch skrzynek odbiorczych. W \hyperref[tab:FMI]{Tabeli~\ref*{tab:FMI}} przedstawiono odczytane wartoœci FMI wraz z wczeœniej nadanymi numerami filtrów.
+Po otrzymaniu wiadomoœci na magistrali $CAN$, gdy ta przejdzie przez filtr akceptacyjny, wraz z wiadomoœci¹ przechowywana jest informacja o filtrze, który wiadomoœæ dopuœci³ do systemu. Informacja ta zapisana jest w zmiennej $FMI$ (Filter Match Index). Numer filtra nie pokrywa siê jednak z wartoœci¹ przechowywan¹ w $FMI$. Podczas inicjalizacji filtrów, przed uruchomieniem kontrolera $CAN$, nadaje siê ka¿demu filtrowi unikalny numer i przypisuje siê go do konkretnej skrzynki odbiorczej FIFO (0 lub 1). Przeprowadzono eksperyment w celu rozwik³ania zagadki numeracji $FMI$ podczas odczytu ramki. Nadano na magistralê $CAN$ wiadomoœci ze wszystkimi mo¿liwymi identyfikatorami wystêpuj¹cymi w systemie. W g³ównym komputerze pok³adowym zdefiniowano dwa banki filtrów akceptacyjnych, przypisuj¹c je do dwóch skrzynek odbiorczych. W \hyperref[tab:FMI]{Tabeli~\ref*{tab:FMI}} przedstawiono odczytane wartoœci $FMI$ wraz z wczeœniej nadanymi numerami filtrów.
 
 \begin{table}[h]
-\caption{Zale¿noœæ zwróconej wartoœci FMI od numeracji filtrów akceptacyjnych}\label{tab:FMI}
+\caption{Zale¿noœæ zwróconej wartoœci $FMI$ od numeracji filtrów akceptacyjnych}\label{tab:FMI}
 \begin{center}
 \begin{tabular}{|c|c|c|}
   \hline 
-  \cellcolor{gray!50} \textbf{Numer filtru} & \cellcolor{gray!50} \textbf{Numer FIFO} & \cellcolor{gray!50} \textbf{zwrócone FMI}\\
+  \cellcolor{gray!50} \textbf{Numer filtru} & \cellcolor{gray!50} \textbf{Numer FIFO} & \cellcolor{gray!50} \textbf{zwrócone $FMI$}\\
   \hline
    0 & 0 & 0\\
   \hline
@@ -40,8 +40,8 @@ Po otrzymaniu wiadomoœci na magistrali CAN, gdy ta przejdzie przez filtr akcepta
 \end{center}
 \end{table}
 
-Widaæ, ¿e numer FMI zale¿y od kolejnoœci przyporz¹dkowania filtru do konkretnego FIFO, a nie od numeru nadanego podczas inicjalizacji. W przypadku przyporz¹dkowania filtrów od 7 do 13, przyjê³y one numery od 0 do 6. Przeprowadzono testy potwierdzaj¹ce tê teoriê. Przy braku znajomoœci tej anomalii, u¿ytkownicy czêsto definiuj¹ w³asne numery filtrów, pomijaj¹c pewne wartoœci i nie mog¹ zdekodowaæ poprawnie ramki. Nastêpstwem jest czêsto ustawienie maski na wartoœæ 0x00000000 zapewniaj¹cej przyjêcie wszystkich wiadomoœci, a nastêpnie filtracjê przy u¿yciu programu (potwierdzone zachowanie na wielu forach internetowych).\\
-Jednym ze sposobów na ominiêcie problemu z³ej numeracji, jest zdefiniowanie wszystkich 14 filtrów w FIFO0. Wtedy wartoœæ FMI pokryje siê z numerem filtru. Dodatkowo pozostaje kolejne 14 filtrów, które mo¿na przypisaæ do FIFO1 i pamiêtaæ o offsecie równym 14 podczas odczytywania wartoœci FMI.
+Widaæ, ¿e numer $FMI$ zale¿y od kolejnoœci przyporz¹dkowania filtru do konkretnego FIFO, a nie od numeru nadanego podczas inicjalizacji. W przypadku przyporz¹dkowania filtrów od 7 do 13, przyjê³y one numery od 0 do 6. Przeprowadzono testy potwierdzaj¹ce tê teoriê. Przy braku znajomoœci tej anomalii, u¿ytkownicy czêsto definiuj¹ w³asne numery filtrów, pomijaj¹c pewne wartoœci i nie mog¹ zdekodowaæ poprawnie ramki. Nastêpstwem jest czêsto ustawienie maski na wartoœæ 0x00000000 zapewniaj¹cej przyjêcie wszystkich wiadomoœci, a nastêpnie filtracjê przy u¿yciu programu (potwierdzone zachowanie na wielu forach internetowych).\\
+Jednym ze sposobów na ominiêcie problemu z³ej numeracji, jest zdefiniowanie wszystkich 14 filtrów w FIFO0. Wtedy wartoœæ $FMI$ pokryje siê z numerem filtru. Dodatkowo pozostaje kolejne 14 filtrów, które mo¿na przypisaæ do FIFO1 i pamiêtaæ o offsecie równym 14 podczas odczytywania wartoœci $FMI$.
 
 \section{Analiza spe³nienia wymogów czasowych systemu}\label{sec:exp:timing}
 Iloœæ ró¿nych wiadomoœci (identyfikatorów w systemie) przedstawionych na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}} reprezentuje nastêpuj¹cy wzór:
@@ -55,7 +55,7 @@ $m$ - iloœæ wiadomoœci wysy³anych przez n-t¹ jednostkê pomiarow¹\\
 \\
 Najkrótszy czas próbkowania poszczególnych wiadomoœci nie mo¿e przekroczyæ wartoœci:
 \begin{equation}\label{eq:tp}
-t_{p_{min}}=N*T
+t_{p_{min}}=N \cdot T
 \end{equation}
 \begin{equation}\label{eq:T}
 T=t_{SD}+t_{UART}
@@ -85,7 +85,7 @@ Na podstawie \hyperref[eq:sum_can]{Wzoru~\ref*{eq:sum_can}} obliczono ca³kowit¹ 
 \label{fig:sd_timing}
 \end {figure}
 
-Raz na 17 operacji zapisu, czas operacji wykracza³ w znacz¹cym stopniu poza dopuszczaln¹ wartoœæ. Czas zapisu wiadomoœci utrzymywa³ siê na poziomie 200 us, a w maksimach osi¹ga³ wartoœci nawet dochodz¹ce do 55 ms. D³ugie czasy zapisu wynikaj¹ z wewnêtrznych operacji, które karta wykonuje, zg³aszaj¹c stan zajêtoœci. Aby system funkcjonowa³ poprawnie nale¿y wprowadziæ bufor, który przechowuje nadchodz¹ce dane w trakcie przerw w zapisie na kartê. Jest to powszechnie znany problem wspominany na forach internetowych. Implementacja buforu to jedna z pierwszych planowanych modernizacji systemu.\\ \\
+Raz na 17 operacji zapisu, czas operacji wykracza³ w znacz¹cym stopniu poza dopuszczaln¹ wartoœæ. Czas zapisu wiadomoœci utrzymywa³ siê na poziomie 200 $\mu$s, a w maksimach osi¹ga³ wartoœci nawet dochodz¹ce do 55 ms. D³ugie czasy zapisu wynikaj¹ z wewnêtrznych operacji, które karta wykonuje, zg³aszaj¹c stan zajêtoœci. Aby system funkcjonowa³ poprawnie nale¿y wprowadziæ bufor, który przechowuje nadchodz¹ce dane w trakcie przerw w zapisie na kartê. Jest to powszechnie znany problem wspominany na forach internetowych. Implementacja buforu to jedna z pierwszych planowanych modernizacji systemu.\\ \\
 
 Czas wysy³ania wiadomoœci przez UART $ t_{UART} $ zbadano dok³adnie tak samo jak  $ t_{SD} $. Ponownie jest to tylko czas zajêtoœci procesora. Wynik badania przedstawiono \hyperref[fig:usart_timing]{Rysunku~\ref*{fig:usart_timing}}.
 
@@ -98,13 +98,13 @@ Czas wysy³ania wiadomoœci przez UART $ t_{UART} $ zbadano dok³adnie tak samo jak
 
 W przypadku komunikacji przez UART, bez zaimplementowanej obs³ugi DMA, czas przes³ania wiadomoœci wynosi oko³o 60 ms. Jest to bardzo du¿a wartoœæ, która musi zostaæ zmniejszona aby system móg³ dzia³aæ zgodnie z za³o¿eniami.\\
 Dla aktualnego stanu systemu, chc¹c obs³u¿yæ wszystkie pod³¹czone wêz³y, wg wzorów{~\ref{eq:sum_can} i \ref{eq:T}, najkrótszy mo¿liwy czas próbkowania wynosi³by:
-\begin{equation}\label{eq:sum_can}
-t_{p_{min}}=N*T=127*(55+60)=14605ms
+\begin{equation}
+t_{p_{min}}=N \cdot T=127 \cdot (55+60)=14605ms
 \end{equation}
 Czyli prawie 1,5 s. Chc¹c obs³u¿yæ tylko sterownik silnika w aktualnym stanie systemu, najkrótszy czas próbkowania musia³by wynosiæ 805 ms. Po wprowadzeniu bufora, który zniweluje problem czekania na zapis do pliku, mo¿na za³o¿yæ, ¿e minimalny czas próbkowania zmniejszy³by siê do: 407 ms. Nadal nie jest to satysfakcjonuj¹cy wynik.\\
 Po wprowadzeniu obs³ugi UART przez kontroler DMA, mo¿na by uzyskaæ prêdkoœæ wysy³ania danych zbli¿on¹ do prêdkoœci zapisu do pliku (albo mniejsz¹). Wtedy minimalny czas próbkowania w systemie prezentowa³by siê nastêpuj¹co:
-\begin{equation}\label{eq:sum_can}
-t_{p_{min}}=N*T=127*(0,2+0,2)=50.8ms
+\begin{equation}
+t_{p_{min}}=N \cdot T=127 \cdot (0,2+0,2)=50.8ms
 \end{equation}
 50ms  to wartoœæ, która w pe³ni wystarczy³aby do próbkowania szybko-zmiennych procesów zachodz¹cych w pojeŸdzie. Jest to wartoœæ u¿ywana przez sterownik silnika do próbkowania wartoœci takich jak: prêdkoœæ obrotowa silnika, po³o¿enie przepustnicy (TPS) czy iloœæ tlenu w spalinach (sonda Lambda).\\
 Czêœæ czujników, na przyk³ad temperatury, nie wymaga tak krótkiego czasu próbkowania, gdy¿ zmiana temperatury jest procesem wolno-zmiennym.
