@@ -69,28 +69,39 @@ urlcolor={blue!70!black}
 \begin{abstract}
 Niniejsza praca in¿ynierska stanowi dokumentacjê projektu realizowanego przez grupê elektryczn¹ w zespole PUT Motorsport w ramach konkursu \textit{Formula Student}. Jako studenci IV roku Automatyki i Robotyki Wydzia³u Elektrycznego Politechniki Poznañskiej oraz cz³onkowie Ko³a Naukowego SENSOR zadeklarowaliœmy chêæ uczestnictwa w konkursie i przy³¹czenie siê do zespo³u.
 \end{abstract}
+{
+\selectlanguage{english}
+\begin{abstract}
+This bachelor thesis is a documentation of an engineering project carried out by an electrical gruop of PUT Motorsport team for a \textit{Formula Student} competition. As the fourth-year students of Automatics and Robotics in the faculty of Electrical Engineering at Poznañ University of Technology and as members of the students scientific association SENSOR, we declared willingness to be a part of the team and to participate in the contest.
+\end{abstract}
+}
+
+
 
 \cleardoublepage
 \mainmatter
 
 \chapter{Wstêp oraz motywacja} \label{ch:wstep}
 \textit{Autor: Marcin Aftowicz, Jakub Baranowski}\\ \\
-\textit{Formula Student (FS)} to najbardziej presti¿owy, europejski konkurs w dziedzinie Motorsport, prowadzony przez \textit{Institution of Mechanical Engineers}. Wspierany przez przemys³, konkurs ma na celu inspirowanie i rozwijanie przedsiêbiorczoœci i innowacyjnoœci u m³odych in¿ynierów. Uczelnie z ca³ego œwiata maj¹ za zadanie zaprojektowaæ i zbudowaæ w pe³ni funkcjonalny samochód wyœcigowy, który ukoñczy statyczne i dynamiczne konkurencje testuj¹ce zarówno wiedzê studentów, jak i wydajnoœæ pojazdu.~\cite{misc:formula}\\
-Zespó³ wyœcigowy Politechniki Poznañskiej - PUT Motorsport to dru¿yna sk³adaj¹ca siê z 23 studentów tworz¹cych 6 grup, która podjê³a siê wyzwania wystartowania w konkursie i skonstruowania w³asnego bolidu. Wyró¿nia siê 5 technicznych grup projektowych odpowiedzialnych za: poszycie, zawieszenie, ramê, silnik oraz elektronikê. Wszystkie grupy pracuj¹ równolegle i dbaj¹ o zachowanie spójnoœci oraz kompatybilnoœci projektowanych elementów. Specyfika takiej pracy nak³ada ograniczenia i wymusza elastycznoœæ rozwi¹zañ, tak aby mog³y one zostaæ dopasowane do ca³oœci\cite{misc:motorsport}. Niniejsza praca jest udokumentowaniem postêpów grupy odpowiedzialnej za elektrykê z pierwszego pó³rocza prac nad uk³adem pomiarowym. Jest ona kontynuacj¹ projektu przejœciowego~\cite{manual:projekt}, w którym opisano utworzenie prototypu systemu. Projekt jest w trakcie rozwoju. Ostateczna wersja systemu ma zostaæ zainstalowana w pojeŸdzie w fazie testów przed lipcowymi zawodami. Pozostaje wiêc czas na dopracowanie poszczególnych elementów sk³adowych systemu oraz poprawienie jego funkcjonalnoœci.
+
+\textit{Formula Student (FS)} to najbardziej presti¿owy, europejski konkurs w dziedzinie Motorsport, prowadzony przez \textit{Institution of Mechanical Engineers}. Wspierany przez przemys³, konkurs ma na celu inspirowanie i rozwijanie przedsiêbiorczoœci i innowacyjnoœci u m³odych in¿ynierów. Uczelnie z ca³ego œwiata maj¹ za zadanie zaprojektowaæ i zbudowaæ w pe³ni funkcjonalny samochód wyœcigowy, który ukoñczy statyczne i dynamiczne konkurencje testuj¹ce zarówno wiedzê studentów, jak i wydajnoœæ pojazdu~\cite{misc:formula}.\\
+
+Zespó³ wyœcigowy Politechniki Poznañskiej - PUT Motorsport to dru¿yna sk³adaj¹ca siê z 23 studentów tworz¹cych 6 grup, która podjê³a siê wyzwania wystartowania w konkursie i skonstruowania w³asnego bolidu. Wyró¿nia siê 5 technicznych grup projektowych odpowiedzialnych za: poszycie, zawieszenie, ramê, silnik oraz elektronikê. Wszystkie grupy pracuj¹ równolegle i dbaj¹ o zachowanie spójnoœci oraz kompatybilnoœci projektowanych elementów. Specyfika takiej pracy nak³ada ograniczenia i wymusza elastycznoœæ rozwi¹zañ, tak aby mog³y one zostaæ dopasowane do ca³oœci~\cite{misc:motorsport}. Niniejsza praca jest udokumentowaniem postêpów grupy odpowiedzialnej za elektrykê z pierwszego pó³rocza prac nad uk³adem pomiarowym. Jest ona kontynuacj¹ projektu przejœciowego~\cite{manual:projekt}, w którym opisano utworzenie prototypu systemu. Projekt jest w trakcie rozwoju. Ostateczna wersja systemu ma zostaæ zainstalowana w pojeŸdzie w fazie testów przed lipcowymi zawodami. Pozostaje wiêc czas na dopracowanie poszczególnych elementów sk³adowych systemu oraz poprawienie jego funkcjonalnoœci.
 %=============================================================
 \input{wstep.tex}
 
 \chapter{Przegl¹d literatury} \label{ch:teoria}
 \textit{Autor: Marcin Aftowicz}\\ \\
+
 W tym rozdziale opisano protoko³y komunikacyjne brane pod uwagê podczas projektowania systemu oraz omówiono sposób dzia³ania u¿ytych modu³ów. Jest to zbiór wiedzy teoretycznej, niezbêdnej w celu zaprojektowania omawianego systemu oraz pe³nego zrozumienia jego funkcjonowania.
 %=============================================================
-\section{G³ówna magistrala komunikacyjna - CAN} \label{sec:can}
+\section{G³ówna magistrala komunikacyjna} \label{sec:can}
 \input{can.tex}
 
-\section{Archiwizacja danych - SD} \label{sec:sd}
+\section{Archiwizacja danych} \label{sec:sd}
 \input{sd.tex}
 
-\section{Komunikacja bezprzewodowa - XBee} \label{sec:xbee}
+\section{Komunikacja bezprzewodowa} \label{sec:xbee}
 \input{xbee.tex}
 
 \chapter{Realizacja projektu} \label{ch:praktyka}
@@ -98,22 +109,27 @@ W tym rozdziale przedstawiono realizacjê poszczególnych czêœci projektu, które s
 %=============================================================
 \section{Model systemu} \label{sec:model}
 \textit{Autor: Marcin Aftowicz}\\ \\
+
 \input{model.tex}
 
-\section{G³ówny komputer pok³adowy - Motherboard}
+\section{G³ówny komputer pok³adowy}
 \textit{Autor: Marcin Aftowicz}\\ \\
+
 \input{cpu.tex}
 
-\section{Rozproszone jednostki pomiarowe - HUB}
+\section{Rozproszone jednostki pomiarowe}
 \textit{Autor: Jakub Baranowski}\\ \\
+
 \input{Hub.tex}
 
 \section{Zdalny interfejs u¿ytkownika}
 \textit{Autor: Jakub Baranowski}\\ \\
+
 \input{interface.tex}
 
 \chapter{Badania eksperymentalne} \label{ch:eksperyment}
 \textit{Autor: Marcin Aftowicz, Jakub Baranowski}\\ \\
+
 Rozdzia³ poœwiêcony jest badaniu dzia³ania systemu. Przedstawiono w nim dowód na poprawne jego funkcjonowanie oraz na spe³nienie za³o¿eñ projektowych. Zbadano przebiegi sygna³ów i skonfrontowano je z teori¹. Porównano protoko³y oraz rozwi¹zania u¿yte w prototypie systemu, z tymi z wersji aktualnej. Pokazano wy¿szoœæ systemu nad prototypem oraz ograniczenia, które muszê zostaæ zlikwidowane w przysz³oœci.
 %=============================================================
 \input{exp.tex}
@@ -122,8 +138,9 @@ Rozdzia³ poœwiêcony jest badaniu dzia³ania systemu. Przedstawiono w nim dowód na
 
 \chapter{Podsumowanie}
 \textit{Autor: Jakub Baranowski}\\ \\
-\input{Podsumowanie.tex}
 %=============================================================
+\input{Podsumowanie.tex}
+
 
 % All appendices and extra material, if you have any.
 \cleardoublepage\appendix%
