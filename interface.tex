@@ -1,11 +1,11 @@
-Zadaniem GUI jest monitorowanie magistrali CAN oraz akwizycja danych przesy³anych przez UART do programu. Program mo¿e pracowaæ w dwóch trybach:\newline
+Zadaniem GUI jest monitorowanie magistrali $CAN$ oraz akwizycja danych przesy³anych przez $UART$ do programu. Program mo¿e pracowaæ w dwóch trybach:\newline
 
 \begin{itemize}
 	\item Offline - wczytywanie danych z karty SD
 	\item Online - monitorowanie magistrali CAN w czasie rzeczywistym
 \end{itemize}
 
-\subsection{Komunikacja UART}
+\subsection{Komunikacja}
 Zdecydowano siê na komunikacje $UART$ w zwi¹zku z du¿¹ iloœci¹ modu³ów bezprzewodowych obs³uguj¹cych ten typ transmisji. Obs³uga komunikacji realizowana jest przez kontrolkê $SerialPort$, która jest czêœci¹ œrodowiska Visual Studio. Dostarcza ona metod pozwalaj¹cych na ³atw¹ obs³ugê portu szeregowego.
 
 \subsection{Grphical User Interface}
