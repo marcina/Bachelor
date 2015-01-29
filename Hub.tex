@@ -56,7 +56,7 @@ Z tej zale¿noœci wynika ostateczny wzór na rezystancje boczników:\newline
 \begin{equation} \label{Ost} \frac{V_{out}}{V_{in}}=\frac{K_3 \cdot R_2}{R_1} \end{equation}
 
 \subsection{Obs³uga magistrali CAN}
-Zadaniem jednostki pomiarowej jest wysy³anie zebranych informacji do g³ównego komputera pok³adowego. Nie musi ona odbieraæ ¿adnych wiadomoœci, st¹d maska równa jest 0x0000000 (wiêcej o maskach w \hyperref[ssec:filtry]{Sekcji~\ref*{ssec:filtry}: Filtry akceptacyjne}).\\
+Zadaniem jednostki pomiarowej jest wysy³anie zebranych informacji do g³ównego komputera pok³adowego. Nie musi ona odbieraæ ¿adnych wiadomoœci, st¹d maska równa jest 0x1FFFFFFF, czyli tylko wiadomoœci, które sama wysy³a mog³yby zostaæ odebrane. (wiêcej o maskach w \hyperref[ssec:filtry]{Sekcji~\ref*{ssec:filtry}: Filtry akceptacyjne}).\\
 Realizacja fizyczna Transceivera CAN przedstawiona jest na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.\\
 Ka¿da wiadomoœæ odpowiada innemu kana³owi przetwornika analogowo-cyfrowego. Czas próbkowania definiuje siê w pliku \textit{defines.h}. Ka¿dy $HUB$ posiada swój unikalny adres, który zdefiniowany jest w pliku \textit{defines.h} (wiêcej o adresowaniu w \hyperref[ssec:adresowanie]{Sekcji~\ref*{ssec:adresowanie}: Przestrzeñ adresowa CAN} i na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}).
 
