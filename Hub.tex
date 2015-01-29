@@ -55,10 +55,31 @@ W dokumentacji mamy podany wspó³czynnik $K_3$, który siê równa:\newline
 Z tej zale¿noœci wynika ostateczny wzór na rezystancje boczników:\newline
 \begin{equation} \label{Ost} \frac{V_{out}}{V_{in}}=\frac{K_3 \cdot R_2}{R_1} \end{equation}
 
-\subsection{Obs³uga magistrali CAN}
-Zadaniem jednostki pomiarowej jest wysy³anie zebranych informacji do g³ównego komputera pok³adowego. Nie musi ona odbieraæ ¿adnych wiadomoœci, st¹d maska równa jest 0x1FFFFFFF, czyli tylko wiadomoœci, które sama wysy³a mog³yby zostaæ odebrane. (wiêcej o maskach w \hyperref[ssec:filtry]{Sekcji~\ref*{ssec:filtry}: Filtry akceptacyjne}).\\
-Realizacja fizyczna Transceivera CAN przedstawiona jest na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.\\
-Ka¿da wiadomoœæ odpowiada innemu kana³owi przetwornika analogowo-cyfrowego. Czas próbkowania definiuje siê w pliku \textit{defines.h}. Ka¿dy $HUB$ posiada swój unikalny adres, który zdefiniowany jest w pliku \textit{defines.h} (wiêcej o adresowaniu w \hyperref[ssec:adresowanie]{Sekcji~\ref*{ssec:adresowanie}: Przestrzeñ adresowa CAN} i na \hyperref[fig:adresowanie]{Rysunku~\ref*{fig:adresowanie}}).
+\subsection{Przep³yw danych}
+Zadaniem Jednostki pomiarowej jest wysy³anie zebranych informacji do g³ównego komputera pok³adowego. Nie musi ona odbieraæ ¿adnych wiadomoœci, st¹d maska równa jest 0x1FFFFFFF. Jest to maska, która sprawia, ¿e ka¿dy bit nadchodz¹cego identyfikatora musi siê zgadzaæ z ustawionym identyfikatorem filtra, czyli z identyfikatorem samej jednostki. Oznacza to, ¿e jednostka odczytuje tylko w³asne komunikaty. System filtrowania wiadomoœci omówiono w \hyperref[ssec:filtry]{Sekcji~\ref*{ssec:filtry}: Filtry akceptacyjne}). Realizacja fizyczna Transceivera CAN przedstawiona jest na \hyperref[fig:transceiver]{Rysunku~\ref*{fig:transceiver}}.\\
+
+Ka¿da wiadomoœæ odpowiada innemu kana³owi przetwornika analogowo-cyfrowego. Ka¿da Jednostka pomiarowa posiada 10 12-bitowych kana³ów $ADC$ (\hyperref[fig:adresowanie]{Rysunek~\ref*{fig:adresowanie}}). Czas próbkowania kana³ów $ADC$ definiuje siê w pliku \textit{defines.h}. Ka¿dy $HUB$ posiada swój unikalny adres, który równie¿ zdefiniowany jest w pliku \textit{defines.h}, jako $MY$\_$ID$. Obs³uga przetworników $ADC$ ustawiona jest w tryb skanowania. Oznacza to, ¿e zamiast wykonywania pojedynczych konwersji, wszystkie kana³y skanowane s¹ jeden po drugim automatycznie. Do szybkiego kopiowania odczytanych wartoœci do pamiêci procesora s³u¿y kontroler $DMA$, omawiany w \hyperref[sec:sub:dma]{Sekcji~\ref*{sec:sub:dma}: Direct Memory Access}. Adres pamiêci, w którym zapisywane s¹ pomiary, przechowuje wskaŸnik $*ADC$\_$Buffer$. Jest to wskaŸnik do 10-elementowej tablicy, która nastêpnie wysy³ana jest na magistralê $CAN$ w przerwaniu od timera $TIM$\_$2$. Obs³ugê przerwania pokazano na  \hyperref[listing:timer]{Listingu~\ref*{listing:timer}}.
+
+\noindent\begin{minipage}{\textwidth}
+\begin{lstlisting}[captionpos=b, belowcaptionskip=8pt, caption=Obs³uga przerwania od $TIM$\_$2$, label=listing:timer]
+void   TIM2_IRQHandler(void)
+{
+	if (TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
+	{
+		for(;i<10;i++)
+		{
+			TxMessage.ExtId = MY_ID & (uint16_t)i<<8;
+			TxMessage.IDE = CAN_ID_EXT;
+			TxMessage.DLC = 2;
+			TxMessage.Data[0] = (uint8_t)ADC_Buffer[i]>>8;
+			TxMessage.Data[1] = (uint8_t)ADC_Buffer[i];
+			CAN_Transmit(CAN1,&TxMessage);
+		}
+		TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+	}
+}
+\end{lstlisting}
+\end{minipage}
 
 \subsection{Zasilanie}
 Bolid wyposa¿ony jest w zasilanie akumulatorowe 12 V. Do zasilania czêœci mikrokontrolerowej i strony wtórnej separacji analogowej zastosowano przetwornice DC/DC firmy aimtec o napiêciu wyjœciowym 3.3 V. Przetwornica charakteryzuje siê efektywnoœci¹ na poziomie 78\% i zapewnia separacje galwaniczn¹ do 3000 VDC \cite{manual:aimtec}. Dla stabilnej pracy przetwornicy po stronie pierwotnej i wtórnej zastosowano po dwa kondensatory(tantalowy i elektrolityczny) o wartoœciach 47 $\mu$F i 100 nF.\newline
