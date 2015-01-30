@@ -1,7 +1,7 @@
-Wybór sposobu przekazu informacji wewn¹trz pojazdu musi spe³niaæ wszystkie za³o¿enia projektu zawarte w \hyperref[sec:analiza]{Sekcji~\ref*{sec:analiza}: Analiza problemu}. Zdecydowano siê na u¿ycie magistrali Cotroller Area Network ($CAN$). Jest to protokó³ komunikacyjny wykorzystywany przez sterownik silnika (Electronic Control Unit - $ECU$) serii PE3~\cite{manual:ecu}, który zosta³ wybrany przez konstruktorów pojazdu. $CAN$ to powszechnie stosowany standard w systemach automatyki przemys³owej i samochodowej. Charakteryzuje siê wysokim bezpieczeñstwem (odpornoœci¹ na b³êdy) transmisji. Pozwala na przesy³anie mikrostrumieni danych, takich jak uzyskiwane dane z czujników, sk³adaj¹cych siê z 1 do 8 bitów na komunikat. Topologia magistrali wymaga u¿ycia mniejszej liczby przewodów, ni¿ np. topologia gwiazdy.
+Wybór sposobu przekazu informacji wewn¹trz pojazdu musi spe³niaæ wszystkie za³o¿enia projektu zawarte w \hyperref[sec:analiza]{Sekcji~\ref*{sec:analiza}: Analiza problemu}. Zdecydowano siê na u¿ycie magistrali Cotroller Area Network ($CAN$). Jest to protokó³ komunikacyjny wykorzystywany przez sterownik silnika (Electronic Control Unit - $ECU$) serii PE3~\cite{manual:ecu}, który zosta³ wybrany przez konstruktorów pojazdu. $CAN$ to powszechnie stosowany standard w systemach automatyki przemys³owej i samochodowej. Charakteryzuje siê wysokim bezpieczeñstwem transmisji (odpornoœci¹ na b³êdy). Pozwala na przesy³anie mikrostrumieni danych, takich jak uzyskiwane dane z czujników, sk³adaj¹cych siê z 1 do 8 bitów na komunikat. Topologia magistrali wymaga u¿ycia mniejszej iloœci przewodów ni¿ np. topologia gwiazdy.
 
 \subsection{CAN w modelu ISO/OSI} \label{sec:sub:iso}
-$CAN$ to standard przemys³owej sieci transmisyjnej stworzonej na pocz¹tku lat osiemdziesi¹tych przez niemieck¹ firmê Bosch. Jak ka¿dy powszechnie stosowany protokó³ komunikacyjny, tak i $CAN$ zosta³ w roku 1993  zestandaryzowany i opisany przez International Standard Organisation ($ISO$) na warstwach modelu ISO/OSI i przyjêty za normê ISO-11898~\cite{article:siecican}\cite{iso:11898} (\hyperref[fig:ISO/OSI]{Rysunek~\ref*{fig:ISO/OSI}}).  Standard $CAN$ mia³ obejmowaæ warstwy 1.~(fizyczn¹) 2.~(³¹cza danych) oraz 7.~(aplikacji) \cite{article:can}.\\
+$CAN$ to standard przemys³owej sieci transmisyjnej stworzonej na pocz¹tku lat 80. przez niemieck¹ firmê Bosch. Jak ka¿dy powszechnie stosowany protokó³ komunikacyjny, tak i $CAN$ zosta³ w roku 1993  zestandaryzowany i opisany przez International Standard Organisation ($ISO$) na warstwach modelu ISO/OSI i przyjêty za normê ISO-11898~\cite{article:siecican}\cite{iso:11898} (\hyperref[fig:ISO/OSI]{Rysunek~\ref*{fig:ISO/OSI}}).  Standard $CAN$ mia³ obejmowaæ warstwy 1.~(fizyczn¹) 2.~(³¹cza danych) oraz 7.~(aplikacji) \cite{article:can}.\\
 
 \begin  {figure} [h] 
 \centering
@@ -54,8 +54,8 @@ Warstwa ³¹cza danych obs³ugiwana jest sprzêtowo przez kontrolery magistrali $CAN
 
 Istnieje bardzo wiele ró¿nych standardów opartych na warstwie aplikacji. Ka¿dy producent opracowuje swój standard. Wyró¿nia siê: 
 \begin{itemize} \label{itemize:can}
-\item $CANopen$ oparty na standardzie grupy $CiA$ (CAN in Automation - standard DS 301). Bardzo popularny protokó³, u¿ywany w systemach wbudowanych.
-\item $CAN Areospace$ - standard wprowadzony przez $NASA$ (National Aeronautic and Space Administration). U¿ywany do systemu kontrolno-nawigacyjnego.
+\item $CANopen$ oparty na standardzie grupy $CiA$ (CAN in Automation - standard DS 301). Jest to bardzo popularny protokó³, u¿ywany w systemach wbudowanych.
+\item $CAN Areospace$ - standard wprowadzony przez $NASA$ (National Aeronautic and Space Administration). U¿ywany jest do systemu kontrolno-nawigacyjnego.
 \item $CAN Kingdom$ - specyfikacja warstwy aplikacji stworzona przez szwedzka firmê Kvaser AB. Daje on projektantom swobodê w tworzeniu w³asnego systemu, otwieraj¹c mo¿liwoœæ do projektowania systemu modu³owego.
 \item $Device Net$ - szeroko stosowany w aplikacjach automatyki przemys³owej.
 \item $SDS$ - (Smart Distributed System) - specyfikacja stworzona przez firmê Honeywell, zajmuj¹c¹ siê systemami steruj¹cymi oraz kontrolno-pomiarowymi.
@@ -66,7 +66,7 @@ Istnieje bardzo wiele ró¿nych standardów opartych na warstwie aplikacji. Ka¿dy p
 Oraz wiele innych, bêd¹cych wariacjami powy¿szych.
 
 \subsection{Budowa ramki CAN} \label{sec:sub:ramkacan}
-Wyró¿nia siê podzia³ standardu $CAN$ na dwie kolejne grupy, wewn¹trz warstwy ³¹cza danych:
+Wyró¿nia siê podzia³ standardu $CAN$ na dwie kolejne grupy wewn¹trz warstwy ³¹cza danych:
 \begin{itemize}
 \item \textit CAN 2.0 A - podstawow¹
 \item \textit CAN 2.0 B - rozszerzon¹
@@ -88,16 +88,18 @@ Podzia³ ten ogranicza siê do budowy ramki, a przede wszystkim do d³ugoœci pola a
 
 Po polu arbitra¿u nastêpuje pole kontrolne, w którym zapisana jest informacja o iloœci przesy³anych danych. Kod $DLC$ (Data Length Code) to nic innego, tylko zapis binarny liczby bajtów przes³anych w polu danych. Maksymalna liczba to 8, czyli zakres wartoœci $DLC$ wynosi od 0b0000 do 0b1000~\cite{manual:stm32f4}.\\
 
-Pole danych jest opcjonalne, gdy¿ istniej¹ ramki, które s¹ go pozbawione, jak ramka ¿¹dania transmisji, czy ramka przepe³nienia.
+Pole danych jest opcjonalne, gdy¿ istniej¹ ramki, które s¹ go pozbawione, jak ramka ¿¹dania transmisji czy ramka przepe³nienia.
 
 \subsection{Czas trwania bitu}
-Czas trwania jednego przesy³anego bitu podzielony jest na segmenty widoczne na (\hyperref[fig:timing]{Rysunku~\ref*{fig:timing}}):
+Czas trwania jednego przesy³anego bitu podzielony jest na:
 
 \begin{itemize}
 \item Segment synchronizacyjny ($SYNC$\_$SEG$)
 \item Segment 1 ($BS1$) sk³adaj¹cy siê z segmentu propagacji sygna³u oraz segmentu fazy
 \item Segment 2 ($BS2$) bêd¹cy segmentem fazy
 \end{itemize}
+
+Segmenty te widoczne s¹ na (\hyperref[fig:timing]{Rysunku~\ref*{fig:timing}}):
 
 \begin  {figure} [h] 
 \centering
@@ -129,9 +131,9 @@ Instrukcja jak dobieraæ d³ugoœci trwania poszczególnych segmentów zawarta jest w
 \subsection{Filtry akceptacyjne} \label{sec:sub:filtry}
 Ogromn¹ zalet¹ systemu opartego na protokole $CAN$ jest obecnoœæ filtrów wiadomoœci. W sieci $CAN$ identyfikator wiadomoœci jest jednoczeœnie jej priorytetem. Im ni¿szy identyfikator, tym wy¿szy priorytet. Wynika to z faktu, ¿e za stan logiczny 0 odpowiada bit dominuj¹cy na magistrali. Dlatego nag³ówek ramki zawieraj¹cy identyfikator nazywany jest polem arbitra¿u. Wêze³, który chce wys³aæ wiadomoœæ o najmniejszym identyfikatorze, uzyska dostêp do magistrali jako pierwszy. Wszystkie wêz³y monitoruj¹ sieæ, równie¿ w trakcie nadawania. Gdy wykryj¹, ¿e wiadomoœæ któr¹ nadaj¹, nie pokrywa siê z t¹ na magistrali, przestaj¹ nadawaæ i oczekuj¹ na koniec ramki. Wtedy ponawiaj¹ próbê nadania wiadomoœci. Algorytm filtracji oraz dostêpu do medium zaimplementowane s¹ sprzêtowo w kontrolerze magistrali $CAN$~\cite{article:can}\cite{article:siecican}.\\
 
-Wa¿nym spostrze¿eniem oraz znacz¹c¹ ró¿nic¹ miêdzy protoko³em $CAN$, a innymi protoko³ami, jest fakt i¿ protokó³ nie posiada adresów. Identyfikator jest powi¹zany z wiadomoœci¹, a nie z urz¹dzeniem. Jako, ¿e ka¿de urz¹dzenie odczytuje stan na magistrali, wysy³anie wiadomoœci odbywa siê w trybie rozg³oszeniowym (broadcast). W wersji podstawowej, dziêki 11-bitowemu identyfikatorowi istnieje 2048 ró¿nych ramek, w rozszerzonej ponad 500 milionów. Nie ma potrzeby aby wszystkie ramki by³y przetwarzane przez wszystkie wêz³y magistrali~\cite{article:can}. Kontrolery $CAN$ umo¿liwiaj¹ filtracjê ramek na poziomie sprzêtowym, bez potrzeby anga¿owania jednostki centralnej. Istniej¹ dwa podstawowe sposoby filtracji wiadomoœci:
+Wa¿nym spostrze¿eniem oraz znacz¹c¹ ró¿nic¹ miêdzy protoko³em $CAN$, a innymi protoko³ami jest fakt, i¿ protokó³ nie posiada adresów. Identyfikator jest powi¹zany z wiadomoœci¹, a nie z urz¹dzeniem. Jako, ¿e ka¿de urz¹dzenie odczytuje stan na magistrali, wysy³anie wiadomoœci odbywa siê w trybie rozg³oszeniowym (broadcast). W wersji podstawowej, dziêki 11-bitowemu identyfikatorowi istnieje 2048 ró¿nych ramek, w rozszerzonej ponad 500 milionów. Nie ma potrzeby aby wszystkie ramki by³y przetwarzane przez wszystkie wêz³y magistrali~\cite{article:can}. Kontrolery $CAN$ umo¿liwiaj¹ filtracjê ramek na poziomie sprzêtowym, bez potrzeby anga¿owania jednostki centralnej. Istniej¹ dwa podstawowe sposoby filtracji wiadomoœci:
 
 \begin{itemize}
-\item Tryb maskowania. Definiuje siê maskê, która okreœla, które bity identyfikatora bêd¹ porównywane z wzorcowym identyfikatorem. Dziêki temu trybowi, mo¿na w ³atwy sposób zadeklarowaæ zbiór istotnych dla programu identyfikatorów.
+\item Tryb maskowania. Definiuje siê maskê, która okreœla, które bity identyfikatora bêd¹ porównywane z wzorcowym identyfikatorem. Dziêki temu trybowi mo¿na w ³atwy sposób zadeklarowaæ zbiór istotnych dla programu identyfikatorów.
 \item Tryb listy identyfikatorów. Tworzona jest lista identyfikatorów, które bêd¹ akceptowane przez wêze³. Jest to wygodne rozwi¹zanie w przypadku ma³ej iloœci po¿¹danych wiadomoœci.
 \end{itemize}

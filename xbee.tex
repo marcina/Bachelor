@@ -21,7 +21,7 @@ Modu³ XBee zawiera dwa bufory do komunikacji szeregowej: nadawczy oraz odbiorczy
 
 Modu³ mo¿e dzia³aæ w dwóch trybach przetwarzania informacji:
 \begin{itemize}
-\item transparentny, który sprawia, ¿e modu³ dzia³a jako konwerter szeregowej linii danych wprost na sygna³ radiowy. Wys³anie danych z bufora odbiorczego nastêpuje po up³ywie z góry ustalonego interwa³u czasowego, w którym nie odebrano ¿adnej informacji, przy nades³aniu specjalnej sekwencji znaków lub przy przepe³nieniu bufora odbiorczego. Ten tryb dostêpny jest tylko w komunikacji poprzez $UART$. Tryb obs³uguje tak¿e ramki komend (AT Commands), ale trzeba wpierw wymusiæ tryb ich odbioru.
+\item transparentny, który sprawia, ¿e modu³ dzia³a jako konwerter szeregowej linii danych wprost na sygna³ radiowy. Wys³anie danych z bufora odbiorczego nastêpuje po up³ywie z góry ustalonego interwa³u czasowego, w którym nie odebrano ¿adnej informacji, przy nades³aniu specjalnej sekwencji znaków lub przy przepe³nieniu bufora odbiorczego. Ten tryb dostêpny jest tylko w komunikacji poprzez $UART$. Tryb obs³uguje tak¿e ramki komend (AT Commands), ale trzeba najpierw wymusiæ tryb ich odbioru.
 \item $API$ (Aplication Programming Interface), który rozbudowuje ramkê odbiorcz¹ i nadawcz¹ o dodatkowe pola kontrolne. Dziêki temu trybowi mo¿na konfigurowaæ zdalnie modu³y w sieci  u¿ywaj¹c zestawu komend do³¹czonych w nocie katalogowej~\cite{manual:xbee}. U³atwia on te¿ adresowanie w przypadku dzia³ania w topologii $P2MP$ lub siatki, przy wielu odbiorcach wiadomoœci. W ramce zawarta jest równie¿ informacja o adresie nadawcy. 
 \end{itemize}
 
